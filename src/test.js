@@ -1,11 +1,10 @@
 angular.module('example').run(function($rootScope){
 
-	$rootScope.greeting = 'Hello';
 	var links = document.querySelectorAll('.menu-link > a');
 
 	Array.prototype.forEach.call(links, function(elem){
 		angular.element(elem).on('click', function(event){
-			event.closeParentDropover = true;
+			$rootScope.$emit('ngDropover.closeAll', { ngDropoverId: null});
 		});
 	});
 }).directive('testDirective', function($interval){
@@ -13,7 +12,7 @@ angular.module('example').run(function($rootScope){
 		templateUrl: '../src/template2.tpl.html',
 		link: function(scope, elem, attrs) {
 			scope.markEvent = function(event) {
-				event.closeParentDropover = true;
+				scope.$emit('ngDropover.close', { ngDropoverId: 'directiveEx' });
 			};
 
 			scope.delayClose = function() {

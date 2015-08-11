@@ -1,5 +1,5 @@
 /**
- * ngDropover v0.0.1 - 2015-08-10
+ * ngDropover v0.0.1 - 2015-08-11
  * A custom angular directive to handle dropdowns and popovers with custom content
  *
  * Copyright (c) 2015 Ricky Sandoval <ricky.sandoval92@gmail.com> and Tony Smith <tony@naptown.com>
@@ -80,7 +80,7 @@
                     //ToDo: Add wrapperClass back? Not sure it is needed
                     function setHtml() {
                         dropoverContents = getDropoverContents();
-                        wrapper = angular.element('<div class="ng-dropover-wrapper"></div>');
+                        wrapper = angular.element('<div class="ng-dropover-wrapper ' + scope.config.wrapperClass + '"></div>');
                         wrapper = elm.wrap(wrapper.css({
                             'display': 'inline-block',
                             'position': 'relative'
@@ -95,7 +95,9 @@
                             event.ngDropoverId = scope.ngDropoverId;
                         });
                     }
+                    scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
                     setHtml();
+                    setTrigger();
 
                     scope.$watch('ngDropoverOptions', function() {
                         scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
@@ -142,8 +144,7 @@
                         }
                     }
 
-
-
+                    //ToDo: bottom/top-right should stay with the elm boundries I think
                     function positionContents() {
                         var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
                         var offX = parseInt(scope.config.offsetX, 10) || 0;
@@ -227,9 +228,7 @@
 
                         $scope.closeAllListener = $rootScope.$on('ngDropover.closeAll', function(event, m) {
                             if (m.ngDropoverId === $scope.ngDropoverId) {
-                                if (m.closeParentDropover) {
-                                    $scope.closeAll();
-                                }
+
                             } else {
                                 if ($scope.config.closeOnClickOff) {
                                     $scope.closeAll();
@@ -237,7 +236,7 @@
                             }
                         });
 
-                        $scope.openListener = $rootScope.$on('ngDropover.toggle', function(event, m) {
+                        $scope.toggleListener = $rootScope.$on('ngDropover.toggle', function(event, m) {
                             $scope.isOpen ? $scope.close(m.ngDropoverId) : $scope.open(m.ngDropoverId);
                         });
 
