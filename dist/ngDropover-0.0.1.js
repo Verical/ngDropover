@@ -75,7 +75,46 @@
                 },
                 link: function(scope, elm, attrs) {
 
-                    var dropoverContents, wrapper, triggerElement;
+                    var dropoverContents, wrapper, triggerElement, handlers;
+
+                    
+                    init();
+
+                    function init() {
+                        scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
+                        setHtml();
+                        handlers = {
+                            toggle: function(e) {
+                                // This is to check if the event came from inside the directive contents
+                                if (!e.ngDropoverId) {
+                                    e.ngDropoverId = scope.ngDropoverId;
+                                    scope.toggle(scope.ngDropoverId);
+                                }
+                            },
+                            open: function(e) {
+                                e.ngDropoverId = scope.ngDropoverId;
+                                if (!scope.isOpen) {
+                                    scope.open(scope.ngDropoverId);
+                                }
+                            },
+                            close: function(e) {
+                                e.ngDropoverId = scope.ngDropoverId;
+                                if (scope.isOpen) {
+                                    scope.close(scope.ngDropoverId);
+                                }
+                            },
+                            // used if the main event is not a click, in order to mark the mouse event for the document listener
+                            markEvent: function(e) {
+                                e.ngDropoverId = scope.ngDropoverId;
+                            }
+                        }
+                        scope.$watch('ngDropoverOptions', function() {
+                            unsetTriggers();
+                            scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
+                            setTriggers();
+                        }, true);
+                        setTriggers();
+                    }
 
                     //ToDo: Add wrapperClass back? Not sure it is needed
                     function setHtml() {
@@ -95,17 +134,9 @@
                             event.ngDropoverId = scope.ngDropoverId;
                         });
                     }
-                    scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
-                    setHtml();
-                    setTrigger();
-
-                    scope.$watch('ngDropoverOptions', function() {
-                        scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
-                        setTrigger();
-                    }, true);
 
                     //Get the trigger from the config if the user set it. Otherwise the trigger will default to the scope's element
-                    function setTrigger() {
+                    function setTriggers() {
                         triggerElement = wrapper;
                         if (scope.config.trigger !== "") {
                             triggerElement = angular.element(document.querySelector(scope.config.trigger));
@@ -117,30 +148,26 @@
                         //else send to individual open and close methods
                         var triggerObj = triggerHelper.getTriggers(scope.config.triggerEvent);
                         if (triggerObj.show === triggerObj.hide) {
-                            triggerElement.on(triggerObj.show, function(e) {
-                                if (!e.ngDropoverId) {
-                                    e.ngDropoverId = scope.ngDropoverId;
-                                    scope.toggle(scope.ngDropoverId);
-                                }
-                            });
+                            triggerElement.on(triggerObj.show, handlers.toggle);
                         } else {
-                            triggerElement.on(triggerObj.show, function(e) {
-                                e.ngDropoverId = scope.ngDropoverId;
-                                if (!scope.isOpen) {
-                                    scope.open(scope.ngDropoverId);
-                                }
-                            });
+                            triggerElement.on(triggerObj.show, handlers.open);
 
-                            triggerElement.on(triggerObj.hide, function(e) {
-                                e.ngDropoverId = scope.ngDropoverId;
-                                if (scope.isOpen) {
-                                    scope.close(scope.ngDropoverId);
-                                }
-                            });
+                            triggerElement.on(triggerObj.hide, handlers.close);
 
-                            triggerElement.on('click', function(e) {
-                                e.ngDropoverId = scope.ngDropoverId;
-                            });
+                            triggerElement.on('click', handlers.markEvent);
+                        }
+                    }
+
+                    function unsetTriggers() {
+                        var triggerObj = triggerHelper.getTriggers(scope.config.triggerEvent);
+                        if (triggerObj.show === triggerObj.hide) {
+                            triggerElement.off(triggerObj.show, handlers.toggle);
+                        } else {
+                            triggerElement.off(triggerObj.show, handlers.open);
+
+                            triggerElement.off(triggerObj.hide, handlers.close);
+
+                            triggerElement.off('click', handlers.markEvent);
                         }
                     }
 
