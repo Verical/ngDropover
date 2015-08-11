@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>ngDropover Examples</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script type="text/javascript" src="/dist/ngDropover-0.0.1.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="/src/test.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style1.css">
+</head>
+
+<body ng-app="example" ng-controller="AppCtrl">
+    <h1>Mad Dropdowns Yo</h1>
+    <section>
+        <div class="row">
+            <div ng-dropover="dropOne" class="outline">
+                <div>Click Toggle</div>
+                <div ng-dropover-contents>
+                    <div>ITEM</div>
+                    <div>ITEM</div>
+                    <div>ITEM</div>
+                    <div>ITEM</div>
+                    <div>ITEM</div>
+                    <div>ITEM</div>
+                </div>
+            </div>
+            <div class="i-block">
+                <div ng-dropover-trigger='{ngDropoverId: "dropOne", action: "open"}' class="remote-trigger">Open from elsewhere</div>
+                <div ng-dropover-trigger='{ngDropoverId: "dropOne", action: "close"}' class="remote-trigger">Close from elsewhere</div>
+                <div ng-dropover-trigger='{ngDropoverId: "dropOne", triggerEvent: "hover"}' class="remote-trigger">Toggle from elsewhere (hover)</div>
+            </div>
+        </div>
+        <div class="row">
+            <nav id="test-menu">
+                <ul>
+                    <li class="menu-main" ng-dropover ng-dropover-options="{{leftMenuOptions}}">
+                        <a href="">Click Left</a>
+                        <ul ng-dropover-contents>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-main" ng-dropover ng-dropover-options="{'triggerEvent': 'hover'}">
+                        <a href="">Hover</a>
+                        <ul ng-dropover-contents>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-main" ng-dropover ng-dropover-options="{'triggerEvent': 'hover', position: 'top'}">
+                        <a href="">Hover Above</a>
+                        <ul ng-dropover-contents>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-main" ng-dropover ng-dropover-options="{'triggerEvent': 'click', 'closeOnClickOff': false}">
+                        <a href="">Click n Stay</a>
+                        <ul ng-dropover-contents>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-main" ng-dropover ng-dropover-options="{'triggerEvent': 'hover', position: 'right'}">
+                        <a href="">Hover Right</a>
+                        <ul ng-dropover-contents>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="row">
+            <div ng-dropover class="outline">
+                Bare
+            </div>
+            <div ng-dropover class="outline" ng-dropover-options="{wrapperClass: 'template-example', position: 'bottom-center'}">
+                Using Template
+                <div ng-dropover-contents>
+                    <ng-include src="'template.tpl.html'"></ng-include>
+                </div>
+            </div>
+            <div ng-dropover="directiveEx" class="outline" ng-dropover-options="{wrapperClass: 'directive-example', position: 'bottom-right'}">
+                Using Other Directive
+                <div ng-dropover-contents test-directive>
+                </div>
+            </div>
+        </div>
+    </section>
+    <h1>Popovers For Days</h1>
+    <section>
+        <div class="row">
+            <div ng-dropover>
+            </div>
+        </div>
+    </section>
+    <h1>Options Playground</h1>
+    <div class="row">
+        <div class="col-sm-4">
+            <form name="playExample">
+                <div class="form-group">
+                    <label for="examplePosition">Position</label>
+                    <select ng-model="exampleOptions.position">
+                        <option>bottom-left</option>
+                        <option>bottom-center</option>
+                        <option>bottom-right</option>
+                        <option>top-left</option>
+                        <option>top-center</option>
+                        <option>top-right</option>
+                        <option>left-bottom</option>
+                        <option>left-center</option>
+                        <option>left-top</option>
+                        <option>right-bottom</option>
+                        <option>right-center</option>
+                        <option>right-top</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleOffX">Horizontal Offset (offsetX)</label>
+                    <input type="number" class="form-control" ng-model="exampleOptions.offsetX">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Vertical Offset (offsetY)</label>
+                    <input type="number" class="form-control" ng-model="exampleOptions.offsetY">
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="exampleOptions.closeOnClickOff"> Close on click off (closeOnClickOff)
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="exampleOptions.closeOnOpen"> Close all others on open (closeOthersOnOpen)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="exampleTriggerEvent">Trigger Event</label>
+                    <select ng-model="exampleOptions.triggerEvent">
+                        <option value="click">Click</option>
+                        <option value="hover">Hover</option>
+                        <option value="focus">Focus</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-8">
+            <div>{{exampleOptions}}</div>
+            <div>
+                <ul>
+                    <li class="menu-main" ng-dropover ng-dropover-options="{{exampleOptions}}">
+                        <a href="">Trigger Element</a>
+                        <ul ng-dropover-contents>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                            <li class="menu-link"><a href="">Sub</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- <div>
+        <h1>Most Basic Implementation</h1>
+        <div>
+            <p><code>$modal</code> is a service to quickly create AngularJS-powered modal windows. Creating custom modals is straightforward: create a partial view, its controller and reference them when using the service.</p>
+            <p>The <code>$modal</code> service has only one method: <code>open(options)</code> where available options are like follows:</p>
+            <ul>
+                <li><code>templateUrl</code> - a path to a template representing modal's content</li>
+                <li><code>template</code> - inline template representing the modal's content</li>
+                <li><code>scope</code> - a scope instance to be used for the modal's content (actually the <code>$modal</code> service is going to create a child scope of a provided scope). Defaults to <code>$rootScope</code></li>
+                <li><code>controller</code> - a controller for a modal instance - it can initialize scope used by modal. Accepts the "controller-as" syntax in the form 'SomeCtrl as myctrl'; can be injected with <code>$modalInstance</code></li>
+            </ul>
+        </div>
+        <p data-height="195" data-theme-id="0" data-slug-hash="XbOVLd" data-default-tab="result" data-user="santhony7" class='codepen'>See the Pen <a href='http://codepen.io/santhony7/pen/XbOVLd/'>ngDropover - Simple</a> by Tony Smith (<a href='http://codepen.io/santhony7'>@santhony7</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+        <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+    </div>
+    <div>
+        <h1>Hover Implementation</h1>
+        <div>
+            <p><code>$modal</code> is a service to quickly create AngularJS-powered modal windows. Creating custom modals is straightforward: create a partial view, its controller and reference them when using the service.</p>
+            <p>The <code>$modal</code> service has only one method: <code>open(options)</code> where available options are like follows:</p>
+            <ul>
+                <li><code>templateUrl</code> - a path to a template representing modal's content</li>
+                <li><code>template</code> - inline template representing the modal's content</li>
+                <li><code>scope</code> - a scope instance to be used for the modal's content (actually the <code>$modal</code> service is going to create a child scope of a provided scope). Defaults to <code>$rootScope</code></li>
+                <li><code>controller</code> - a controller for a modal instance - it can initialize scope used by modal. Accepts the "controller-as" syntax in the form 'SomeCtrl as myctrl'; can be injected with <code>$modalInstance</code></li>
+            </ul>
+        </div>
+        <p data-height="268" data-theme-id="0" data-slug-hash="OVdQNr" data-default-tab="result" data-user="santhony7" class='codepen'>See the Pen <a href='http://codepen.io/santhony7/pen/OVdQNr/'>ngDropover - Hover</a> by Tony Smith (<a href='http://codepen.io/santhony7'>@santhony7</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+        <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+    </div>
+    <div>
+        <h1>Remote Control Implementation with Arrow</h1>
+        <div>
+            <p><code>$modal</code> is a service to quickly create AngularJS-powered modal windows. Creating custom modals is straightforward: create a partial view, its controller and reference them when using the service.</p>
+            <p>The <code>$modal</code> service has only one method: <code>open(options)</code> where available options are like follows:</p>
+            <ul>
+                <li><code>templateUrl</code> - a path to a template representing modal's content</li>
+                <li><code>template</code> - inline template representing the modal's content</li>
+                <li><code>scope</code> - a scope instance to be used for the modal's content (actually the <code>$modal</code> service is going to create a child scope of a provided scope). Defaults to <code>$rootScope</code></li>
+                <li><code>controller</code> - a controller for a modal instance - it can initialize scope used by modal. Accepts the "controller-as" syntax in the form 'SomeCtrl as myctrl'; can be injected with <code>$modalInstance</code></li>
+            </ul>
+        </div>
+        <p data-height="268" data-theme-id="0" data-slug-hash="LVqQZO" data-default-tab="result" data-user="santhony7" class='codepen'>See the Pen <a href='http://codepen.io/santhony7/pen/LVqQZO/'>ngDropover - Remote Control</a> by Tony Smith (<a href='http://codepen.io/santhony7'>@santhony7</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+        <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+    </div> -->
+
+</html>

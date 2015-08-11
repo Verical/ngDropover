@@ -1,0 +1,27 @@
+*ToDo*
+*In no particular order*
+
+- Set up build
+- Version numbering
+- Give thanks to contributors
+- Docs
+- Grunt
+- README
+- Code Comments
+- Add to various module websites ( http://ngmodules.org/ )
+- Performance test
+- Browser compatabilty test
+- Release Notes
+- Unit tests
+- Add type checking logic
+- Console messages for commmon errors "That dropover is already closed"
+
+- Website/Examples
+	- Make a toaster popup
+	- Select input
+
+- Add ability to close others or not on open
+- Research no wrapper
+- Allow for no triggers on elm. Move triggers into Link. Triggers in JSON format. Try to remove ngDropoverTrigger directive
+- Add a destroy for trigger events
+- Animate research - Let the user use whatever lib they want

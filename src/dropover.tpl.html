@@ -1,0 +1,42 @@
+<div class="dropover" ng-class="{ 'dropover-open' : api.isOpen()}">
+	<style>
+		.dropover-wrapper {
+		}
+		.dropover {
+			display: none;
+			position: absolute;
+			border: 1px solid black;
+			box-shadow: 2px 2px 2px 2px black;
+			background: white;
+			padding: 20px;
+			border-radius: 5px;
+			z-index: 101;
+		}
+		.dropover-open {
+			display: block;
+		}
+		.pop-top {
+			bottom: 100%;
+		}
+		.pop-bottom {
+			top: 100%;
+		}
+		.pop-middle, .pop-dropdown {
+			left: 0;
+		}
+
+		.dropover-overlay {
+			position: fixed;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			visibility: hidden;
+		}
+		[dropover] {
+			margin: 20px;
+			padding: 20px;
+			border: 2px solid #2EDF9A;
+		}
+	</style>
+</div>

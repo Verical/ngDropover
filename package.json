@@ -1,0 +1,38 @@
+{
+  "name": "ngDropover",
+  "version": "0.0.1",
+  "author": "Ricky Sandoval <ricky.sandoval92@gmail.com> and Tony Smith <tony@naptown.com>",
+  "description": "A custom angular directive to handle dropdowns and popovers with custom content",
+  "contributors": [
+    {
+      "name": "Ricky Sandoval",
+      "email": "ricky.sandoval92@gmail.com"
+    },
+    {
+      "name": "Tony Smith",
+      "email": "tony@naptown.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rickysandoval/dropover"
+  },
+  "keywords": [
+    "angular 1.x",
+    "dropdown",
+    "popover"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "0.4.x",
+    "grunt-contrib-clean": "0.x.x",
+    "grunt-contrib-concat": "0.x.x",
+    "grunt-contrib-copy": "0.x.x",
+    "grunt-contrib-jasmine": "0.x.x",
+    "grunt-contrib-jshint": "0.x.x",
+    "grunt-contrib-uglify": "0.x.x",
+    "grunt-contrib-watch": "^0.6.1"
+  },
+  "bundledDependencies": [],
+  "license": "MIT"
+}
