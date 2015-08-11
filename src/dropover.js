@@ -69,7 +69,7 @@
                 },
                 link: function(scope, elm, attrs) {
 
-                    var dropoverContents, wrapper, triggerElement, handlers;
+                    var dropoverContents, triggerElement, handlers;
 
                     
                     init();
@@ -113,12 +113,7 @@
                     //ToDo: Add wrapperClass back? Not sure it is needed
                     function setHtml() {
                         dropoverContents = getDropoverContents();
-                        wrapper = angular.element('<div class="ng-dropover-wrapper ' + scope.config.wrapperClass + '"></div>');
-                        wrapper = elm.wrap(wrapper.css({
-                            'display': 'inline-block',
-                            'position': 'relative'
-                        })).parent();
-                        elm.after(dropoverContents);
+                        elm.addClass(scope.config.wrapperClass);
                         dropoverContents.css({
                             'position': 'absolute',
                             'visibility': 'hidden'
@@ -127,11 +122,12 @@
                         dropoverContents.on('click', function(event) {
                             event.ngDropoverId = scope.ngDropoverId;
                         });
+
                     }
 
                     //Get the trigger from the config if the user set it. Otherwise the trigger will default to the scope's element
                     function setTriggers() {
-                        triggerElement = wrapper;
+                        triggerElement = elm;
                         if (scope.config.trigger !== "") {
                             triggerElement = angular.element(document.querySelector(scope.config.trigger));
                         }
@@ -178,7 +174,6 @@
                         var ret;
                         if (elm[0].querySelector('[ng-dropover-contents]')) {
                             ret = angular.element(elm[0].querySelector('[ng-dropover-contents]'));
-                            elm[0].querySelector('[ng-dropover-contents]').remove();
                             return ret;
                         } else {
                             return angular.element("<div class='ng-dropover-empty'>Oops, you forgot to specify what goes in the dropdown</div>");
@@ -188,14 +183,16 @@
                     scope.open = function(ngDropoverId) {
                         if (ngDropoverId === scope.ngDropoverId && !scope.isOpen) {
 
+                            positionContents();
+
                             //start the display process and fire events
                             dropoverContents.css('visibility', 'visible');
                             $rootScope.$broadcast('ngDropover.opening', scope.ngDropoverId);
                             $rootScope.$broadcast('ngDropover.opened', scope.ngDropoverId);
-                            wrapper.addClass('ng-dropover-open');
+                            elm.addClass('ng-dropover-open');
                             $rootScope.$broadcast('ngDropover.rendered', scope.ngDropoverId);
 
-                            positionContents();
+                            angular.element($window).bind('resize', positionContents);
 
                             scope.isOpen = true;
                         }
@@ -225,9 +222,16 @@
                         dropoverContents.css('visibility', 'hidden');
                         $rootScope.$broadcast('ngDropover.closing', scope.ngDropoverId);
                         $rootScope.$broadcast('ngDropover.closed', scope.ngDropoverId);
-                        wrapper.removeClass('ng-dropover-open');
+                        elm.removeClass('ng-dropover-open');
                         scope.isOpen = false;
+
+                        angular.element($window).unbind('resize', positionContents);
                     };
+
+                    scope.$on('$destroy', function(){
+                        unsetTriggers();
+                        angular.element($window).unbind('resize', positionContents);
+                    });
 
 
                 },
