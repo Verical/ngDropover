@@ -29,7 +29,7 @@
                 'closeOthersOnOpen': true,
                 'trigger': '',
                 'triggerEvent': 'click',
-                'position': 'bottom',
+                'position': 'bottom-left',
                 'closeOnClickOff': true
             }
         )
