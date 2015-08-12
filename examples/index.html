@@ -17,7 +17,7 @@
     <h1>Mad Dropdowns Yo</h1>
     <section>
         <div class="row">
-            <div ng-dropover="dropOne" class="outline dropOneTrigger" style="{position: absolute}"ng-dropover-options="{'trigger': '.dropOneTrigger'}">
+            <div style="position:relative" ng-dropover="dropOne" class="outline dropOneTrigger" style="{position: absolute}"ng-dropover-options="{'trigger': '.dropOneTrigger'}">
                 <div>Click Toggle</div>
                 <div ng-dropover-contents>
                     <div>ITEM</div>
@@ -34,9 +34,9 @@
             </div>
         </div>
         <div class="row">
-            <nav id="test-menu">
+            <nav id="test-menu" style="position:relative; padding-top: 50px;">
                 <ul>
-                    <li class="menu-main" ng-dropover ng-dropover-options="{{leftMenuOptions}}">
+                    <li class="menu-main" style="position:relative" ng-dropover ng-dropover-options="{{leftMenuOptions}}">
                     {{toggle}}
                         <a href="">Click Left</a>
                         <ul ng-dropover-contents>

@@ -356,7 +356,7 @@
              */
             var parentOffsetEl = function(element) {
                 var docDomEl = $document[0];
-                var offsetParent = !isStaticPositioned(element.parentElement) ? element.parentElement : element.offsetParent || docDomEl;
+                var offsetParent = element.offsetParent || docDomEl;
                 while (offsetParent && offsetParent !== docDomEl && isStaticPositioned(offsetParent)) {
                     offsetParent = offsetParent.offsetParent;
                 }
