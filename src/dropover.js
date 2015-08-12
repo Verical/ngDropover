@@ -173,7 +173,7 @@
                         }
                     }
 
-                    //ToDo: add class for each position; remove old class dropoverContents.addClass(scope.config.position);
+                    // //ToDo: add class for each position; remove old class dropoverContents.addClass(scope.config.position);
                     function positionContents() {
                         var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
                         var offX = parseInt(scope.config.horizontalOffset, 10) || 0;
@@ -418,6 +418,11 @@
                         targetElPos;
 
                     hostElPos = appendToBody ? this.offset(hostEl) : this.position(hostEl);
+                    
+                    if (!isStaticPositioned(hostEl[0])){
+                        hostElPos.top = -hostEl[0].clientTop;
+                        hostElPos.left = -hostEl[0].clientLeft;
+                    }
 
                     targetElWidth = targetEl.prop('offsetWidth');
                     targetElHeight = targetEl.prop('offsetHeight');
