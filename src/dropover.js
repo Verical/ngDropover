@@ -24,8 +24,8 @@
         })
         .constant(
             'ngDropoverConfig', {
-                'offsetX': 0,//ToDo: change this to horizontalOffset
-                'offsetY': 0,//ToDo: change this to verticalOffset
+                'offsetX': 0, //ToDo: change this to horizontalOffset
+                'offsetY': 0, //ToDo: change this to verticalOffset
                 'closeOthersOnOpen': true,
                 'trigger': '',
                 'triggerEvent': 'click',
@@ -70,7 +70,7 @@
 
                     var dropoverContents, triggerElement, handlers;
 
-                    
+
                     init();
 
                     function init() {
@@ -160,7 +160,7 @@
                     }
 
                     //ToDo: bottom/top-right should stay with the elm boundries
-                    //ToDo: add class for each position
+                    //ToDo: add class for each position; remove old class dropoverContents.addClass(scope.config.position);
                     function positionContents() {
                         var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
                         var offX = parseInt(scope.config.offsetX, 10) || 0;
@@ -227,7 +227,7 @@
                         angular.element($window).unbind('resize', positionContents);
                     };
 
-                    scope.$on('$destroy', function(){
+                    scope.$on('$destroy', function() {
                         unsetTriggers();
                         angular.element($window).unbind('resize', positionContents);
                     });
@@ -415,6 +415,9 @@
                             return hostElPos.left;
                         },
                         right: function() {
+                            if (pos1 === "right") {
+                                return hostElPos.left + (hostElPos.width-targetElWidth);
+                            }
                             return hostElPos.left + hostElPos.width;
                         }
                     };
@@ -457,6 +460,8 @@
                             };
                             break;
                     }
+
+
 
                     return targetElPos;
                 }
