@@ -10,7 +10,8 @@
 - Code Comments
 - Add to various module websites ( http://ngmodules.org/ )
 - Performance test
-- Browser compatabilty test
+- Browser compatability test
+- Angular version compatability test
 - Release Notes
 - Unit tests
 - Add type checking logic
