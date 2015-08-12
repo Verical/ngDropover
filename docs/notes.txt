@@ -23,6 +23,8 @@
 
 - Review boostrap/JQuery popover code
 
+- Global options?
+
 - Custom Event
 	{
 		elementID

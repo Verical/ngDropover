@@ -181,3 +181,7 @@ nav .ng-dropover-contents {
 .col-sm-8 .ng-dropover-contents {
     width: 120px;
 }
+
+.ng-dropover-contents.dropdown {
+    display: none;
+}

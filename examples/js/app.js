@@ -3,9 +3,10 @@ angular.module('example', ['ngDropover'])
 
         $scope.leftMenuOptions = {
             'triggerEvent': 'click',
-            'position': 'left-bottom'        };
-
-
+            'position': 'left-bottom',
+            'classOnly': true,
+            'group': 'dropdown'
+         };
 
         $rootScope.exampleOptions = {
             'horizontalOffset': 0,
@@ -17,5 +18,16 @@ angular.module('example', ['ngDropover'])
             'position': "bottom-left",
             'closeOnClickOff': true
         };
+
+        $rootScope.$on('ngDropover.opening', function(event, dropObj){
+            if (dropObj.group == 'dropdown'){
+                $(dropObj.element).slideToggle();
+            }
+        });
+        $rootScope.$on('ngDropover.closing', function(event, dropObj){
+            if (dropObj.group == 'dropdown'){
+                $(dropObj.element).slideToggle();
+            }
+        });
 
     });

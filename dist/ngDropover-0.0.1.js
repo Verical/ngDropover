@@ -1,4 +1,10 @@
-/* global angular */
+/**
+ * ngDropover v0.0.1 - 2015-08-12
+ * A custom angular directive to handle dropdowns and popovers with custom content
+ *
+ * Copyright (c) 2015 Ricky Sandoval <ricky.sandoval92@gmail.com> and Tony Smith <tony@naptown.com>
+ * Licensed MIT
+ */
 (function(window, document) {
     'use strict';
 
