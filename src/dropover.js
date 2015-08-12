@@ -24,9 +24,8 @@
         })
         .constant(
             'ngDropoverConfig', {
-                'offsetX': 0,
-                'offsetY': 0,
-                'wrapperClass': '',
+                'offsetX': 0,//ToDo: change this to horizontalOffset
+                'offsetY': 0,//ToDo: change this to verticalOffset
                 'closeOthersOnOpen': true,
                 'trigger': '',
                 'triggerEvent': 'click',
@@ -110,7 +109,6 @@
                         setTriggers();
                     }
 
-                    //ToDo: Add wrapperClass back? Not sure it is needed
                     function setHtml() {
                         dropoverContents = getDropoverContents();
                         elm.addClass(scope.config.wrapperClass);
@@ -161,7 +159,8 @@
                         }
                     }
 
-                    //ToDo: bottom/top-right should stay with the elm boundries I think
+                    //ToDo: bottom/top-right should stay with the elm boundries
+                    //ToDo: add class for each position
                     function positionContents() {
                         var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
                         var offX = parseInt(scope.config.offsetX, 10) || 0;
