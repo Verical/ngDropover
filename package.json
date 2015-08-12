@@ -1,6 +1,6 @@
 {
-  "name": "ngDropover",
-  "version": "0.0.2",
+  "name": "ngdropover",
+  "version": "0.0.0",
   "author": "Ricky Sandoval <ricky.sandoval92@gmail.com> and Tony Smith <tony@naptown.com>",
   "description": "A custom angular directive to handle dropdowns and popovers with custom content",
   "contributors": [
