@@ -79,7 +79,6 @@
                     var dropoverContents, triggerElements, handlers, showContents, hideContents;
 
                     init();
-
                     function init() {
                         scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
                         setHtml();
@@ -107,26 +106,28 @@
                                 e.ngDropoverId = scope.ngDropoverId;
                             }
                         }
+
                         scope.$watch('ngDropoverOptions', function() {
                             unsetTriggers();
                             scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
                             setTriggers();
                             setMethods();
                         }, true);
+                        
                         setTriggers();
                         setMethods();
                         dropoverContents.on('click', handlers.markEvent);
                     }
 
-                    function setMethods() {
-                        if (scope.config.classOnly === true) {
-                            showContents = hideContents = function() {};
+                    function setMethods(){
+                        if (scope.config.classOnly === true){
+                            showContents = hideContents = function(){};
                             positionContents();
                         } else {
-                            showContents = function() {
+                            showContents = function(){
                                 dropoverContents.css('visibility', 'visible');
                             }
-                            hideContents = function() {
+                            hideContents = function(){
                                 dropoverContents.css('visibility', 'hidden');
                             }
                             dropoverContents.css('visibility', 'hidden');
@@ -148,7 +149,7 @@
                         if (scope.config.trigger !== "") {
                             triggerElements = document.querySelectorAll(scope.config.trigger);
                         }
-                        for (var i = 0; i < triggerElements.length; i++) {
+                        for (var i = 0; i < triggerElements.length; i++){
                             var el = angular.element(triggerElements[i]);
 
                             el.addClass('ng-dropover-trigger');
@@ -168,7 +169,7 @@
 
                     function unsetTriggers() {
                         var triggerObj = triggerHelper.getTriggers(scope.config.triggerEvent);
-                        for (var i = 0; i < triggerElements.length; i++) {
+                        for (var i = 0; i < triggerElements.length; i++){
                             var el = angular.element(triggerElements[i]);
                             if (triggerObj.show === triggerObj.hide) {
                                 el.off(triggerObj.show, handlers.toggle);
@@ -180,7 +181,7 @@
                         }
                     }
 
-                    //ToDo: add class for each position; remove old class dropoverContents.addClass(scope.config.position);
+                    // //ToDo: add class for each position; remove old class dropoverContents.addClass(scope.config.position);
                     function positionContents() {
                         var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
                         var offX = parseInt(scope.config.horizontalOffset, 10) || 0;
@@ -263,7 +264,7 @@
                     };
 
                     function closer() {
-
+        
                         $rootScope.$broadcast('ngDropover.closing', {
                             id: scope.ngDropoverId,
                             element: dropoverContents[0],
@@ -363,7 +364,7 @@
              */
             var parentOffsetEl = function(element) {
                 var docDomEl = $document[0];
-                var offsetParent = element.offsetParent || docDomEl;
+                var offsetParent = !isStaticPositioned(element.parentElement) ? element.parentElement : element.offsetParent || docDomEl;
                 while (offsetParent && offsetParent !== docDomEl && isStaticPositioned(offsetParent)) {
                     offsetParent = offsetParent.offsetParent;
                 }
@@ -386,7 +387,6 @@
                         offsetParentBCR = this.offset(angular.element(offsetParentEl));
                         offsetParentBCR.top += offsetParentEl.clientTop - offsetParentEl.scrollTop;
                         offsetParentBCR.left += offsetParentEl.clientLeft - offsetParentEl.scrollLeft;
-                        console.log(offsetParentBCR);
                     }
                     var boundingClientRect = element[0].getBoundingClientRect();
                     return {
@@ -403,7 +403,6 @@
                  */
                 offset: function(element) {
                     var boundingClientRect = element[0].getBoundingClientRect();
-                    console.log(boundingClientRect);
                     return {
                         width: boundingClientRect.width || element.prop('offsetWidth'),
                         height: boundingClientRect.height || element.prop('offsetHeight'),
@@ -427,8 +426,8 @@
                         targetElPos;
 
                     hostElPos = appendToBody ? this.offset(hostEl) : this.position(hostEl);
-
-                    if (!isStaticPositioned(hostEl[0])) {
+                    
+                    if (!isStaticPositioned(hostEl[0])){
                         hostElPos.top = -hostEl[0].clientTop;
                         hostElPos.left = -hostEl[0].clientLeft;
                     }
@@ -445,7 +444,7 @@
                         },
                         right: function() {
                             if (pos1 === "right") {
-                                return hostElPos.left + (hostElPos.width - targetElWidth);
+                                return hostElPos.left + (hostElPos.width-targetElWidth);
                             }
                             return hostElPos.left + hostElPos.width;
                         }
@@ -456,11 +455,9 @@
                             return hostElPos.top + hostElPos.height / 2 - targetElHeight / 2;
                         },
                         top: function() {
-                            console.log(hostElPos.top);
                             return hostElPos.top;
                         },
                         bottom: function() {
-                            console.log(hostElPos.height);
                             return hostElPos.top + hostElPos.height;
                         }
                     };
