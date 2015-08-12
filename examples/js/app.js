@@ -8,8 +8,8 @@ angular.module('example', ['ngDropover'])
 
 
         $rootScope.exampleOptions = {
-            'offsetX': 0,
-            'offsetY': 0,
+            'horizontalOffset': 0,
+            'verticalOffset': 0,
             'wrapperClass': '',
             'closeOthersOnOpen': false,
             'trigger': "",

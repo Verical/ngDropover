@@ -24,8 +24,8 @@
         })
         .constant(
             'ngDropoverConfig', {
-                'offsetX': 0, //ToDo: change this to horizontalOffset
-                'offsetY': 0, //ToDo: change this to verticalOffset
+                'horizontalOffset': 0,
+                'verticalOffset': 0,
                 'closeOthersOnOpen': true,
                 'trigger': '',
                 'triggerEvent': 'click',
@@ -159,12 +159,11 @@
                         }
                     }
 
-                    //ToDo: bottom/top-right should stay with the elm boundries
                     //ToDo: add class for each position; remove old class dropoverContents.addClass(scope.config.position);
                     function positionContents() {
                         var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
-                        var offX = parseInt(scope.config.offsetX, 10) || 0;
-                        var offY = parseInt(scope.config.offsetY, 10) || 0;
+                        var offX = parseInt(scope.config.horizontalOffset, 10) || 0;
+                        var offY = parseInt(scope.config.verticalOffset, 10) || 0;
                         dropoverContents.css('left', positions.left + offX + 'px');
                         dropoverContents.css('top', positions.top + offY + 'px');
                     }
