@@ -164,6 +164,34 @@
                         dropoverContents.css({
                             'position': 'absolute'
                         }).addClass('ngdo-contents');
+
+
+                        // function whichTransitionEvent() {
+                        //     var t;
+                        //     var el = dropoverContents[0];
+                        //     var transitions = {
+                        //         'transition': 'transitionend',
+                        //         'OTransition': 'oTransitionEnd',
+                        //         'MozTransition': 'transitionend',
+                        //         'WebkitTransition': 'webkitTransitionEnd'
+                        //     }
+
+                        //     for (t in transitions) {
+                        //         if (el.style[t] !== undefined) {
+                        //             return transitions[t];
+                        //         }
+                        //     }
+                        // }
+
+                        // /* Listen for a transition! */
+                        // var transitionEvent = whichTransitionEvent();
+                        // transitionEvent && elm[0].addEventListener(transitionEvent, function() {
+                        //     console.log('Transition complete!  This is the callback, no library needed!');
+                        // });
+
+
+
+
                     }
 
                     //Get the trigger from the config if the user set it. Otherwise the trigger will default to the scope's element
@@ -225,6 +253,27 @@
                         };
                         elm.addClass('ngdo-' + scope.config.position);
                     };
+
+
+                    // function positionContents() {
+                    //     var offX = parseInt(scope.config.offsetX, 10) || 0;
+                    //     var offY = parseInt(scope.config.offsetY, 10) || 0;
+
+                    //     if (getStyle(dropoverContents[0], 'display') == 'none'){
+                    //         var vis = getStyle(dropoverContents[0], 'visibility');
+                    //         dropoverContents.css('visibiliy', 'hidden');
+                    //         dropoverContents.css('display', '');
+                    //         var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
+                    //         dropoverContents.css('left', positions.left + offX + 'px');
+                    //         dropoverContents.css('top', positions.top + offY + 'px');
+                    //         dropoverContents.css('display', 'none');
+                    //         dropoverContents.css('visibiliy', vis);
+                    //     } else {
+                    //         var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
+                    //         dropoverContents.css('left', positions.left + offX + 'px');
+                    //         dropoverContents.css('top', positions.top + offY + 'px');
+                    //     }
+                    // }
 
 
                     function getDropoverContents() {
