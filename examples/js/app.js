@@ -16,14 +16,12 @@ angular.module('example', ['ngDropover'])
         };
 
         $rootScope.$on('ngDropover.opening', function(event, dropObj) {
-            if (dropObj.group == 'dropdown') {
-                $(dropObj.element).slideToggle();
-            }
+            $(dropObj.element).slideDown();
         });
+        
         $rootScope.$on('ngDropover.closing', function(event, dropObj) {
-            if (dropObj.group == 'dropdown') {
-                $(dropObj.element).slideToggle();
-            }
+            $(dropObj.element).show();
+            $(dropObj.element).slideUp();
         });
 
     }).run(function($rootScope) {

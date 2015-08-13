@@ -22,7 +22,7 @@
 	- Mobile friendly
 	- Recipes
 		- Select to show model interaction
-		- Animation
+		- Animation, Show JQuery and handle multiple events (canceling)
 		- Toaster
 		- Shadows
 		- Arrow pointer
@@ -30,11 +30,11 @@
 		- Option binding (best practice)
 		- Disable default event
 		- Grouping dropovers
+		-
 
 - Directive
 	- Add ability to close others or not on open
-	- Allow for no triggers and multiple triggers w/ trigger object {trigger:{elm:"",event:"click/hover/focus"}}
-	- Animate research - Let the user use whatever lib they want
+
 	- Smart Positioning and collision detection
 	- Add type checking logic with console errors
 	- Console messages for commmon errors like "That dropover is already closed"

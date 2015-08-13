@@ -182,7 +182,7 @@ nav .ngdo-contents {
     display: none;
 }
 
-[ng-dropover] .ngdo-contents {
+/*[ng-dropover] .ngdo-contents {
     -webkit-transition: all linear 0.8s;
     transition: all linear 0.8s;
     opacity: 0;
@@ -190,7 +190,7 @@ nav .ngdo-contents {
 
 [ng-dropover].ngdo-open .ngdo-contents {
     opacity: 1;
-}
+}*/
 
 /*[ng-dropover] .ngdo-contents {
     overflow-y: hidden;

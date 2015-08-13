@@ -84,6 +84,7 @@
                 console.log("∇ ngDropover Error | ID:" + id + " ∇");
                 console.log(element);
                 console.log(message);
+                console.log("");
             }
 
             return {
@@ -321,11 +322,7 @@
 
                     function closer() {
 
-                        $rootScope.$broadcast('ngDropover.closing', {
-                            id: scope.ngDropoverId,
-                            element: dropoverContents[0],
-                            group: scope.config.group
-                        });
+
                         if (transition.event) {
                             $timeout(function() {
                                 dropoverContents[0].addEventListener(transition.event, transition.handler);
@@ -337,6 +334,12 @@
                         }
                         elm.removeClass('ngdo-open');
                         scope.isOpen = false;
+
+                        $rootScope.$broadcast('ngDropover.closing', {
+                            id: scope.ngDropoverId,
+                            element: dropoverContents[0],
+                            group: scope.config.group
+                        });
 
                         angular.element($window).unbind('resize', positionContents);
                     };
