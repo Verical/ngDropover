@@ -78,7 +78,7 @@
                 }
             }
         })
-        .directive('ngDropover', function(ngDropoverConfig, positions, $rootScope, $position, $document, $window, triggerEventsMap) {
+        .directive('ngDropover', function(ngDropoverConfig, positions, $rootScope, $position, $document, $window, triggerEventsMap, $timeout) {
 
             function logError(id, element, message) {
                 console.log("∇ ngDropover Error | ID:" + id + " ∇");
