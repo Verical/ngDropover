@@ -207,15 +207,25 @@ nav .ngdo-contents {
 
 table {
     border-collapse: collapse;
-    border: 1px solid #FF0000;
+    border: 1px solid #B9B2F4;
     width: 600px;
-    height: 600px;
+    height: 300px;
     margin: 100px;
 }
 
 table td {
-    border: 1px solid #FF0000;
+    border: 1px solid #B9B2F4;
     text-align: center;
+}
+
+td.shadow-center {
+    background-color: #B9B2F4;
+}
+
+.shadow-fun .ngdo-contents {
+   padding: 5px;
+   width: 80px;
+   height: 80px;
 }
 
 .shadow-fun.ngdo-bottom-left .ngdo-contents {
