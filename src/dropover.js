@@ -99,9 +99,7 @@
                         scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
                         scope.positions = positions;
 
-                        if (scope.positions.indexOf(scope.config.position) > 0) {
-
-                        } else {
+                        if (scope.positions.indexOf(scope.config.position) == 0) {
                             console.log("Invalid position string: " + scope.config.position);
                             scope.config.position = "bottom";
                         };

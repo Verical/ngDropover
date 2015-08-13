@@ -95,8 +95,6 @@ h1 {
     cursor: initial;
 }
 
-
-
 ul.ngdo-contents {
     padding: 0;
     border: 1px solid #81DFBB;
@@ -175,6 +173,7 @@ nav .ngdo-contents {
 .col-sm-8 ul {
     text-align: center;
 }
+
 .col-sm-8 .ngdo-contents {
     width: 120px;
 }
@@ -182,3 +181,28 @@ nav .ngdo-contents {
 .ngdo-contents.dropdown {
     display: none;
 }
+
+
+[ng-dropover] .ngdo-contents {
+    -webkit-transition: all linear 0.3s;
+    transition: all linear 0.3s;
+    opacity: 0;
+}
+
+[ng-dropover].ngdo-open .ngdo-contents {
+    opacity: 1;
+}
+
+/*[ng-dropover] .ngdo-contents {
+    overflow-y: hidden;
+    transition-property: all;
+    transition-duration: .5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+    max-height: 0;
+}
+
+[ng-dropover].ngdo-open .ngdo-contents {
+    max-height: 500px;
+}*/
+
+
