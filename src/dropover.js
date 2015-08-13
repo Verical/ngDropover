@@ -165,7 +165,7 @@
                         elm.addClass(scope.config.wrapperClass);
                         dropoverContents.css({
                             'position': 'absolute'
-                        }).addClass('ng-dropover-contents');
+                        }).addClass('ngdo-contents');
                     }
 
                     //Get the trigger from the config if the user set it. Otherwise the trigger will default to the scope's element
@@ -178,7 +178,7 @@
                         for (var i = 0; i < triggerElements.length; i++) {
                             var el = angular.element(triggerElements[i]);
 
-                            el.addClass('ng-dropover-trigger');
+                            el.addClass('ngdo-trigger');
 
                             //If the the trigger's event to open matches the event to close, then send to the toggle method
                             //else send to individual open and close methods
@@ -236,7 +236,7 @@
                             return ret;
                         } else {
 
-                            ret = angular.element("<div class='ng-dropover-empty'>Oops, you forgot to specify what goes in the dropdown</div>").addClass(scope.config.group);
+                            ret = angular.element("<div class='ngdo-empty'>Oops, you forgot to specify what goes in the dropdown</div>").addClass(scope.config.group);
                             elm.append(ret);
                             return ret;
                         }
@@ -253,7 +253,7 @@
                                 group: scope.config.group
                             });
                             showContents();
-                            elm.addClass('ng-dropover-open');
+                            elm.addClass('ngdo-open');
                             angular.element($window).bind('resize', positionContents);
 
                             scope.isOpen = true;
@@ -288,7 +288,7 @@
                             group: scope.config.group
                         });
                         hideContents();
-                        elm.removeClass('ng-dropover-open');
+                        elm.removeClass('ngdo-open');
                         scope.isOpen = false;
 
                         angular.element($window).unbind('resize', positionContents);
@@ -299,16 +299,6 @@
                         angular.element($window).unbind('resize', positionContents);
                         dropoverContents.off('click', handlers.markEvent);
                     });
-
-                    function getStyle(el, cssprop) {
-                        if (el.currentStyle) { //IE
-                            return el.currentStyle[cssprop];
-                        } else if ($window.getComputedStyle) {
-                            return $window.getComputedStyle(el)[cssprop];
-                        }
-                        // finally try and get inline style
-                        return el.style[cssprop];
-                    }
 
                 },
                 controller: [

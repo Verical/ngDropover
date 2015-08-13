@@ -51,7 +51,7 @@ ul li {}
     padding: 5px;
 }
 
-.ng-dropover-trigger {
+.ngdo-trigger {
     cursor: pointer;
 }
 
@@ -86,7 +86,7 @@ h1 {
     padding: 20px;
 }
 
-.ng-dropover-contents {
+.ngdo-contents {
     border: 1px solid #1ADF60;
     border-radius: 2px;
     padding: 20px;
@@ -95,12 +95,9 @@ h1 {
     cursor: initial;
 }
 
-.ng-dropover-wrapper {
-    width: auto;
-    margin-right: 25px;
-}
 
-ul.ng-dropover-contents {
+
+ul.ngdo-contents {
     padding: 0;
     border: 1px solid #81DFBB;
 }
@@ -122,7 +119,7 @@ nav a:hover {
     text-decoration: none;
 }
 
-nav .ng-dropover-contents {
+nav .ngdo-contents {
     display: inline-block;
     min-width: 120px;
 }
@@ -158,16 +155,16 @@ nav .ng-dropover-contents {
     display: inline-block;
 }
 
-.ng-dropover-empty {
+.ngdo-empty {
     font-size: 12px;
     line-height: 1.2em;
 }
 
-.template-example .ng-dropover-contents {
+.template-example .ngdo-contents {
     width: 275px;
 }
 
-.directive-example .ng-dropover-contents {
+.directive-example .ngdo-contents {
     width: 500px;
 }
 
@@ -178,10 +175,10 @@ nav .ng-dropover-contents {
 .col-sm-8 ul {
     text-align: center;
 }
-.col-sm-8 .ng-dropover-contents {
+.col-sm-8 .ngdo-contents {
     width: 120px;
 }
 
-.ng-dropover-contents.dropdown {
+.ngdo-contents.dropdown {
     display: none;
 }
