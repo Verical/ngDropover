@@ -1,28 +1,43 @@
 *ToDo*
 *In no particular order*
 
-- Set up build
-- Version numbering
-- Give thanks to contributors
-- Docs
-- Grunt
-- README
-- Code Comments
-- Add to various module websites ( http://ngmodules.org/ )
-- Performance test
-- Browser compatability test
-- Angular version compatability test
-- Release Notes
-- Unit tests
-- Add type checking logic
-- Console messages for commmon errors "That dropover is already closed"
+- Build
+	- Version numbering
+	- Release notes
+	- Unit tests
+	- Grunt
+	- NPM integration?
+
+-Testing
+	- Performance test
+	- Browser compatability test
+	- Angular version compatability test
+	- Mobile friendly test
 
 - Website/Examples
-	- Make a toaster popup
-	- Select input
+	- Layout and Theme
+	- Where to source dropover
+	- Download
+	- Content copy
+	- Mobile friendly
+	- Recipes
+		- Select to show model interaction
+		- Animation
+		- Toaster
+		- Shadows
+		- Arrow pointer
+		- Open/Close with just events
 
-- Add ability to close others or not on open
-- Research no wrapper
-- Allow for no triggers on elm. Move triggers into Link. Triggers in JSON format. Try to remove ngDropoverTrigger directive
-- Add a destroy for trigger events
-- Animate research - Let the user use whatever lib they want
+- Directive
+	- Add ability to close others or not on open
+	- Allow for no triggers and multiple triggers w/ trigger object {trigger:{elm:"",event:"click/hover/focus"}}
+	- Animate research - Let the user use whatever lib they want
+	- Smart Positioning and collision detection
+	- Add type checking logic with console errors
+	- Console messages for commmon errors like "That dropover is already closed"
+	- Code Comments
+
+- Other
+	- Give thanks to borrowed code
+	- Documentation/README
+	- Add to various module websites ( http://ngmodules.org/ )
