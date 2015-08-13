@@ -27,7 +27,6 @@
                 'horizontalOffset': 0, //ToDo: Research if this can be replaced with just a margin on the contents
                 'verticalOffset': 0,
                 'closeOthersOnOpen': true,
-                'trigger': '',
                 'triggerEvent': 'click',
                 'position': 'bottom-left',
                 'closeOnClickOff': true,
@@ -54,32 +53,39 @@
                 'right-top'
             ]
         )
-        .factory('triggerHelper', function() {
+        .factory('triggerEventsMap', function() {
 
             var triggerMap = {
                 'mouseenter': 'mouseleave',
                 'click': 'click',
-                'focus': 'blur'
+                'focus': 'blur',
+                'none': 'none'
             };
 
             return {
-                getTriggers: function(trigger) {
-                    var show = trigger;
-                    var hide = triggerMap[show] || show;
-                    if (trigger === 'hover') {
-                        return {
-                            show: 'mouseenter',
-                            hide: 'mouseleave'
-                        };
+                getTriggers: function(triggerEvent) {
+                    if (triggerEvent === 'hover') {
+                        triggerEvent = 'mouseenter'
                     }
-                    return {
-                        show: show,
-                        hide: hide
-                    };
+
+                    if (triggerMap.hasOwnProperty(triggerEvent)) {
+                        return {
+                            'show': triggerEvent,
+                            'hide': triggerMap[triggerEvent]
+                        }
+                    }
+                    return null;
                 }
-            };
+            }
         })
-        .directive('ngDropover', function(ngDropoverConfig, positions, $rootScope, $position, $document, $window, triggerHelper, $timeout) {
+        .directive('ngDropover', function(ngDropoverConfig, positions, $rootScope, $position, $document, $window, triggerEventsMap) {
+
+            function logError(id, element, message) {
+                console.log("∇ ngDropover Error | ID:" + id + " ∇");
+                console.log(element);
+                console.log(message);
+            }
+
             return {
                 restrict: 'A',
                 replace: true,
@@ -89,7 +95,9 @@
                 },
                 link: function(scope, elm, attrs) {
 
-                    var dropoverContents, triggerElements, handlers, transition = { duration: 0 };
+                    var dropoverContents, triggerElements, handlers, transition = {
+                        duration: 0
+                    };
 
                     init();
 
@@ -98,10 +106,7 @@
                         scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
                         scope.positions = positions;
 
-                        if (scope.positions.indexOf(scope.config.position) == 0) {
-                            console.log("Invalid position string: " + scope.config.position);
-                            scope.config.position = "bottom";
-                        };
+
 
                         setHtml();
                         handlers = {
@@ -132,14 +137,17 @@
                         scope.$watch('ngDropoverOptions', function() {
                             unsetTriggers();
                             scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
+                            if (typeof(scope.config.position) !== 'string' || scope.positions.indexOf(scope.config.position) == -1) {
+                                logError(scope.ngDropoverId, angular.element(elm), "Position must be a string and one of these values: " + scope.positions);
+                                scope.config.position = "bottom";
+                            };
                             setTriggers();
                             positionContents();
                             setPositionClass();
                         }, true);
 
-                        setTriggers();
                         dropoverContents.on('click', handlers.markEvent);
-                        $document.ready(function(){
+                        $document.ready(function() {
                             positionContents();
                         });
                     }
@@ -151,10 +159,9 @@
                         dropoverContents.css({
                             'position': 'absolute'
                         }).addClass('ngdo-contents');
-
                         transition.event = whichTransitionEvent();
                         transition.handler = function(event) {
-                            if (event.propertyName == "visibility"){
+                            if (event.propertyName == "visibility") {
                                 return;
                             }
                             dropoverContents.css({
@@ -166,42 +173,41 @@
 
                     //Get the trigger from the config if the user set it. Otherwise the trigger will default to the scope's element
                     function setTriggers() {
-                        triggerElements = [elm];
-                        var triggerObj = triggerHelper.getTriggers(scope.config.triggerEvent);
-                        if (scope.config.trigger !== "") {
-                            triggerElements = document.querySelectorAll(scope.config.trigger);
-                        }
-                        for (var i = 0; i < triggerElements.length; i++) {
-                            var el = angular.element(triggerElements[i]);
 
-                            el.addClass('ngdo-trigger');
+                        var triggerObj = triggerEventsMap.getTriggers(scope.config.triggerEvent);
 
+                        if (!triggerObj) {
+                            logError(scope.ngDropoverId, angular.element(elm), "triggerEvent must be a string: 'none', 'click', 'hover', 'focus'");
+                        };
+
+                        if (triggerObj && triggerObj.show !== "none") {
                             //If the the trigger's event to open matches the event to close, then send to the toggle method
                             //else send to individual open and close methods
                             if (triggerObj.show === triggerObj.hide) {
-                                el.on(triggerObj.show, handlers.toggle);
+                                elm.on(triggerObj.show, handlers.toggle);
                             } else {
-                                el.on(triggerObj.show, handlers.open);
+                                elm.on(triggerObj.show, handlers.open);
 
-                                el.on(triggerObj.hide, handlers.close);
+                                elm.on(triggerObj.hide, handlers.close);
                             }
-
                         }
-                    }
+                    };
 
                     function unsetTriggers() {
-                        var triggerObj = triggerHelper.getTriggers(scope.config.triggerEvent);
-                        for (var i = 0; i < triggerElements.length; i++) {
-                            var el = angular.element(triggerElements[i]);
-                            if (triggerObj.show === triggerObj.hide) {
-                                el.off(triggerObj.show, handlers.toggle);
-                            } else {
-                                el.off(triggerObj.show, handlers.open);
+                        if (triggerElements && triggerElements.length > 0) {
+                            var triggerObj = triggerEventsMap.getTriggers(scope.config.triggerEvent);
+                            for (var i = 0; i < triggerElements.length; i++) {
+                                var el = angular.element(triggerElements[i]);
+                                if (triggerObj.show === triggerObj.hide) {
+                                    el.off(triggerObj.show, handlers.toggle);
+                                } else {
+                                    el.off(triggerObj.show, handlers.open);
 
-                                el.off(triggerObj.hide, handlers.close);
+                                    el.off(triggerObj.hide, handlers.close);
+                                }
                             }
                         }
-                    }
+                    };
 
                     function positionContents() {
 
@@ -210,26 +216,19 @@
                         offX = parseInt(scope.config.offsetX, 10) || 0;
                         offY = parseInt(scope.config.offsetY, 10) || 0;
 
-                        if (!scope.isOpen){
-                            dropoverContents.css({
-                                'visibility': 'hidden',
-                                'display': 'inline-block'
-                            });
-                            positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
-                            dropoverContents.css({
-                                'left': positions.left + offX + 'px',
-                                'top': positions.top + offY + 'px',
-                                'display': 'none',
-                                'visibility': 'visible'
-                            });
-                        } else {
-                            positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
-                            dropoverContents.css({
-                                'left': positions.left + offX + 'px',
-                                'top': positions.top + offY + 'px',
-                            });
-                        }
-                    }
+                        dropoverContents.css({
+                            'visibility': 'hidden',
+                            'display': ''
+                        });
+
+                        positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
+                        dropoverContents.css({
+                            'left': positions.left + offX + 'px',
+                            'top': positions.top + offY + 'px',
+                            'display': 'none',
+                            'visibility': 'visible'
+                        });
+                    };
 
                     function setPositionClass() {
                         var classList = elm[0].className.split(' ');
@@ -314,7 +313,7 @@
 
                         for (t in transitions) {
                             if (el.style[t] !== undefined && parseFloat($position.getStyle(el, propertyCheck[t]), 10) > 0) {
-                                transition.duration = Math.floor(parseFloat($position.getStyle(el, propertyCheck[t]), 10)* 1000);
+                                transition.duration = Math.floor(parseFloat($position.getStyle(el, propertyCheck[t]), 10) * 1000);
                                 return transitions[t];
                             }
                         }
@@ -328,9 +327,9 @@
                             group: scope.config.group
                         });
                         if (transition.event) {
-                            $timeout(function(){
+                            $timeout(function() {
                                 dropoverContents[0].addEventListener(transition.event, transition.handler);
-                            }, transition.duration/2);
+                            }, transition.duration / 2);
                         } else {
                             dropoverContents.css({
                                 'display': 'none'
@@ -554,3 +553,35 @@
             };
         }]);
 })(window, document);
+
+
+//
+//
+//  JUNK YARD
+// 
+//
+
+// Cool code for detecting CSS transition events
+
+// function whichTransitionEvent() {
+//     var t;
+//     var el = dropoverContents[0];
+//     var transitions = {
+//         'transition': 'transitionend',
+//         'OTransition': 'oTransitionEnd',
+//         'MozTransition': 'transitionend',
+//         'WebkitTransition': 'webkitTransitionEnd'
+//     }
+
+//     for (t in transitions) {
+//         if (el.style[t] !== undefined) {
+//             return transitions[t];
+//         }
+//     }
+// }
+
+// /* Listen for a transition! */
+// var transitionEvent = whichTransitionEvent();
+// transitionEvent && elm[0].addEventListener(transitionEvent, function() {
+//     console.log('Transition complete!  This is the callback, no library needed!');
+// });

@@ -9,11 +9,9 @@ angular.module('example', ['ngDropover'])
         $rootScope.exampleOptions = {
             'horizontalOffset': 0,
             'verticalOffset': 0,
-            'wrapperClass': '',
             'closeOthersOnOpen': false,
-            'trigger': "",
-            'triggerEvent': "click",
-            'position': "bottom-left",
+            'triggerEvent': "wddd",
+            'position': 'son',
             'closeOnClickOff': true
         };
 

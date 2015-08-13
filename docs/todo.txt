@@ -27,6 +27,9 @@
 		- Shadows
 		- Arrow pointer
 		- Open/Close with just events
+		- Option binding (best practice)
+		- Disable default event
+		- Grouping dropovers
 
 - Directive
 	- Add ability to close others or not on open
