@@ -79,7 +79,7 @@
                 }
             };
         })
-        .directive('ngDropover', function(ngDropoverConfig, positions, $rootScope, $position, $document, $window, triggerHelper) {
+        .directive('ngDropover', function(ngDropoverConfig, positions, $rootScope, $position, $document, $window, triggerHelper, $timeout) {
             return {
                 restrict: 'A',
                 replace: true,
@@ -139,6 +139,9 @@
 
                         setTriggers();
                         dropoverContents.on('click', handlers.markEvent);
+                        $timeout(function(){
+                            positionContents();
+                        });
                     }
 
 
@@ -148,7 +151,6 @@
                         dropoverContents.css({
                             'position': 'absolute'
                         }).addClass('ngdo-contents');
-
 
                         // function whichTransitionEvent() {
                         //     var t;
@@ -224,17 +226,25 @@
                         offX = parseInt(scope.config.offsetX, 10) || 0;
                         offY = parseInt(scope.config.offsetY, 10) || 0;
 
-                        dropoverContents.css({
-                            'visibility': 'hidden',
-                            'display': ''
-                        });
-                        positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
-                        dropoverContents.css({
-                            'left': positions.left + offX + 'px',
-                            'top': positions.top + offY + 'px',
-                            'display': 'none',
-                            'visibility': 'visible'
-                        });
+                        if (!scope.isOpen){
+                            dropoverContents.css({
+                                'visibility': 'hidden',
+                                'display': 'inline-block'
+                            });
+                            positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
+                            dropoverContents.css({
+                                'left': positions.left + offX + 'px',
+                                'top': positions.top + offY + 'px',
+                                'display': 'none',
+                                'visibility': 'visible'
+                            });
+                        } else {
+                            positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
+                            dropoverContents.css({
+                                'left': positions.left + offX + 'px',
+                                'top': positions.top + offY + 'px',
+                            });
+                        }
                     }
 
                     function setPositionClass() {
@@ -403,6 +413,9 @@
             };
 
             return {
+
+                getStyle: getStyle,
+
                 /**
                  * Provides read-only equivalent of jQuery's position function:
                  * http://api.jquery.com/position/

@@ -8,7 +8,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="/src/dropover.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="/src/test.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style1.css">
 </head>
@@ -91,7 +90,7 @@
             <div ng-dropover class="outline" ng-dropover-options="{wrapperClass: 'template-example', position: 'bottom-center'}">
                 Using Template
                 <div ng-dropover-contents>
-                    <ng-include src="'template.tpl.html'"></ng-include>
+                    <ng-include src="'temp1.html'"></ng-include>
                 </div>
             </div>
             <div ng-dropover="directiveEx" class="outline" ng-dropover-options="{wrapperClass: 'directive-example', position: 'right-bottom'}">
@@ -99,6 +98,21 @@
                 <div ng-dropover-contents test-directive>
                 </div>
             </div>
+            <script type="text/ng-template" id="temp1.html">
+                <div>
+                    To include a template inside, use ng-include inside of <br>
+                    <code>ng-dropover-contents</code>
+                </div>
+            </script>
+            <script type="text/ng-template" id="temp2.html">
+                <div>
+                    <h3>Outside Directive Yo</h3>
+                    <div>Close on clicking something inside : <br><button ng-click="markEvent($event)">Close</button></div>
+                    <div>Or close more programatically (requires id on parent) : <br><button ng-click="delayClose()">Close</button>{{ countdown }}</div>
+
+                    <div>note: be careful with directives that have replace: true</div>
+                </div>
+            </script>
         </div>
     </section>
     <h1>Popovers For Days</h1>
