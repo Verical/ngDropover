@@ -31,7 +31,6 @@
                 'triggerEvent': 'click',
                 'position': 'bottom-left',
                 'closeOnClickOff': true,
-                'classOnly': false,
                 'group': ''
             }
         )
@@ -90,7 +89,7 @@
                 },
                 link: function(scope, elm, attrs) {
 
-                    var dropoverContents, triggerElements, handlers, showContents, hideContents;
+                    var dropoverContents, triggerElements, handlers;
 
                     init();
 
@@ -134,29 +133,14 @@
                             unsetTriggers();
                             scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
                             setTriggers();
-                            setMethods();
+                            positionContents();
                             setPositionClass();
                         }, true);
 
                         setTriggers();
-                        setMethods();
                         dropoverContents.on('click', handlers.markEvent);
                     }
 
-                    function setMethods() {
-                        if (scope.config.classOnly === true) {
-                            showContents = hideContents = function() {};
-                            positionContents();
-                        } else {
-                            showContents = function() {
-                                dropoverContents.css('visibility', 'visible');
-                            }
-                            hideContents = function() {
-                                dropoverContents.css('visibility', 'hidden');
-                            }
-                            dropoverContents.css('visibility', 'hidden');
-                        }
-                    }
 
                     function setHtml() {
                         dropoverContents = getDropoverContents();
@@ -233,14 +217,24 @@
                         }
                     }
 
-                    //ToDo: add class for each position; remove old class dropoverContents.addClass(scope.config.position);
                     function positionContents() {
-                        setPositionClass();
-                        var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
-                        var offX = parseInt(scope.config.horizontalOffset, 10) || 0;
-                        var offY = parseInt(scope.config.verticalOffset, 10) || 0;
-                        dropoverContents.css('left', positions.left + offX + 'px');
-                        dropoverContents.css('top', positions.top + offY + 'px');
+
+                        var offX, offY, positions;
+
+                        offX = parseInt(scope.config.offsetX, 10) || 0;
+                        offY = parseInt(scope.config.offsetY, 10) || 0;
+
+                        dropoverContents.css({
+                            'visibility': 'hidden',
+                            'display': ''
+                        });
+                        positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
+                        dropoverContents.css({
+                            'left': positions.left + offX + 'px',
+                            'top': positions.top + offY + 'px',
+                            'display': 'none',
+                            'visibility': 'visible'
+                        });
                     }
 
                     function setPositionClass() {
@@ -253,28 +247,6 @@
                         };
                         elm.addClass('ngdo-' + scope.config.position);
                     };
-
-
-                    // function positionContents() {
-                    //     var offX = parseInt(scope.config.offsetX, 10) || 0;
-                    //     var offY = parseInt(scope.config.offsetY, 10) || 0;
-
-                    //     if (getStyle(dropoverContents[0], 'display') == 'none'){
-                    //         var vis = getStyle(dropoverContents[0], 'visibility');
-                    //         dropoverContents.css('visibiliy', 'hidden');
-                    //         dropoverContents.css('display', '');
-                    //         var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
-                    //         dropoverContents.css('left', positions.left + offX + 'px');
-                    //         dropoverContents.css('top', positions.top + offY + 'px');
-                    //         dropoverContents.css('display', 'none');
-                    //         dropoverContents.css('visibiliy', vis);
-                    //     } else {
-                    //         var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
-                    //         dropoverContents.css('left', positions.left + offX + 'px');
-                    //         dropoverContents.css('top', positions.top + offY + 'px');
-                    //     }
-                    // }
-
 
                     function getDropoverContents() {
                         var ret;
@@ -289,6 +261,7 @@
                         }
                     }
 
+                    //ToDo: Detect previous display value
                     scope.open = function(ngDropoverId) {
                         if (ngDropoverId === scope.ngDropoverId && !scope.isOpen) {
                             positionContents();
@@ -299,7 +272,9 @@
                                 element: dropoverContents[0],
                                 group: scope.config.group
                             });
-                            showContents();
+                            dropoverContents.css({
+                                'display': 'inline-block'
+                            });
                             elm.addClass('ngdo-open');
                             angular.element($window).bind('resize', positionContents);
 
@@ -334,7 +309,9 @@
                             element: dropoverContents[0],
                             group: scope.config.group
                         });
-                        hideContents();
+                        dropoverContents.css({
+                            'display': 'none'
+                        });
                         elm.removeClass('ngdo-open');
                         scope.isOpen = false;
 
