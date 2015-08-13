@@ -16,12 +16,12 @@ angular.module('example', ['ngDropover'])
         };
 
         $rootScope.$on('ngDropover.opening', function(event, dropObj) {
-            $(dropObj.element).slideDown();
+            $(dropObj.element).stop().slideDown();
         });
         
         $rootScope.$on('ngDropover.closing', function(event, dropObj) {
             $(dropObj.element).show();
-            $(dropObj.element).slideUp();
+            $(dropObj.element).stop().slideUp();
         });
 
     }).run(function($rootScope) {
