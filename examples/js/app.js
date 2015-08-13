@@ -3,9 +3,7 @@ angular.module('example', ['ngDropover'])
 
         $scope.leftMenuOptions = {
             'triggerEvent': 'click',
-            'position': 'left-bottom',
-            'classOnly': true,
-            'group': 'dropdown'
+            'position': 'left-bottom'
          };
 
         $rootScope.exampleOptions = {

@@ -35,6 +35,26 @@
                 'group': ''
             }
         )
+        .constant(
+            'positions', [
+                'bottom',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right',
+                'top',
+                'top-left',
+                'top-center',
+                'top-right',
+                'left',
+                'left-bottom',
+                'left-center',
+                'left-top',
+                'right',
+                'right-bottom',
+                'right-center',
+                'right-top'
+            ]
+        )
         .factory('triggerHelper', function() {
 
             var triggerMap = {
@@ -60,7 +80,7 @@
                 }
             };
         })
-        .directive('ngDropover', function(ngDropoverConfig, $rootScope, $position, $document, $window, triggerHelper) {
+        .directive('ngDropover', function(ngDropoverConfig, positions, $rootScope, $position, $document, $window, triggerHelper) {
             return {
                 restrict: 'A',
                 replace: true,
@@ -73,8 +93,19 @@
                     var dropoverContents, triggerElements, handlers, showContents, hideContents;
 
                     init();
+
                     function init() {
+
                         scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
+                        scope.positions = positions;
+
+                        if (scope.positions.indexOf(scope.config.position) > 0) {
+
+                        } else {
+                            console.log("Invalid position string: " + scope.config.position);
+                            scope.config.position = "bottom";
+                        };
+
                         setHtml();
                         handlers = {
                             toggle: function(e) {
@@ -106,22 +137,23 @@
                             scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
                             setTriggers();
                             setMethods();
+                            setPositionClass();
                         }, true);
-                        
+
                         setTriggers();
                         setMethods();
                         dropoverContents.on('click', handlers.markEvent);
                     }
 
-                    function setMethods(){
-                        if (scope.config.classOnly === true){
-                            showContents = hideContents = function(){};
+                    function setMethods() {
+                        if (scope.config.classOnly === true) {
+                            showContents = hideContents = function() {};
                             positionContents();
                         } else {
-                            showContents = function(){
+                            showContents = function() {
                                 dropoverContents.css('visibility', 'visible');
                             }
-                            hideContents = function(){
+                            hideContents = function() {
                                 dropoverContents.css('visibility', 'hidden');
                             }
                             dropoverContents.css('visibility', 'hidden');
@@ -143,7 +175,7 @@
                         if (scope.config.trigger !== "") {
                             triggerElements = document.querySelectorAll(scope.config.trigger);
                         }
-                        for (var i = 0; i < triggerElements.length; i++){
+                        for (var i = 0; i < triggerElements.length; i++) {
                             var el = angular.element(triggerElements[i]);
 
                             el.addClass('ng-dropover-trigger');
@@ -163,7 +195,7 @@
 
                     function unsetTriggers() {
                         var triggerObj = triggerHelper.getTriggers(scope.config.triggerEvent);
-                        for (var i = 0; i < triggerElements.length; i++){
+                        for (var i = 0; i < triggerElements.length; i++) {
                             var el = angular.element(triggerElements[i]);
                             if (triggerObj.show === triggerObj.hide) {
                                 el.off(triggerObj.show, handlers.toggle);
@@ -175,8 +207,9 @@
                         }
                     }
 
-                    // //ToDo: add class for each position; remove old class dropoverContents.addClass(scope.config.position);
+                    //ToDo: add class for each position; remove old class dropoverContents.addClass(scope.config.position);
                     function positionContents() {
+                        setPositionClass();
                         var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
                         var offX = parseInt(scope.config.horizontalOffset, 10) || 0;
                         var offY = parseInt(scope.config.verticalOffset, 10) || 0;
@@ -184,27 +217,17 @@
                         dropoverContents.css('top', positions.top + offY + 'px');
                     }
 
-                    //ToDo: bottom/top-right should stay with the elm boundries I think
-                    //ToDo: add class for each position; remove old class dropoverContents.addClass(scope.config.position);
-                    // function positionContents() {
-                    //     var offX = parseInt(scope.config.offsetX, 10) || 0;
-                    //     var offY = parseInt(scope.config.offsetY, 10) || 0;
+                    function setPositionClass() {
+                        var classList = elm[0].className.split(' ');
+                        for (var i = 0, l = classList.length; i < l; i++) {
+                            var stripPrefix = classList[i].substring(5, classList[i].length);
+                            if (scope.positions.indexOf(stripPrefix) > 0) {
+                                elm.removeClass(classList[i]);
+                            }
+                        };
+                        elm.addClass('ngdo-' + scope.config.position);
+                    };
 
-                    //     if (getStyle(dropoverContents[0], 'display') == 'none'){
-                    //         var vis = getStyle(dropoverContents[0], 'visibility');
-                    //         dropoverContents.css('visibiliy', 'hidden');
-                    //         dropoverContents.css('display', '');
-                    //         var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
-                    //         dropoverContents.css('left', positions.left + offX + 'px');
-                    //         dropoverContents.css('top', positions.top + offY + 'px');
-                    //         dropoverContents.css('display', 'none');
-                    //         dropoverContents.css('visibiliy', vis);
-                    //     } else {
-                    //         var positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
-                    //         dropoverContents.css('left', positions.left + offX + 'px');
-                    //         dropoverContents.css('top', positions.top + offY + 'px');
-                    //     }
-                    // }
 
                     function getDropoverContents() {
                         var ret;
@@ -258,7 +281,7 @@
                     };
 
                     function closer() {
-        
+
                         $rootScope.$broadcast('ngDropover.closing', {
                             id: scope.ngDropoverId,
                             element: dropoverContents[0],
@@ -420,8 +443,8 @@
                         targetElPos;
 
                     hostElPos = appendToBody ? this.offset(hostEl) : this.position(hostEl);
-                    
-                    if (!isStaticPositioned(hostEl[0])){
+
+                    if (!isStaticPositioned(hostEl[0])) {
                         hostElPos.top = -hostEl[0].clientTop;
                         hostElPos.left = -hostEl[0].clientLeft;
                     }
@@ -438,7 +461,7 @@
                         },
                         right: function() {
                             if (pos1 === "right") {
-                                return hostElPos.left + (hostElPos.width-targetElWidth);
+                                return hostElPos.left + (hostElPos.width - targetElWidth);
                             }
                             return hostElPos.left + hostElPos.width;
                         }
