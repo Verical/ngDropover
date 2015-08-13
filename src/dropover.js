@@ -89,7 +89,7 @@
                 },
                 link: function(scope, elm, attrs) {
 
-                    var dropoverContents, triggerElements, handlers;
+                    var dropoverContents, triggerElements, handlers, transition = { duration: 0 };
 
                     init();
 
@@ -139,7 +139,7 @@
 
                         setTriggers();
                         dropoverContents.on('click', handlers.markEvent);
-                        $timeout(function(){
+                        $document.ready(function(){
                             positionContents();
                         });
                     }
@@ -152,32 +152,16 @@
                             'position': 'absolute'
                         }).addClass('ngdo-contents');
 
-                        // function whichTransitionEvent() {
-                        //     var t;
-                        //     var el = dropoverContents[0];
-                        //     var transitions = {
-                        //         'transition': 'transitionend',
-                        //         'OTransition': 'oTransitionEnd',
-                        //         'MozTransition': 'transitionend',
-                        //         'WebkitTransition': 'webkitTransitionEnd'
-                        //     }
-
-                        //     for (t in transitions) {
-                        //         if (el.style[t] !== undefined) {
-                        //             return transitions[t];
-                        //         }
-                        //     }
-                        // }
-
-                        // /* Listen for a transition! */
-                        // var transitionEvent = whichTransitionEvent();
-                        // transitionEvent && elm[0].addEventListener(transitionEvent, function() {
-                        //     console.log('Transition complete!  This is the callback, no library needed!');
-                        // });
-
-
-
-
+                        transition.event = whichTransitionEvent();
+                        transition.handler = function(event) {
+                            if (event.propertyName == "visibility"){
+                                return;
+                            }
+                            dropoverContents.css({
+                                'display': 'none'
+                            });
+                            dropoverContents[0].removeEventListener(transition.event, transition.handler);
+                        };
                     }
 
                     //Get the trigger from the config if the user set it. Otherwise the trigger will default to the scope's element
@@ -312,6 +296,30 @@
                         }
                     };
 
+                    function whichTransitionEvent() {
+                        var t;
+                        var el = dropoverContents[0];
+                        var transitions = {
+                            'transition': 'transitionend',
+                            'OTransition': 'oTransitionEnd',
+                            'MozTransition': 'transitionend',
+                            'webkitTransition': 'webkitTransitionEnd'
+                        };
+                        var propertyCheck = {
+                            'transition': 'transitionDuration',
+                            'OTransition': 'oTransitionDuration',
+                            'MozTransition': 'MozTransitionDuration',
+                            'webkitTransition': 'WebkitTransitionDuration'
+                        };
+
+                        for (t in transitions) {
+                            if (el.style[t] !== undefined && parseFloat($position.getStyle(el, propertyCheck[t]), 10) > 0) {
+                                transition.duration = Math.floor(parseFloat($position.getStyle(el, propertyCheck[t]), 10)* 1000);
+                                return transitions[t];
+                            }
+                        }
+                    }
+
                     function closer() {
 
                         $rootScope.$broadcast('ngDropover.closing', {
@@ -319,9 +327,15 @@
                             element: dropoverContents[0],
                             group: scope.config.group
                         });
-                        dropoverContents.css({
-                            'display': 'none'
-                        });
+                        if (transition.event) {
+                            $timeout(function(){
+                                dropoverContents[0].addEventListener(transition.event, transition.handler);
+                            }, transition.duration/2);
+                        } else {
+                            dropoverContents.css({
+                                'display': 'none'
+                            });
+                        }
                         elm.removeClass('ngdo-open');
                         scope.isOpen = false;
 
@@ -405,7 +419,7 @@
              */
             var parentOffsetEl = function(element) {
                 var docDomEl = $document[0];
-                var offsetParent = !isStaticPositioned(element.parentElement) ? element.parentElement : element.offsetParent || docDomEl;
+                var offsetParent = element.offsetParent || docDomEl;
                 while (offsetParent && offsetParent !== docDomEl && isStaticPositioned(offsetParent)) {
                     offsetParent = offsetParent.offsetParent;
                 }
