@@ -30,16 +30,17 @@
 		- Option binding (best practice)
 		- Disable default event
 		- Grouping dropovers
-		-
 
 - Directive
-	- Add ability to close others or not on open
-	- Smart Positioning and collision detection
 	- Add type checking logic with console errors
 	- Console messages for commmon errors like "That dropover is already closed"
+		- ID is already in use
 	- Code Comments
 
 - Other
 	- Give thanks to borrowed code
 	- Documentation/README
 	- Add to various module websites ( http://ngmodules.org/ )
+
+- Roadmap
+	- Page/Viewport edge detection

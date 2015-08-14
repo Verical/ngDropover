@@ -216,8 +216,8 @@
 
                         var offX, offY, positions;
 
-                        offX = parseInt(scope.config.offsetX, 10) || 0;
-                        offY = parseInt(scope.config.offsetY, 10) || 0;
+                        offX = parseInt(scope.config.horizontalOffset, 10) || 0;
+                        offY = parseInt(scope.config.verticalOffset, 10) || 0;
 
                         dropoverContents.css({
                             'visibility': 'hidden',
@@ -369,13 +369,9 @@
                         });
 
                         $scope.closeAllListener = $rootScope.$on('ngDropover.closeAll', function(event, m) {
-                            if (m.ngDropoverId === $scope.ngDropoverId) {
-
-                            } else {
+                            if (m.ngDropoverId !== $scope.ngDropoverId  && !(!$scope.config.closeOnClickOff && m.fromDocument)) {
                                 // Unless closeOnClickOff is false and the event was from the document listener
-                                if (!(!$scope.config.closeOnClickOff && m.fromDocument)) {
-                                    $scope.closeAll();
-                                }
+                                $scope.closeAll();
                             }
                         });
 
