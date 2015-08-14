@@ -224,25 +224,6 @@
                             'display': ''
                         });
 
-
-                        if ($position.offset(dropoverContents).top < 0) {
-                            console.log("TOP OUT");
-                        }
-
-                        if ((dropoverContents[0].getBoundingClientRect().top + $position.offset(dropoverContents).height) > document.documentElement.clientHeight) {
-                            console.log("BOTTOM OUT");
-                        }
-
-                        if ($position.offset(dropoverContents).left < 0) {
-                            console.log("LEFT OUT");
-                        }
-
-                        if (($position.offset(dropoverContents).left + $position.offset(dropoverContents).width) > document.documentElement.clientWidth) {
-                            console.log("RIGHT OUT");
-                        }
-
-
-
                         positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
                         dropoverContents.css({
                             'left': positions.left + offX + 'px',
@@ -250,7 +231,6 @@
                             'display': 'none',
                             'visibility': 'visible'
                         });
-
                     };
 
                     function setPositionClass() {
@@ -344,8 +324,6 @@
                     }
 
                     function closer() {
-
-
                         if (transition.event) {
                             $timeout(function() {
                                 dropoverContents[0].addEventListener(transition.event, transition.handler);
