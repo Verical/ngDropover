@@ -224,11 +224,12 @@
                             'display': ''
                         });
 
+
                         if ($position.offset(dropoverContents).top < 0) {
                             console.log("TOP OUT");
                         }
 
-                        if (($position.offset(dropoverContents).top + $position.offset(dropoverContents).height) > document.documentElement.clientHeight) {
+                        if ((dropoverContents[0].getBoundingClientRect().top + $position.offset(dropoverContents).height) > document.documentElement.clientHeight) {
                             console.log("BOTTOM OUT");
                         }
 
