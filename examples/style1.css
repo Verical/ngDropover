@@ -12,7 +12,7 @@ body {
 }
 
 .row {
-    margin: 50px 0;
+    
 }
 
 button {
@@ -209,7 +209,7 @@ table {
     border: 1px solid #B9B2F4;
     width: 600px;
     height: 300px;
-    margin: 100px;
+
 }
 
 table td {

@@ -172,6 +172,8 @@
                         };
                     }
 
+
+
                     //Get the trigger from the config if the user set it. Otherwise the trigger will default to the scope's element
                     function setTriggers() {
 
@@ -222,6 +224,24 @@
                             'display': ''
                         });
 
+                        if ($position.offset(dropoverContents).top < 0) {
+                            console.log("TOP OUT");
+                        }
+
+                        if (($position.offset(dropoverContents).top + $position.offset(dropoverContents).height) > document.documentElement.clientHeight) {
+                            console.log("BOTTOM OUT");
+                        }
+
+                        if ($position.offset(dropoverContents).left < 0) {
+                            console.log("LEFT OUT");
+                        }
+
+                        if (($position.offset(dropoverContents).left + $position.offset(dropoverContents).width) > document.documentElement.clientWidth) {
+                            console.log("RIGHT OUT");
+                        }
+
+
+
                         positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
                         dropoverContents.css({
                             'left': positions.left + offX + 'px',
@@ -229,6 +249,7 @@
                             'display': 'none',
                             'visibility': 'visible'
                         });
+
                     };
 
                     function setPositionClass() {
@@ -258,6 +279,7 @@
                     //ToDo: Detect previous display value
                     scope.open = function(ngDropoverId) {
                         if (ngDropoverId === scope.ngDropoverId && !scope.isOpen) {
+
                             positionContents();
 
                             //start the display process and fire events

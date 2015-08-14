@@ -34,7 +34,6 @@
 
 - Directive
 	- Add ability to close others or not on open
-
 	- Smart Positioning and collision detection
 	- Add type checking logic with console errors
 	- Console messages for commmon errors like "That dropover is already closed"
