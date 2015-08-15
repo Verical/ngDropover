@@ -155,6 +155,7 @@
 
 
                     function setHtml() {
+                        elm.attr("ng-dropover", scope.ngDropoverId)
                         dropoverContents = getDropoverContents();
                         elm.addClass(scope.config.wrapperClass);
                         dropoverContents.css({
@@ -260,6 +261,10 @@
                     //ToDo: Detect previous display value
                     scope.open = function(ngDropoverId) {
                         if (ngDropoverId === scope.ngDropoverId && !scope.isOpen) {
+
+                            if (scope.config.closeOthersOnOpen) {
+                                $rootScope.$emit("ngDropover.closeAll", event);
+                            };
 
                             positionContents();
 
@@ -369,7 +374,7 @@
                         });
 
                         $scope.closeAllListener = $rootScope.$on('ngDropover.closeAll', function(event, m) {
-                            if (m.ngDropoverId !== $scope.ngDropoverId  && !(!$scope.config.closeOnClickOff && m.fromDocument)) {
+                            if (m.ngDropoverId !== $scope.ngDropoverId && !(!$scope.config.closeOnClickOff && m.fromDocument)) {
                                 // Unless closeOnClickOff is false and the event was from the document listener
                                 $scope.closeAll();
                             }
