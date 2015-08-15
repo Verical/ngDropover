@@ -22,17 +22,18 @@
 	- Mobile friendly
 	- Recipes
 
-		- Dropdown with checkboxes that shows your selections
+		- 
 		- Full menu; one with two levels; Opening one closes others; implement closeOthersOnOpen
 		- Animation; three buttons: default, CSS, JQuery
-		- Toaster within the codepen
-		- Shadows; Create whole section
-		- Arrow pointer; tooltip
-		- Open/Close with just events, Note: Disabled default event (triggerEvent='none')
-		- "Attached" dropover (like our cart button)
-		- Simple form
+		- 
+		- 
+		- 
+		- 
+		- 
+		- Toaster within the codepen (Going to skip this one for now. Not sure it really shows anything)
 
 - Directive
+	- Binding to ngdropover. Put id in ng-dropover-options?
 	- Add type checking logic with console errors
 	- Console messages for commmon errors like "That dropover is already closed"
 		- ID is already in use
