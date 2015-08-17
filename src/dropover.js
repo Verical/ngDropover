@@ -170,6 +170,7 @@
                         }).addClass('ngdo-contents');
                         transition.event = whichTransitionEvent();
                         transition.handler = function(event) {
+                            console.log(event);
                             if (event.propertyName == "visibility") {
                                 return;
                             }
@@ -267,6 +268,9 @@
 
                     //ToDo: Detect previous display value
                     scope.open = function(ngDropoverId) {
+                        if (transition.event){
+                            dropoverContents[0].removeEventListener(transition.event, transition.handler);
+                        }
                         if (ngDropoverId === scope.ngDropoverId && !scope.isOpen) {
 
                             if (scope.config.closeOthersOnOpen) {
@@ -338,7 +342,9 @@
                     function closer() {
                         if (transition.event) {
                             $timeout(function() {
-                                dropoverContents[0].addEventListener(transition.event, transition.handler);
+                                if (!scope.isOpen) {
+                                    dropoverContents[0].addEventListener(transition.event, transition.handler);
+                                }
                             }, transition.duration / 2);
                         } else {
                             dropoverContents.css({
