@@ -42,9 +42,7 @@ angular.module('example', ['ngDropover'])
             templateUrl: 'temp2.html',
             link: function(scope, elem, attrs) {
                 scope.markEvent = function(event) {
-                    scope.$emit('ngDropover.close', {
-                        ngDropoverId: 'directiveEx'
-                    });
+                    scope.$emit('ngDropover.close', 'directiveEx');
                 };
 
                 scope.delayClose = function() {
@@ -52,9 +50,7 @@ angular.module('example', ['ngDropover'])
                     var count = $interval(function() {
                         scope.countdown--;
                         if (scope.countdown == 0) {
-                            scope.$emit('ngDropover.close', {
-                                ngDropoverId: 'directiveEx'
-                            });
+                            scope.$emit('ngDropover.close', 'directiveEx');
                             $interval.cancel(count);
                         }
                     }, 1000);

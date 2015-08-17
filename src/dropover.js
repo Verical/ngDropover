@@ -378,23 +378,23 @@
                         $scope.ngDropoverId = $scope.target || $scope.$id;
 
                         //set up event listeners
-                        $scope.openListener = $rootScope.$on('ngDropover.open', function(event, m) {
-                            $scope.open(m.ngDropoverId);
+                        $scope.openListener = $rootScope.$on('ngDropover.open', function(event, ngDropoverId) {
+                            $scope.open(ngDropoverId);
                         });
 
-                        $scope.closeListener = $rootScope.$on('ngDropover.close', function(event, m) {
-                            $scope.close(m.ngDropoverId);
+                        $scope.closeListener = $rootScope.$on('ngDropover.close', function(event, ngDropoverId) {
+                            $scope.close(ngDropoverId);
                         });
 
-                        $scope.closeAllListener = $rootScope.$on('ngDropover.closeAll', function(event, m) {
-                            if (m.ngDropoverId !== $scope.ngDropoverId && !(!$scope.config.closeOnClickOff && m.fromDocument)) {
+                        $scope.toggleListener = $rootScope.$on('ngDropover.toggle', function(event, ngDropoverId) {
+                            $scope.isOpen ? $scope.close(ngDropoverId) : $scope.open(ngDropoverId);
+                        });
+
+                        $scope.closeAllListener = $rootScope.$on('ngDropover.closeAll', function(event, mouseEvent) {
+                            if (!mouseEvent || mouseEvent.ngDropoverId !== $scope.ngDropoverId && !(!$scope.config.closeOnClickOff && mouseEvent.fromDocument)) {
                                 // Unless closeOnClickOff is false and the event was from the document listener
                                 $scope.closeAll();
                             }
-                        });
-
-                        $scope.toggleListener = $rootScope.$on('ngDropover.toggle', function(event, m) {
-                            $scope.isOpen ? $scope.close(m.ngDropoverId) : $scope.open(m.ngDropoverId);
                         });
 
                         $scope.$on('$destroy', function() {
