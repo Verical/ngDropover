@@ -29,7 +29,9 @@ angular.module('example', ['ngDropover'])
         var links = document.querySelectorAll('.menu-link > a');
 
         Array.prototype.forEach.call(links, function(elem) {
-            angular.element(elem).on('click', function(event) {
+            angular.element(elem).on('touchstart click', function(event) {
+                event.preventDefault();
+                console.log('close all');
                 $rootScope.$emit('ngDropover.closeAll', {
                     ngDropoverId: null
                 });

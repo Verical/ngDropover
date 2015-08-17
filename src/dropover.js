@@ -17,9 +17,11 @@
 
     angular.module('ngDropover', [])
         .run(function($document, $rootScope) {
-            $document.on('click', function(event) {
-                event.fromDocument = true;
-                $rootScope.$emit("ngDropover.closeAll", event);
+            $document.on('touchstart click', function(event) {
+                if (event.which !== 3){
+                    event.fromDocument = true;
+                    $rootScope.$emit("ngDropover.closeAll", event);
+                }
             });
         })
         .constant(
@@ -59,13 +61,17 @@
                 'mouseenter': 'mouseleave',
                 'click': 'click',
                 'focus': 'blur',
-                'none': 'none'
+                'none': 'none',
+                'touchstart click': 'touchstart click'
             };
 
             return {
                 getTriggers: function(triggerEvent) {
                     if (triggerEvent === 'hover') {
                         triggerEvent = 'mouseenter'
+                    }
+                    if (triggerEvent === 'click') {
+                        triggerEvent = 'touchstart click';
                     }
 
                     if (triggerMap.hasOwnProperty(triggerEvent)) {
@@ -113,6 +119,7 @@
                         handlers = {
                             toggle: function(e) {
                                 // This is to check if the event came from inside the directive contents
+                                e.preventDefault();
                                 if (!e.ngDropoverId) {
                                     e.ngDropoverId = scope.ngDropoverId;
                                     scope.toggle(scope.ngDropoverId);
@@ -147,7 +154,7 @@
                             setPositionClass();
                         }, true);
 
-                        dropoverContents.on('click', handlers.markEvent);
+                        dropoverContents.on('touchstart click', handlers.markEvent);
                         $document.ready(function() {
                             positionContents();
                         });
@@ -263,7 +270,7 @@
                         if (ngDropoverId === scope.ngDropoverId && !scope.isOpen) {
 
                             if (scope.config.closeOthersOnOpen) {
-                                $rootScope.$emit("ngDropover.closeAll", event);
+                                $rootScope.$emit("ngDropover.closeAll", { ngDropoverId: scope.ngDropoverId });
                             };
 
                             positionContents();
@@ -353,7 +360,7 @@
                     scope.$on('$destroy', function() {
                         unsetTriggers();
                         angular.element($window).unbind('resize', positionContents);
-                        dropoverContents.off('click', handlers.markEvent);
+                        dropoverContents.off('touchstart click', handlers.markEvent);
                     });
 
                 },
@@ -558,35 +565,3 @@
             };
         }]);
 })(window, document);
-
-
-//
-//
-//  JUNK YARD
-// 
-//
-
-// Cool code for detecting CSS transition events
-
-// function whichTransitionEvent() {
-//     var t;
-//     var el = dropoverContents[0];
-//     var transitions = {
-//         'transition': 'transitionend',
-//         'OTransition': 'oTransitionEnd',
-//         'MozTransition': 'transitionend',
-//         'WebkitTransition': 'webkitTransitionEnd'
-//     }
-
-//     for (t in transitions) {
-//         if (el.style[t] !== undefined) {
-//             return transitions[t];
-//         }
-//     }
-// }
-
-// /* Listen for a transition! */
-// var transitionEvent = whichTransitionEvent();
-// transitionEvent && elm[0].addEventListener(transitionEvent, function() {
-//     console.log('Transition complete!  This is the callback, no library needed!');
-// });
