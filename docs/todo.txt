@@ -23,7 +23,7 @@
 	- Recipes
 
 		- 
-		- Full menu; one with two levels; Opening one closes others; implement closeOthersOnOpen
+		- Full menu; one with two levels; Opening one closes others;
 		- Animation; three buttons: default, CSS, JQuery
 		- 
 		- 
