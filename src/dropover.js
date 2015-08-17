@@ -199,8 +199,8 @@
                                 elm.on(triggerObj.show, handlers.toggle);
                             } else {
                                 elm.on(triggerObj.show, handlers.open);
-
                                 elm.on(triggerObj.hide, handlers.close);
+                                elm.on('touchstart click', handlers.markEvent);
                             }
                         }
                     };
@@ -214,8 +214,8 @@
                                     el.off(triggerObj.show, handlers.toggle);
                                 } else {
                                     el.off(triggerObj.show, handlers.open);
-
                                     el.off(triggerObj.hide, handlers.close);
+                                    el.off('touchstart click', handlers.markEvent);
                                 }
                             }
                         }
