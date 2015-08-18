@@ -167,7 +167,7 @@
                         elm.addClass(scope.config.wrapperClass);
                         dropoverContents.css({
                             'position': 'absolute'
-                        }).addClass('ngdo-contents');
+                        }).addClass('ngdo-contents ' + scope.config.groupId);
                         transition.event = getTransitions();
                         transition.handler = function(event) {
                             if (event.propertyName == "visibility") {
@@ -255,11 +255,11 @@
                     function getDropoverContents() {
                         var ret;
                         if (elm[0].querySelector('[ng-dropover-contents]')) {
-                            ret = angular.element(elm[0].querySelector('[ng-dropover-contents]')).addClass(scope.config.groupId);
+                            ret = angular.element(elm[0].querySelector('[ng-dropover-contents]'));
                             return ret;
                         } else {
 
-                            ret = angular.element("<div class='ngdo-empty'>Oops, you forgot to specify what goes in the dropdown</div>").addClass(scope.config.groupId);
+                            ret = angular.element("<div class='ngdo-empty'>Oops, you forgot to specify what goes in the dropdown</div>");
                             elm.append(ret);
                             return ret;
                         }
