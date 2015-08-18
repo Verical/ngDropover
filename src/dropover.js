@@ -32,7 +32,7 @@
                 'triggerEvent': 'click',
                 'position': 'bottom-left',
                 'closeOnClickOff': true,
-                'group': ''
+                'groupId': ''
             }
         )
         .constant(
@@ -256,11 +256,11 @@
                     function getDropoverContents() {
                         var ret;
                         if (elm[0].querySelector('[ng-dropover-contents]')) {
-                            ret = angular.element(elm[0].querySelector('[ng-dropover-contents]')).addClass(scope.config.group);
+                            ret = angular.element(elm[0].querySelector('[ng-dropover-contents]')).addClass(scope.config.groupId);
                             return ret;
                         } else {
 
-                            ret = angular.element("<div class='ngdo-empty'>Oops, you forgot to specify what goes in the dropdown</div>").addClass(scope.config.group);
+                            ret = angular.element("<div class='ngdo-empty'>Oops, you forgot to specify what goes in the dropdown</div>").addClass(scope.config.groupId);
                             elm.append(ret);
                             return ret;
                         }
@@ -283,7 +283,7 @@
                             $rootScope.$broadcast('ngDropover.opening', {
                                 id: scope.ngDropoverId,
                                 element: dropoverContents[0],
-                                group: scope.config.group
+                                groupId: scope.config.groupId
                             });
                             dropoverContents.css({
                                 'display': 'inline-block'
@@ -357,7 +357,7 @@
                         $rootScope.$broadcast('ngDropover.closing', {
                             id: scope.ngDropoverId,
                             element: dropoverContents[0],
-                            group: scope.config.group
+                            groupId: scope.config.groupId
                         });
 
                         angular.element($window).unbind('resize', positionContents);
