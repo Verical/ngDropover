@@ -329,11 +329,11 @@
                             'MozTransition': 'MozTransitionDuration',
                             'webkitTransition': 'WebkitTransitionDuration'
                         };
-                        var transition;
-                        for (transition in transitions) {
-                            if (dropoverContents[0].style[transition] !== undefined && parseFloat($position.getStyle(dropoverContents[0], propertyCheck[transition]), 10) > 0) {
-                                transition.duration = Math.floor(parseFloat($position.getStyle(dropoverContents[0], propertyCheck[transition]), 10) * 1000);
-                                return transitions[transition];
+                        var t;
+                        for (t in transitions) {
+                            if (dropoverContents[0].style[t] !== undefined && parseFloat($position.getStyle(dropoverContents[0], propertyCheck[t]), 10) > 0) {
+                                t.duration = Math.floor(parseFloat($position.getStyle(dropoverContents[0], propertyCheck[t]), 10) * 1000);
+                                return transitions[t];
                             }
                         }
                     }
