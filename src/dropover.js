@@ -18,7 +18,7 @@
     angular.module('ngDropover', [])
         .run(function($document, $rootScope) {
             $document.on('touchstart click', function(event) {
-                if (event.which !== 3){
+                if (event.which !== 3) {
                     event.fromDocument = true;
                     $rootScope.$emit("ngDropover.closeAll", event);
                 }
@@ -26,7 +26,7 @@
         })
         .constant(
             'ngDropoverConfig', {
-                'horizontalOffset': 0, //ToDo: Research if this can be replaced with just a margin on the contents
+                'horizontalOffset': 0,
                 'verticalOffset': 0,
                 'closeOthersOnOpen': true,
                 'triggerEvent': 'click',
@@ -147,7 +147,7 @@
                             scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
                             if (typeof(scope.config.position) !== 'string' || scope.positions.indexOf(scope.config.position) == -1) {
                                 logError(scope.ngDropoverId, angular.element(elm), "Position must be a string and one of these values: " + scope.positions);
-                                scope.config.position = "bottom";
+                                scope.config.position = "bottom-left";
                             };
                             setTriggers();
                             positionContents();
@@ -168,9 +168,8 @@
                         dropoverContents.css({
                             'position': 'absolute'
                         }).addClass('ngdo-contents');
-                        transition.event = whichTransitionEvent();
+                        transition.event = getTransitions();
                         transition.handler = function(event) {
-                            console.log(event);
                             if (event.propertyName == "visibility") {
                                 return;
                             }
@@ -268,13 +267,15 @@
 
                     //ToDo: Detect previous display value
                     scope.open = function(ngDropoverId) {
-                        if (transition.event){
+                        if (transition.event) {
                             dropoverContents[0].removeEventListener(transition.event, transition.handler);
                         }
                         if (ngDropoverId === scope.ngDropoverId && !scope.isOpen) {
 
                             if (scope.config.closeOthersOnOpen) {
-                                $rootScope.$emit("ngDropover.closeAll", { ngDropoverId: scope.ngDropoverId });
+                                $rootScope.$emit("ngDropover.closeAll", {
+                                    ngDropoverId: scope.ngDropoverId
+                                });
                             };
 
                             positionContents();
@@ -315,9 +316,7 @@
                         }
                     };
 
-                    function whichTransitionEvent() {
-                        var t;
-                        var el = dropoverContents[0];
+                    function getTransitions() {
                         var transitions = {
                             'transition': 'transitionend',
                             'OTransition': 'oTransitionEnd',
@@ -330,11 +329,11 @@
                             'MozTransition': 'MozTransitionDuration',
                             'webkitTransition': 'WebkitTransitionDuration'
                         };
-
-                        for (t in transitions) {
-                            if (el.style[t] !== undefined && parseFloat($position.getStyle(el, propertyCheck[t]), 10) > 0) {
-                                transition.duration = Math.floor(parseFloat($position.getStyle(el, propertyCheck[t]), 10) * 1000);
-                                return transitions[t];
+                        var transition;
+                        for (transition in transitions) {
+                            if (dropoverContents[0].style[transition] !== undefined && parseFloat($position.getStyle(dropoverContents[0], propertyCheck[transition]), 10) > 0) {
+                                transition.duration = Math.floor(parseFloat($position.getStyle(dropoverContents[0], propertyCheck[transition]), 10) * 1000);
+                                return transitions[transition];
                             }
                         }
                     }
