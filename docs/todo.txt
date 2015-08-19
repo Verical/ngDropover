@@ -13,6 +13,7 @@
 	- Browser compatability test
 	- Angular version compatability test
 	- Mobile friendly test
+	- Object destroy cleanup
 
 - Website/Examples
 	- Layout and Theme

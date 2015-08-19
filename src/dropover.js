@@ -85,6 +85,24 @@
         })
         .directive('ngDropover', function(ngDropoverConfig, positions, $rootScope, $position, $document, $window, triggerEventsMap, $timeout) {
 
+            if (!Array.prototype.indexOf) {
+                Array.prototype.indexOf = function(elt /*, from*/ ) {
+                    var len = this.length >>> 0;
+
+                    var from = Number(arguments[1]) || 0;
+                    from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+                    if (from < 0)
+                        from += len;
+
+                    for (; from < len; from++) {
+                        if (from in this &&
+                            this[from] === elt)
+                            return from;
+                    }
+                    return -1;
+                };
+            }
+
             function logError(id, element, message) {
                 console.log("∇ ngDropover Error | ID:" + id + " ∇");
                 console.log(element);
@@ -92,7 +110,7 @@
                 console.log("");
             }
 
-            var allDropOvers = [];
+            var allDropovers = [];
 
             var delimeter = ',_,';
 
@@ -268,13 +286,17 @@
                         elm.addClass('ngdo-' + scope.config.position);
                     };
 
-                    function updateDropoverArray() {
-                        var dropoverObjIndex = allDropOvers.indexOf(scope.dropoverObj);
-                        if (dropoverObjIndex == -1) {
-                            allDropOvers.push(scope.dropoverObj);
+                    function updateDropoverArray(remove) {
+                        var dropoverObjIndex = allDropovers.indexOf(scope.dropoverObj);
+                        if (!remove) {
+                            if (dropoverObjIndex == -1) {
+                                allDropovers.push(scope.dropoverObj);
+                            } else {
+                                setDropoverObj();
+                                allDropovers[dropoverObjIndex] = scope.dropoverObj;
+                            }
                         } else {
-                            setDropoverObj();
-                            allDropOvers[dropoverObjIndex] = scope.dropoverObj;
+                            allDropovers.splice(dropoverObjIndex, 1);
                         }
                     };
 
@@ -378,6 +400,7 @@
                         unsetTriggers();
                         angular.element($window).unbind('resize', positionContents);
                         dropoverContents.off('touchstart click', handlers.markEvent);
+                        updateDropoverArray(true);
                     });
 
                 },
