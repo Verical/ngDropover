@@ -401,6 +401,7 @@
                         unsetTriggers();
                         angular.element($window).unbind('resize', positionContents);
                         dropoverContents.off('touchstart click', handlers.markEvent);
+                        updateDropoverArray(true);
                     });
 
                 },
