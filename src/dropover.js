@@ -28,7 +28,6 @@
             'ngDropoverConfig', {
                 'horizontalOffset': 0,
                 'verticalOffset': 0,
-                'closeOthersOnOpen': true,
                 'triggerEvent': 'click',
                 'position': 'bottom-left',
                 'closeOnClickOff': true,
@@ -95,6 +94,8 @@
 
             var allDropOvers = [];
 
+            var delimeter = ',_,';
+
             return {
                 restrict: 'A',
                 replace: true,
@@ -121,24 +122,28 @@
                                 // This is to check if the event came from inside the directive contents
                                 e.preventDefault();
                                 if (!e.ngDropoverId) {
-                                    e.ngDropoverId = scope.ngDropoverId;
+                                    handlers.markEvent(e);
                                     scope.toggle(scope.ngDropoverId);
                                 }
                             },
                             open: function(e) {
-                                e.ngDropoverId = scope.ngDropoverId;
+                                handlers.markEvent(e);
                                 if (!scope.isOpen) {
                                     scope.open(scope.ngDropoverId);
                                 }
                             },
                             close: function(e) {
-                                e.ngDropoverId = scope.ngDropoverId;
+                                handlers.markEvent(e);
                                 if (scope.isOpen) {
                                     scope.close(scope.ngDropoverId);
                                 }
                             },
                             markEvent: function(e) {
-                                e.ngDropoverId = scope.ngDropoverId;
+                                if (!e.ngDropoverId) {
+                                    e.ngDropoverId = scope.ngDropoverId;
+                                } else {
+                                    e.ngDropoverId += delimeter + scope.ngDropoverId;
+                                }
                             }
                         }
 
@@ -293,12 +298,6 @@
                         }
                         if (ngDropoverId === scope.ngDropoverId && !scope.isOpen) {
 
-                            if (scope.config.closeOthersOnOpen) {
-                                $rootScope.$emit("ngDropover.closeAll", {
-                                    ngDropoverId: scope.ngDropoverId
-                                });
-                            };
-
                             positionContents();
 
                             //start the display process and fire events
@@ -387,7 +386,7 @@
                     function($scope, $element, $attrs) {
 
                         $scope.isOpen = false;
-                        $scope.ngDropoverId = $scope.target || $scope.$id;
+                        $scope.ngDropoverId = $scope.target || (''+$scope.$id);
 
                         //set up event listeners
                         $scope.openListener = $rootScope.$on('ngDropover.open', function(event, ngDropoverId) {
@@ -403,7 +402,7 @@
                         });
 
                         $scope.closeAllListener = $rootScope.$on('ngDropover.closeAll', function(event, mouseEvent) {
-                            if (!mouseEvent || mouseEvent.ngDropoverId !== $scope.ngDropoverId && !(!$scope.config.closeOnClickOff && mouseEvent.fromDocument)) {
+                            if (!mouseEvent.ngDropoverId || (mouseEvent.ngDropoverId).split(delimeter).indexOf($scope.ngDropoverId) < 0 && !(!$scope.config.closeOnClickOff && mouseEvent.fromDocument)) {
                                 // Unless closeOnClickOff is false and the event was from the document listener
                                 $scope.closeAll();
                             }

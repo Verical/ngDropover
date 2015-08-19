@@ -15,15 +15,6 @@ angular.module('example', ['ngDropover'])
             'closeOnClickOff': true
         };
 
-        $rootScope.$on('ngDropover.opening', function(event, dropObj) {
-            $(dropObj.element).stop().slideDown();
-        });
-        
-        $rootScope.$on('ngDropover.closing', function(event, dropObj) {
-            $(dropObj.element).show();
-            $(dropObj.element).stop().slideUp();
-        });
-
     }).run(function($rootScope) {
 
         var links = document.querySelectorAll('.menu-link > a');
