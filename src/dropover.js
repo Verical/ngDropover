@@ -271,7 +271,6 @@
                             setDropoverObj();
                             allDropOvers[dropoverObjIndex] = scope.dropoverObj;
                         }
-                        console.log(allDropOvers);
                     };
 
                     function getDropoverContents() {
