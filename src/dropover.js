@@ -332,7 +332,7 @@
                         var t;
                         for (t in transitions) {
                             if (dropoverContents[0].style[t] !== undefined && parseFloat($position.getStyle(dropoverContents[0], propertyCheck[t]), 10) > 0) {
-                                t.duration = Math.floor(parseFloat($position.getStyle(dropoverContents[0], propertyCheck[t]), 10) * 1000);
+                                transition.duration = Math.floor(parseFloat($position.getStyle(dropoverContents[0], propertyCheck[t]), 10) * 1000);
                                 return transitions[t];
                             }
                         }
