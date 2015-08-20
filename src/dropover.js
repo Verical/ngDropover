@@ -16,14 +16,14 @@
      */
 
     angular.module('ngDropover', [])
-        .run(function($document, $rootScope) {
+        .run(['$document', '$rootScope', function($document, $rootScope) {
             $document.on('touchstart click', function(event) {
                 if (event.which !== 3) {
                     event.fromDocument = true;
                     $rootScope.$emit("ngDropover.closeAll", event);
                 }
             });
-        })
+        }])
         .constant(
             'ngDropoverConfig', {
                 'horizontalOffset': 0,
@@ -67,7 +67,7 @@
             return {
                 getTriggers: function(triggerEvent) {
                     if (triggerEvent === 'hover') {
-                        triggerEvent = 'mouseenter'
+                        triggerEvent = 'mouseenter';
                     }
                     if (triggerEvent === 'click') {
                         triggerEvent = 'touchstart click';
@@ -83,7 +83,7 @@
                 }
             }
         })
-        .directive('ngDropover', function(ngDropoverConfig, positions, $rootScope, $position, $document, $window, triggerEventsMap, $timeout) {
+        .directive('ngDropover', ['ngDropoverConfig', 'positions', '$rootScope', '$position', '$document', '$window', 'triggerEventsMap', '$timeout', function(ngDropoverConfig, positions, $rootScope, $position, $document, $window, triggerEventsMap, $timeout) {
 
             if (!Array.prototype.indexOf) {
                 Array.prototype.indexOf = function(elt /*, from*/ ) {
@@ -173,7 +173,7 @@
                             if (typeof(scope.config.position) !== 'string' || scope.positions.indexOf(scope.config.position) == -1) {
                                 logError(scope.ngDropoverId, angular.element(elm), "Position must be a string and one of these values: " + scope.positions);
                                 scope.config.position = "bottom-left";
-                            };
+                            }
                             setTriggers();
                             positionContents();
                             setPositionClass();
@@ -212,9 +212,9 @@
                             id: scope.ngDropoverId,
                             children: elm[0].querySelectorAll('[ng-dropover]'),
                             element: elm,
-                            dropoverContents: dropoverContents,
+                            dropoverContents: dropoverContents
                         };
-                    };
+                    }
 
                     //Get the trigger from the config if the user set it. Otherwise the trigger will default to the scope's element
                     function setTriggers() {
@@ -223,7 +223,7 @@
 
                         if (!triggerObj) {
                             logError(scope.ngDropoverId, angular.element(elm), "triggerEvent must be a string: 'none', 'click', 'hover', 'focus'");
-                        };
+                        }
 
                         if (triggerObj && triggerObj.show !== "none") {
                             //If the the trigger's event to open matches the event to close, then send to the toggle method
@@ -236,7 +236,7 @@
                                 elm.on('touchstart click', handlers.markEvent);
                             }
                         }
-                    };
+                    }
 
                     function unsetTriggers() {
                         if (triggerElements && triggerElements.length > 0) {
@@ -252,7 +252,7 @@
                                 }
                             }
                         }
-                    };
+                    }
 
                     function positionContents() {
 
@@ -273,7 +273,7 @@
                             'display': 'none',
                             'visibility': 'visible'
                         });
-                    };
+                    }
 
                     function setPositionClass() {
                         var classList = elm[0].className.split(' ');
@@ -282,9 +282,9 @@
                             if (scope.positions.indexOf(stripPrefix) > 0) {
                                 elm.removeClass(classList[i]);
                             }
-                        };
+                        }
                         elm.addClass('ngdo-' + scope.config.position);
-                    };
+                    }
 
                     function updateDropoverArray(remove) {
                         var dropoverObjIndex = allDropovers.indexOf(scope.dropoverObj);
@@ -298,7 +298,7 @@
                         } else {
                             allDropovers.splice(dropoverObjIndex, 1);
                         }
-                    };
+                    }
 
                     function getDropoverContents() {
                         var ret;
@@ -311,7 +311,7 @@
                             elm.append(ret);
                             return ret;
                         }
-                    };
+                    }
 
                     //ToDo: Detect previous display value
                     scope.open = function(ngDropoverId) {
@@ -374,6 +374,7 @@
                                 return transitions[t];
                             }
                         }
+                        return undefined;
                     }
 
                     function closer() {
@@ -409,7 +410,7 @@
                     function($scope, $element, $attrs) {
 
                         $scope.isOpen = false;
-                        $scope.ngDropoverId = $scope.target || (''+$scope.$id);
+                        $scope.ngDropoverId = $scope.target || ('' + $scope.$id);
 
                         //set up event listeners
                         $scope.openListener = $rootScope.$on('ngDropover.open', function(event, ngDropoverId) {
@@ -444,7 +445,7 @@
                     }
                 ]
             };
-        }).factory('$position', ['$document', '$window', function($document, $window) {
+        }]).factory('$position', ['$document', '$window', function($document, $window) {
 
             function getStyle(el, cssprop) {
                 if (el.currentStyle) { //IE
