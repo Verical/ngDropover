@@ -188,7 +188,7 @@
 
 
                     function setHtml() {
-                        elm.addClass(scope.config.groupId);
+                        elm.addClass(scope.config.groupId + " ngdo");
                         elm.attr("ng-dropover", scope.ngDropoverId)
                         dropoverContents = getDropoverContents();
                         dropoverContents.css({
