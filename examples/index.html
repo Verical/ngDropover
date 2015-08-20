@@ -16,7 +16,7 @@
     <h1>Mad Dropdowns Yo</h1>
     <section>
         <div class="row">
-            <div style="position:relative" ng-dropover="dropOne" class="outline dropOneTrigger" style="{position: absolute}" ng-dropover-options="{'trigger': '.dropOneTrigger'}">
+            <div style="position:relative" ng-dropover="dropOne" class="outline dropOneTrigger" style="{position: absolute}">
                 <div>Click Toggle</div>
                 <div ng-dropover-contents>
                     <div>ITEM</div>
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="i-block">
-                <div class="remote-trigger dropOneTrigger">Toggle from elsewhere</div>
+                <div class="remote-trigger dropOneTrigger" ng-dropover-trigger="{ targetId: 'dropOne'}">Toggle from elsewhere</div>
             </div>
         </div>
         <div class="row">

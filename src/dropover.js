@@ -31,6 +31,9 @@
                     if (element.attributes.getNamedItem('ng-dropover')){
                         ids += element.attributes.getNamedItem('ng-dropover').nodeValue + ',_,';
                     }
+                    if (element.attributes.getNamedItem('ng-dropover-trigger')){
+                        ids += ($rootScope.$eval(element.attributes.getNamedItem('ng-dropover-trigger').nodeValue).targetId || '') + ',_,';
+                    }
                     element = element.parentNode;
                 }
                 return ids;
@@ -610,6 +613,40 @@
                             break;
                     }
                     return targetElPos;
+                }
+            };
+        }])
+        .directive('ngDropoverTrigger', ['$rootScope', '$document', 'triggerEventsMap', function($rootScope, $document, triggerEventsMap) {
+            return {
+                restrict: 'AE',
+                link: function (scope, element, attrs) {
+                    var options = scope.$eval(attrs.ngDropoverTrigger);
+                    var triggerObj = triggerEventsMap.getTriggers(options.triggerEvent || 'click');
+                    element.addClass('ng-dropover-trigger');
+
+                    if (options.action == "open" || options.action == "close") {
+                        element.on(triggerObj.show, function(event) {
+                            if (event.tyepe == 'touchstart') {
+                                event.preventDefault();
+                            }
+                            event.targetId = options.targetId;
+                            scope.$emit('ngDropover.' + options.action, event);
+                        });
+                    } else {
+                        if (triggerObj.show === triggerObj.hide) {
+                            element.on(triggerObj.show, function(event) {
+                                scope.$emit('ngDropover.toggle', options.targetId);
+                            });
+                        } else {
+                            element.on(triggerObj.show, function(event) {
+                                scope.$emit('ngDropover.open', options.targetId);
+                            });
+
+                            element.on(triggerObj.hide, function(event) {
+                                scope.$emit('ngDropover.close', options.targetId);
+                            });
+                        }
+                    }
                 }
             };
         }]);
