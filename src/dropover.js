@@ -18,11 +18,23 @@
     angular.module('ngDropover', [])
         .run(['$document', '$rootScope', function($document, $rootScope) {
             $document.on('touchstart click', function(event) {
+                if (event.type == 'touchstart') {
+                    event.preventDefault();
+                }
                 if (event.which !== 3) {
-                    event.fromDocument = true;
-                    $rootScope.$emit("ngDropover.closeAll", event);
+                    $rootScope.$emit("ngDropover.closeAll", { fromDocument: true, ngDropoverId: getIds(event.target)} );
                 }
             });
+            function getIds(element) {
+                var ids = '';
+                while (element != document) {
+                    if (element.attributes.getNamedItem('ng-dropover')){
+                        ids += element.attributes.getNamedItem('ng-dropover').nodeValue + ',_,';
+                    }
+                    element = element.parentNode;
+                }
+                return ids;
+            }
         }])
         .constant(
             'ngDropoverConfig', {
@@ -425,8 +437,8 @@
                             $scope.isOpen ? $scope.close(ngDropoverId) : $scope.open(ngDropoverId);
                         });
 
-                        $scope.closeAllListener = $rootScope.$on('ngDropover.closeAll', function(event, mouseEvent) {
-                            if (!mouseEvent.ngDropoverId || (mouseEvent.ngDropoverId).split(delimeter).indexOf($scope.ngDropoverId) < 0 && !(!$scope.config.closeOnClickOff && mouseEvent.fromDocument)) {
+                        $scope.closeAllListener = $rootScope.$on('ngDropover.closeAll', function(event, info) {
+                            if ((!info.ngDropoverId || (info.ngDropoverId).split(delimeter).indexOf($scope.ngDropoverId) < 0) && !(!$scope.config.closeOnClickOff && info.fromDocument)) {
                                 // Unless closeOnClickOff is false and the event was from the document listener
                                 $scope.closeAll();
                             }
