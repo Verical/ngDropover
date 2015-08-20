@@ -122,7 +122,7 @@
             }
 
             function logError(id, element, message) {
-                console.log("∇ ngDropover Error | ID:" + id + " ∇");
+                console.log("? ngDropover Error | ID:" + id + " ?");
                 console.log(element);
                 console.log(message);
                 console.log("");
@@ -156,31 +156,34 @@
                         handlers = {
                             toggle: function(e) {
                                 // This is to check if the event came from inside the directive contents
-                                e.preventDefault();
-                                if (!e.ngDropoverId) {
-                                    handlers.markEvent(e);
+                                if (event.type == "touchstart") {
+                                    e.preventDefault();
+                                }
+                                if (!fromContents(e)) {
                                     scope.toggle(scope.ngDropoverId);
                                 }
                             },
                             open: function(e) {
-                                handlers.markEvent(e);
                                 if (!scope.isOpen) {
                                     scope.open(scope.ngDropoverId);
                                 }
                             },
                             close: function(e) {
-                                handlers.markEvent(e);
                                 if (scope.isOpen) {
                                     scope.close(scope.ngDropoverId);
                                 }
-                            },
-                            markEvent: function(e) {
-                                if (!e.ngDropoverId) {
-                                    e.ngDropoverId = scope.ngDropoverId;
-                                } else {
-                                    e.ngDropoverId += delimeter + scope.ngDropoverId;
-                                }
                             }
+                        }
+                        function fromContents(e) {
+                            var element = e.target;
+
+                            while (element != document && element != elm[0]) {
+                                if (element.attributes.getNamedItem('ng-dropover-contents')) {
+                                    return true;
+                                }
+                                element = element.parentNode;
+                            }
+                            return false;
                         }
 
                         setDropoverObj();
@@ -198,7 +201,6 @@
                             updateDropoverArray();
                         }, true);
 
-                        dropoverContents.on('touchstart click', handlers.markEvent);
                         $document.ready(function() {
                             positionContents();
                         });
@@ -251,7 +253,6 @@
                             } else {
                                 elm.on(triggerObj.show, handlers.open);
                                 elm.on(triggerObj.hide, handlers.close);
-                                elm.on('touchstart click', handlers.markEvent);
                             }
                         }
                     }
@@ -266,7 +267,6 @@
                                 } else {
                                     el.off(triggerObj.show, handlers.open);
                                     el.off(triggerObj.hide, handlers.close);
-                                    el.off('touchstart click', handlers.markEvent);
                                 }
                             }
                         }
@@ -418,7 +418,6 @@
                     scope.$on('$destroy', function() {
                         unsetTriggers();
                         angular.element($window).unbind('resize', positionContents);
-                        dropoverContents.off('touchstart click', handlers.markEvent);
                         updateDropoverArray(true);
                     });
 
@@ -616,9 +615,6 @@
                             };
                             break;
                     }
-
-
-
                     return targetElPos;
                 }
             };

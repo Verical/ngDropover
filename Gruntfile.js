@@ -35,10 +35,10 @@ module.exports = function(grunt) {
     };
 
     // setup dynamic filenames
-    config.versioned = [config.pkg.name, config.pkg.version].join('-');
+    config.versioned = config.pkg.name;
     config.dist = ['dist/', '.js'].join(config.versioned);
-    config.website = ['website/vendor/ngdropover/', '.min.js'].join(config.versioned);
     config.uglifyFiles[['dist/', '.min.js'].join(config.versioned)] = config.dist;
+    config.website = ['website/vendor/ngdropover/', '.js'].join(config.versioned);
 
     // Project configuration.
     grunt.initConfig({
@@ -57,10 +57,6 @@ module.exports = function(grunt) {
             dist: {
                 src: config.sources,
                 dest: config.dist
-            },
-            website: {
-                src: config.sources,
-                dest: config.website,
             }
         },
         uglify: {
@@ -70,6 +66,16 @@ module.exports = function(grunt) {
             dist: {
                 files: config.uglifyFiles
             }
+        },
+        copy: {
+            main: {
+                files: [{
+                    expand: false,
+                    src: [config.dist],
+                    dest: config.website,
+                    filter: 'isFile'
+                }],
+            },
         },
         jasmine: {
             tests: {
@@ -104,7 +110,7 @@ module.exports = function(grunt) {
 
     // Default task.
     // grunt.registerTask('default', ['boilerplate-check', 'clean', 'concat', 'jshint', 'uglify', 'jasmine']);
-    grunt.registerTask('default', ['clean', 'concat', 'uglify']);
+    grunt.registerTask('default', ['clean', 'concat', 'uglify', 'copy']);
 
 
 };
