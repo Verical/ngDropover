@@ -37,6 +37,7 @@ module.exports = function(grunt) {
     // setup dynamic filenames
     config.versioned = [config.pkg.name, config.pkg.version].join('-');
     config.dist = ['dist/', '.js'].join(config.versioned);
+    config.website = ['website/vendor/ngdropover/', '.min.js'].join(config.versioned);
     config.uglifyFiles[['dist/', '.min.js'].join(config.versioned)] = config.dist;
 
     // Project configuration.
@@ -56,6 +57,10 @@ module.exports = function(grunt) {
             dist: {
                 src: config.sources,
                 dest: config.dist
+            },
+            website: {
+                src: config.sources,
+                dest: config.website,
             }
         },
         uglify: {

@@ -16,25 +16,12 @@
 	- Object destroy cleanup
 
 - Website/Examples
-	- Layout and Theme
-	- Where to source dropover
+	- Layout and Theme - Still needs button states
 	- Download
 	- Content copy
 	- Mobile friendly
-	- Recipes
-
-		- 
-		- Full menu; one with two levels; Opening one closes others;
-		- Animation; three buttons: default, CSS, JQuery
-		- 
-		- 
-		- 
-		- 
-		- 
-		- Toaster within the codepen (Going to skip this one for now. Not sure it really shows anything)
 
 - Directive
-	- Binding to ngdropover. Put id in ng-dropover-options?
 	- Add type checking logic with console errors
 	- Console messages for commmon errors like "That dropover is already closed"
 		- ID is already in use
@@ -45,7 +32,7 @@
 	- Give thanks to borrowed code
 	- Documentation/README
 	- Add to various module websites ( http://ngmodules.org/ )
-	- Option binding (best practice); maybe just something for the intro.
+
 
 - Roadmap
 	- Page/Viewport edge detection
