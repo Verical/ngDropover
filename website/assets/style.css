@@ -99,14 +99,14 @@ code i {
     cursor: pointer;
 }
 
-.ngdo-contents {
+/*.ngdo-contents {
   border: 1px solid #d14b2d;
   border-radius: 10px;
   background-color: #fbf4e1;
   padding: 20px;
   box-shadow: 0px 5px 6px #888888;
   text-align: left;
-}
+}*/
 
 .top-sample {
     text-align: center;
