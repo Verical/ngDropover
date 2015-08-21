@@ -22,16 +22,20 @@
                     event.preventDefault();
                 }
                 if (event.which !== 3) {
-                    $rootScope.$emit("ngDropover.closeAll", { fromDocument: true, ngDropoverId: getIds(event.target)} );
+                    $rootScope.$emit("ngDropover.closeAll", {
+                        fromDocument: true,
+                        ngDropoverId: getIds(event.target)
+                    });
                 }
             });
+
             function getIds(element) {
                 var ids = '';
                 while (element != document) {
-                    if (element.attributes.getNamedItem('ng-dropover')){
+                    if (element.attributes.getNamedItem('ng-dropover')) {
                         ids += element.attributes.getNamedItem('ng-dropover').nodeValue + ',_,';
                     }
-                    if (element.attributes.getNamedItem('ng-dropover-trigger')){
+                    if (element.attributes.getNamedItem('ng-dropover-trigger')) {
                         ids += ($rootScope.$eval(element.attributes.getNamedItem('ng-dropover-trigger').nodeValue).targetId || '') + ',_,';
                     }
                     element = element.parentNode;
@@ -125,8 +129,6 @@
                 console.log("");
             }
 
-            var allDropovers = [];
-
             var delimeter = ',_,';
 
             return {
@@ -171,6 +173,7 @@
                                 }
                             }
                         }
+
                         function fromContents(e) {
                             var element = e.target;
 
@@ -195,14 +198,12 @@
                             setTriggers();
                             positionContents();
                             setPositionClass();
-                            updateDropoverArray();
                         }, true);
 
                         $document.ready(function() {
                             positionContents();
                         });
                     }
-
 
                     function setHtml() {
                         elm.addClass(scope.config.groupId + " ngdo");
@@ -299,20 +300,6 @@
                             }
                         }
                         elm.addClass('ngdo-' + scope.config.position);
-                    }
-
-                    function updateDropoverArray(remove) {
-                        var dropoverObjIndex = allDropovers.indexOf(scope.dropoverObj);
-                        if (!remove) {
-                            if (dropoverObjIndex == -1) {
-                                allDropovers.push(scope.dropoverObj);
-                            } else {
-                                setDropoverObj();
-                                allDropovers[dropoverObjIndex] = scope.dropoverObj;
-                            }
-                        } else {
-                            allDropovers.splice(dropoverObjIndex, 1);
-                        }
                     }
 
                     function getDropoverContents() {
@@ -415,7 +402,6 @@
                     scope.$on('$destroy', function() {
                         unsetTriggers();
                         angular.element($window).unbind('resize', positionContents);
-                        updateDropoverArray(true);
                     });
 
                 },
@@ -424,6 +410,7 @@
                     function($scope, $element, $attrs) {
 
                         $scope.isOpen = false;
+
                         $scope.ngDropoverId = $scope.target || ('' + $scope.$id);
 
                         //set up event listeners
@@ -619,7 +606,7 @@
         .directive('ngDropoverTrigger', ['$rootScope', '$document', 'triggerEventsMap', function($rootScope, $document, triggerEventsMap) {
             return {
                 restrict: 'AE',
-                link: function (scope, element, attrs) {
+                link: function(scope, element, attrs) {
                     var options = scope.$eval(attrs.ngDropoverTrigger);
                     var triggerObj = triggerEventsMap.getTriggers(options.triggerEvent || 'click');
                     element.addClass('ng-dropover-trigger');

@@ -1,5 +1,5 @@
 /**
- * ngdropover v0.0.0 - 2015-08-20
+ * ngdropover v0.0.0 - 2015-08-21
  * A custom angular directive to handle dropdowns and popovers with custom content
  *
  * Copyright (c) 2015 Ricky Sandoval <ricky.sandoval92@gmail.com> and Tony Smith <tony@naptown.com>
@@ -28,14 +28,21 @@
                     event.preventDefault();
                 }
                 if (event.which !== 3) {
-                    $rootScope.$emit("ngDropover.closeAll", { fromDocument: true, ngDropoverId: getIds(event.target)} );
+                    $rootScope.$emit("ngDropover.closeAll", {
+                        fromDocument: true,
+                        ngDropoverId: getIds(event.target)
+                    });
                 }
             });
+
             function getIds(element) {
                 var ids = '';
                 while (element != document) {
-                    if (element.attributes.getNamedItem('ng-dropover')){
+                    if (element.attributes.getNamedItem('ng-dropover')) {
                         ids += element.attributes.getNamedItem('ng-dropover').nodeValue + ',_,';
+                    }
+                    if (element.attributes.getNamedItem('ng-dropover-trigger')) {
+                        ids += ($rootScope.$eval(element.attributes.getNamedItem('ng-dropover-trigger').nodeValue).targetId || '') + ',_,';
                     }
                     element = element.parentNode;
                 }
@@ -128,7 +135,7 @@
                 console.log("");
             }
 
-            var allDropovers = [];
+            $rootScope.ngDropovers = [];
 
             var delimeter = ',_,';
 
@@ -174,6 +181,7 @@
                                 }
                             }
                         }
+
                         function fromContents(e) {
                             var element = e.target;
 
@@ -203,9 +211,14 @@
 
                         $document.ready(function() {
                             positionContents();
+
+                            for (var i = 0, len = $rootScope.ngDropovers.length; i < len; i++) {
+                                if (scope.dropoverObj.id === $rootScope.ngDropovers[i].id && scope.dropoverObj !== $rootScope.ngDropovers[i]) {
+                                    console.log("Duplicate ID: " + scope.dropoverObj.id);
+                                }
+                            }
                         });
                     }
-
 
                     function setHtml() {
                         elm.addClass(scope.config.groupId + " ngdo");
@@ -305,16 +318,16 @@
                     }
 
                     function updateDropoverArray(remove) {
-                        var dropoverObjIndex = allDropovers.indexOf(scope.dropoverObj);
+                        var dropoverObjIndex = $rootScope.ngDropovers.indexOf(scope.dropoverObj);
                         if (!remove) {
                             if (dropoverObjIndex == -1) {
-                                allDropovers.push(scope.dropoverObj);
+                                $rootScope.ngDropovers.push(scope.dropoverObj);
                             } else {
                                 setDropoverObj();
-                                allDropovers[dropoverObjIndex] = scope.dropoverObj;
+                                $rootScope.ngDropovers[dropoverObjIndex] = scope.dropoverObj;
                             }
                         } else {
-                            allDropovers.splice(dropoverObjIndex, 1);
+                            $rootScope.ngDropovers.splice(dropoverObjIndex, 1);
                         }
                     }
 
@@ -427,6 +440,7 @@
                     function($scope, $element, $attrs) {
 
                         $scope.isOpen = false;
+
                         $scope.ngDropoverId = $scope.target || ('' + $scope.$id);
 
                         //set up event listeners
@@ -616,6 +630,40 @@
                             break;
                     }
                     return targetElPos;
+                }
+            };
+        }])
+        .directive('ngDropoverTrigger', ['$rootScope', '$document', 'triggerEventsMap', function($rootScope, $document, triggerEventsMap) {
+            return {
+                restrict: 'AE',
+                link: function(scope, element, attrs) {
+                    var options = scope.$eval(attrs.ngDropoverTrigger);
+                    var triggerObj = triggerEventsMap.getTriggers(options.triggerEvent || 'click');
+                    element.addClass('ng-dropover-trigger');
+
+                    if (options.action == "open" || options.action == "close") {
+                        element.on(triggerObj.show, function(event) {
+                            if (event.tyepe == 'touchstart') {
+                                event.preventDefault();
+                            }
+                            event.targetId = options.targetId;
+                            scope.$emit('ngDropover.' + options.action, event);
+                        });
+                    } else {
+                        if (triggerObj.show === triggerObj.hide) {
+                            element.on(triggerObj.show, function(event) {
+                                scope.$emit('ngDropover.toggle', options.targetId);
+                            });
+                        } else {
+                            element.on(triggerObj.show, function(event) {
+                                scope.$emit('ngDropover.open', options.targetId);
+                            });
+
+                            element.on(triggerObj.hide, function(event) {
+                                scope.$emit('ngDropover.close', options.targetId);
+                            });
+                        }
+                    }
                 }
             };
         }]);
