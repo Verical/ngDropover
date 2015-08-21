@@ -1,10 +1,4 @@
-/**
- * ngdropover v0.0.0 - 2015-08-21
- * A custom angular directive to handle dropdowns and popovers with custom content
- *
- * Copyright (c) 2015 Ricky Sandoval <ricky.sandoval92@gmail.com> and Tony Smith <tony@naptown.com>
- * Licensed MIT
- */
+/* global angular */
 (function(window, document) {
     'use strict';
 
@@ -20,7 +14,7 @@
      * Authors: Tony Smith & Ricky Sandoval
      * 
      */
-
+ 
     angular.module('ngDropover', [])
         .run(['$document', '$rootScope', function($document, $rootScope) {
             $document.on('touchstart click', function(event) {
@@ -135,8 +129,6 @@
                 console.log("");
             }
 
-            $rootScope.ngDropovers = [];
-
             var delimeter = ',_,';
 
             return {
@@ -206,17 +198,10 @@
                             setTriggers();
                             positionContents();
                             setPositionClass();
-                            updateDropoverArray();
                         }, true);
 
                         $document.ready(function() {
                             positionContents();
-
-                            for (var i = 0, len = $rootScope.ngDropovers.length; i < len; i++) {
-                                if (scope.dropoverObj.id === $rootScope.ngDropovers[i].id && scope.dropoverObj !== $rootScope.ngDropovers[i]) {
-                                    console.log("Duplicate ID: " + scope.dropoverObj.id);
-                                }
-                            }
                         });
                     }
 
@@ -317,20 +302,6 @@
                         elm.addClass('ngdo-' + scope.config.position);
                     }
 
-                    function updateDropoverArray(remove) {
-                        var dropoverObjIndex = $rootScope.ngDropovers.indexOf(scope.dropoverObj);
-                        if (!remove) {
-                            if (dropoverObjIndex == -1) {
-                                $rootScope.ngDropovers.push(scope.dropoverObj);
-                            } else {
-                                setDropoverObj();
-                                $rootScope.ngDropovers[dropoverObjIndex] = scope.dropoverObj;
-                            }
-                        } else {
-                            $rootScope.ngDropovers.splice(dropoverObjIndex, 1);
-                        }
-                    }
-
                     function getDropoverContents() {
                         var ret;
                         if (elm[0].querySelector('[ng-dropover-contents]')) {
@@ -346,10 +317,15 @@
 
                     //ToDo: Detect previous display value
                     scope.open = function(ngDropoverId) {
+
+
+
                         if (transition.event) {
                             dropoverContents[0].removeEventListener(transition.event, transition.handler);
                         }
                         if (ngDropoverId === scope.ngDropoverId && !scope.isOpen) {
+
+
 
                             positionContents();
 
@@ -431,7 +407,6 @@
                     scope.$on('$destroy', function() {
                         unsetTriggers();
                         angular.element($window).unbind('resize', positionContents);
-                        updateDropoverArray(true);
                     });
 
                 },
@@ -636,18 +611,29 @@
         .directive('ngDropoverTrigger', ['$rootScope', '$document', 'triggerEventsMap', function($rootScope, $document, triggerEventsMap) {
             return {
                 restrict: 'AE',
+                scope: {
+                    triggerOptions: '@ngDropoverTrigger'
+                },
                 link: function(scope, element, attrs) {
-                    var options = scope.$eval(attrs.ngDropoverTrigger);
+                    var options = scope.$eval(scope.triggerOptions);
+
                     var triggerObj = triggerEventsMap.getTriggers(options.triggerEvent || 'click');
                     element.addClass('ng-dropover-trigger');
 
-                    if (options.action == "open" || options.action == "close") {
-                        element.on(triggerObj.show, function(event) {
-                            if (event.tyepe == 'touchstart') {
+                    if (options.action === "open" || options.action === "close") {
+
+                        element.on("touchstart click", function(event) {
+                            if (event.type === 'touchstart') {
                                 event.preventDefault();
                             }
-                            event.targetId = options.targetId;
-                            scope.$emit('ngDropover.' + options.action, event);
+                            scope.$emit('ngDropover.' + options.action, options.targetId);
+                        });
+
+                        element.on(triggerObj.show, function(event) {
+                            if (event.type === 'touchstart') {
+                                event.preventDefault();
+                            }
+                            scope.$emit('ngDropover.' + options.action, options.targetId);
                         });
                     } else {
                         if (triggerObj.show === triggerObj.hide) {

@@ -30,5 +30,4 @@ angular.module('verical.ngDropoverPage', ['ui.router'])
     $scope.openGithub = function() {
         $window.open('https://github.com/Verical/ngDropover', '_blank');
     };
-
 }]);

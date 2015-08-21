@@ -22,13 +22,13 @@ module.exports = function(grunt) {
         ].join(''),
 
         sources: [
-            'src/intro.js',
+            //'src/intro.js',
 
             // add'l packages
             'src/dropover.js',
 
-            'src/export.js',
-            'src/outro.js'
+            //'src/export.js',
+            //'src/outro.js'
         ],
         pkg: pkg,
         uglifyFiles: {}
@@ -51,8 +51,8 @@ module.exports = function(grunt) {
         },
         concat: {
             options: {
-                stripBanners: true,
-                banner: config.banner
+                // stripBanners: true,
+                // banner: config.banner
             },
             dist: {
                 src: config.sources,
@@ -95,7 +95,7 @@ module.exports = function(grunt) {
         watch: {
             js: {
                 files: ['src/*.js', 'examples/js/*'],
-                tasks: ['clean', 'concat', 'uglify']
+                tasks: ['clean', 'concat', 'uglify', 'copy']
             }
         }
     });

@@ -16,11 +16,8 @@
         <div class="main-desc">ngDropover is a feature-rich, event-driven solution for dropdowns, popovers, tooltips, or any other time you need a trigger or triggers to hide-show elements.</div>
         <div class="imagination">The only dependency is AngularJS and your imaaaaggginaaaaationnnnnn!<img src="assets/img/rainbow.png"></div>
         <div class="col-sm-6">
-
             <div class="intro">
                 <!-- <div>Dropover - noun 1. A hovering DOM element who's inclusion into the visible realm can be toggled.</div> -->
-                
-                
                 <li>Open and close the dropover programmatically with events</li>
                 <li>Easily create multiple triggers</li>
                 <li>Close dropover when clicking outside directive</li>
@@ -31,7 +28,7 @@
             <div class="ngdo" ng-dropover ng-dropover-options="{'position':'bottom-center','triggerEvent':'hover'}">
                 <button class="regular-button">Hover Over Me!</button>
                 <div ng-dropover-contents>
-                Dropover contents can be plain HTML, an ng-include, or another directive...even another ngDropover!
+                    Dropover contents can be plain HTML, an ng-include, or another directive...even another ngDropover!
                 </div>
             </div>
         </div>
@@ -92,7 +89,8 @@
                 <div class="event-info">
                     Added to the directive element.
                 </div>
-            </li><li>
+            </li>
+            <li>
                 <h1 class="event-title"><code class="code-title">ngdo-open</code></h1>
                 <div class="event-info">
                     Added to the directive element when the dropover is open.
@@ -323,27 +321,13 @@
     <div class="row">
         <h1 class="example-title">Using Events</h1>
         <div class="col-sm-5">
-            <p>It's easy to control dropovers remotely using events. This gives you the flexibility to open and close for more advanced triggers and situations.</p>
+            <p>It's easy to control dropovers remotely using events. This gives you the flexibility to open and close for more advanced triggers and situations. Notice how both dropovers are showing on the different directives. This is because they were both given the id of "myDropover" (<code ng-non-bindable>&lt;div ng-dropover="myDropover"...&gt;</code>). If you are going to give your ngDropovers an id manually, be sure to give unique ids if you don't want this behavior.</p>
             <ul class="events-list">
-                <li>
-                    <code class="code-title">ngDropover.opening</code>
-                    <p>XXXX</p>
-                    <code class="code-block">
-                       XXXX
-                    </code>
-                </li>
                 <li>
                     <code class="code-title">ngDropover.open</code>
                     <p>Opens a dropover specified by it's unique ID</p>
                     <code class="code-block">
                         $scope.$emit('ngDropover.open', 'myDropover');
-                    </code>
-                </li>
-                <li>
-                    <code class="code-title">ngDropover.closing</code>
-                    <p>XXXX</p>
-                    <code class="code-block">
-                       XXXX
                     </code>
                 </li>
                 <li>

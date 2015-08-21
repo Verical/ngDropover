@@ -14,7 +14,7 @@
      * Authors: Tony Smith & Ricky Sandoval
      * 
      */
-
+ 
     angular.module('ngDropover', [])
         .run(['$document', '$rootScope', function($document, $rootScope) {
             $document.on('touchstart click', function(event) {
@@ -315,7 +315,6 @@
                         }
                     }
 
-                    //ToDo: Detect previous display value
                     scope.open = function(ngDropoverId) {
                         if (transition.event) {
                             dropoverContents[0].removeEventListener(transition.event, transition.handler);
@@ -606,18 +605,29 @@
         .directive('ngDropoverTrigger', ['$rootScope', '$document', 'triggerEventsMap', function($rootScope, $document, triggerEventsMap) {
             return {
                 restrict: 'AE',
+                scope: {
+                    triggerOptions: '@ngDropoverTrigger'
+                },
                 link: function(scope, element, attrs) {
-                    var options = scope.$eval(attrs.ngDropoverTrigger);
+                    var options = scope.$eval(scope.triggerOptions);
+
                     var triggerObj = triggerEventsMap.getTriggers(options.triggerEvent || 'click');
                     element.addClass('ng-dropover-trigger');
 
-                    if (options.action == "open" || options.action == "close") {
-                        element.on(triggerObj.show, function(event) {
-                            if (event.tyepe == 'touchstart') {
+                    if (options.action === "open" || options.action === "close") {
+
+                        element.on("touchstart click", function(event) {
+                            if (event.type === 'touchstart') {
                                 event.preventDefault();
                             }
-                            event.targetId = options.targetId;
-                            scope.$emit('ngDropover.' + options.action, event);
+                            scope.$emit('ngDropover.' + options.action, options.targetId);
+                        });
+
+                        element.on(triggerObj.show, function(event) {
+                            if (event.type === 'touchstart') {
+                                event.preventDefault();
+                            }
+                            scope.$emit('ngDropover.' + options.action, options.targetId);
                         });
                     } else {
                         if (triggerObj.show === triggerObj.hide) {
