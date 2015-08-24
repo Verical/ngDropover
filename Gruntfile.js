@@ -110,7 +110,7 @@ module.exports = function(grunt) {
 
     // Default task.
     // grunt.registerTask('default', ['boilerplate-check', 'clean', 'concat', 'jshint', 'uglify', 'jasmine']);
-    grunt.registerTask('default', ['clean', 'concat', 'uglify', 'copy']);
+    grunt.registerTask('default', ['clean', 'concat', 'jshint', 'uglify', 'copy']);
 
 
 };
