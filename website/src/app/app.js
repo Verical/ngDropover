@@ -13,12 +13,4 @@ angular.module('verical', ['verical.ngDropoverPage', 'verical.ngdoIE', 'ui.route
         }
     });
 
-
-
-    $scope.onItemClick = function(item) {
-        console.log(item);
-        $rootScope.$emit('ngDropover.closeAll');
-    }
-
-
 }]);

@@ -124,10 +124,10 @@
             }
 
             function logError(id, element, message) {
-                console.log("? ngDropover Error | ID:" + id + " ?");// jshint ignore:line
-                console.log(element);// jshint ignore:line
-                console.log(message);// jshint ignore:line
-                console.log("");// jshint ignore:line
+                console.log("? ngDropover Error | ID:" + id + " ?");
+                console.log(element);
+                console.log(message);
+                console.log("");
             }
 
             var delimeter = ',_,';
@@ -423,7 +423,11 @@
                         });
 
                         $scope.toggleListener = $rootScope.$on('ngDropover.toggle', function(event, ngDropoverId) {
-                            $scope.isOpen ? $scope.close(ngDropoverId) : $scope.open(ngDropoverId);// jshint ignore:line
+                            if (!$scope.isOpen) {
+                                $scope.open(ngDropoverId);
+                            } else {
+                                $scope.close(ngDropoverId);
+                            }
                         });
 
                         $scope.closeAllListener = $rootScope.$on('ngDropover.closeAll', function(event, ngDropoverId) {
