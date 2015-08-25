@@ -154,7 +154,7 @@
                         handlers = {
                             toggle: function(e) {
                                 // This is to check if the event came from inside the directive contents
-                                if (event.type === "touchstart") {
+                                if (e.type === "touchstart") {
                                     e.preventDefault();
                                 }
                                 if (!fromContents(e)) {
