@@ -17,16 +17,18 @@
 
     angular.module('ngDropover', [])
         .run(['$document', '$rootScope', function($document, $rootScope) {
-            $document.on('touchstart click', function(event) {
-                if (event.type === 'touchstart') {
-                    event.preventDefault();
-                }
-                if (event.which !== 3) {
+            $rootScope.scrolling = false;
+            $document.on('touchmove', function(event){
+                $rootScope.scrolling = true;
+            });
+            $document.on('touchend click', function(event) {
+                if (event.which !== 3 && !$rootScope.scrolling) {
                     $rootScope.$emit("ngDropover.documentClick", {
                         fromDocument: true,
                         ngDropoverId: getIds(event.target)
                     });
                 }
+                $rootScope.scrolling = false;
             });
 
             function getIds(element) {
@@ -80,7 +82,7 @@
                 'click': 'click',
                 'focus': 'blur',
                 'none': 'none',
-                'touchstart click': 'touchstart click'
+                'touchend click': 'touchend click'
             };
 
             return {
@@ -89,7 +91,7 @@
                         triggerEvent = 'mouseenter';
                     }
                     if (triggerEvent === 'click') {
-                        triggerEvent = 'touchstart click';
+                        triggerEvent = 'touchend click';
                     }
 
                     if (triggerMap.hasOwnProperty(triggerEvent)) {
@@ -152,29 +154,33 @@
 
                         setHtml();
                         handlers = {
-                            toggle: function(e) {
+                            toggle: function(event) {
                                 // This is to check if the event came from inside the directive contents
-                                if (e.type === "touchstart") {
-                                    e.preventDefault();
+                                if (event.type === "touchend") {
+                                    event.preventDefault();
+                                    if ($rootScope.scrolling){
+                                        $rootScope.scrolling = false;
+                                        return;
+                                    }
                                 }
-                                if (!fromContents(e)) {
+                                if (!fromContents(event)) {
                                     scope.toggle(scope.ngDropoverId);
                                 }
                             },
-                            open: function(e) {
+                            open: function(event) {
                                 if (!scope.isOpen) {
                                     scope.open(scope.ngDropoverId);
                                 }
                             },
-                            close: function(e) {
+                            close: function(event) {
                                 if (scope.isOpen) {
                                     scope.close(scope.ngDropoverId);
                                 }
                             }
                         };
 
-                        function fromContents(e) {
-                            var element = e.target;
+                        function fromContents(event) {
+                            var element = event.target;
 
                             while (element !== document && element !== elm[0]) {
                                 if (element.attributes.getNamedItem('ng-dropover-contents')) {
@@ -200,6 +206,7 @@
                         }, true);
 
                         $document.ready(function() {
+                            dropoverContents.css('display', 'none');
                             positionContents();
                         });
                     }
@@ -273,10 +280,12 @@
 
                     function positionContents() {
 
-                        var offX, offY, positions;
+                        var offX, offY, positions, oldVis, oldDisplay;
 
                         offX = parseInt(scope.config.horizontalOffset, 10) || 0;
                         offY = parseInt(scope.config.verticalOffset, 10) || 0;
+                        oldVis = $position.getStyle(dropoverContents[0], 'visibility');
+                        oldDisplay = $position.getStyle(dropoverContents[0], 'display');
 
                         dropoverContents.css({
                             'visibility': 'hidden',
@@ -287,8 +296,8 @@
                         dropoverContents.css({
                             'left': positions.left + offX + 'px',
                             'top': positions.top + offY + 'px',
-                            'display': 'none',
-                            'visibility': 'visible'
+                            'display': oldDisplay,
+                            'visibility': oldVis
                         });
                     }
 
@@ -626,23 +635,26 @@
                     element.addClass('ng-dropover-trigger');
 
                     if (options.action === "open" || options.action === "close") {
-
-                        element.on("touchstart click", function(event) {
-                            if (event.type === 'touchstart') {
-                                event.preventDefault();
-                            }
-                            scope.$emit('ngDropover.' + options.action, options.targetId);
-                        });
-
                         element.on(triggerObj.show, function(event) {
-                            if (event.type === 'touchstart') {
+                            if (event.type === 'touchend') {
                                 event.preventDefault();
+                                if ($rootScope.scrolling) {
+                                    $rootScope.scrolling = false;
+                                    return;
+                                }
                             }
                             scope.$emit('ngDropover.' + options.action, options.targetId);
                         });
                     } else {
                         if (triggerObj.show === triggerObj.hide) {
                             element.on(triggerObj.show, function(event) {
+                                if (event.type === 'touchend') {
+                                    event.preventDefault();
+                                    if ($rootScope.scrolling) {
+                                        $rootScope.scrolling = false;
+                                        return;
+                                    }
+                                }
                                 scope.$emit('ngDropover.toggle', options.targetId);
                             });
                         } else {
