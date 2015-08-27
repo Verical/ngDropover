@@ -182,7 +182,7 @@
                         function fromContents(event) {
                             var element = event.target;
 
-                            while (element !== document && element !== elm[0]) {
+                            while (element && element !== document && element !== elm[0]) {
                                 if (element.attributes.getNamedItem('ng-dropover-contents')) {
                                     return true;
                                 }
@@ -244,9 +244,7 @@
 
                     //Get the trigger from the config if the user set it. Otherwise the trigger will default to the scope's element
                     function setTriggers() {
-
                         var triggerObj = triggerEventsMap.getTriggers(scope.config.triggerEvent);
-                        console.log(triggerObj);
                         if (!triggerObj) {
                             logError(scope.ngDropoverId, angular.element(elm), "triggerEvent must be a string: 'none', 'click', 'hover', 'focus'");
                         }
@@ -260,6 +258,11 @@
                                 elm.on('touchend', handlers.toggle);
                                 elm.on(triggerObj.show, handlers.open);
                                 elm.on(triggerObj.hide, handlers.close);
+                                if (scope.config.triggerEvent === 'hover') {
+                                    dropoverContents.on('mouseleave', function(){
+                                        handlers.close({});
+                                    });
+                                }
                             }
                         }
                     }
@@ -275,6 +278,11 @@
                             elm.off('touchend', handlers.toggle);
                             elm.off(triggerObj.show, handlers.open);
                             elm.off(triggerObj.hide, handlers.close);
+                            if (scope.config.triggerEvent === 'hover') {
+                                dropoverContents.off('mouseleave', function(){
+                                    handlers.close({});
+                                });
+                            }
                         }
                     }
 

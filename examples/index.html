@@ -33,6 +33,26 @@
             </div>
         </div>
         <div class="row">
+            <div ng-dropover ng-dropover-options="{'triggerEvent':'hover', 'closeOthersOnOpen':false}">
+                <div>Products</div>
+                <div class="menu-item" ng-dropover-contents>
+                    <div class="menu-items-border arrowed">
+                        <div class="menu-contents-item" ng-click="onItemClick('Products Item - 1')">Products Item - 1</div>
+                        <div class="menu-contents-item" ng-dropover ng-dropover-options="{'triggerEvent':'hover', 'closeOthersOnOpen':false, 'position':'right-bottom', 'verticalOffset':'-53'}">Products Item - 2 &nbsp; >>
+                            <div class="menu-item sub-menu-items" ng-dropover-contents>
+                                <div class="menu-items-border">
+                                    <div class="menu-contents-item" ng-click="onItemClick('Products Item2 - 1')">Products Item2 - 1</div>
+                                    <div class="menu-contents-item" ng-click="onItemClick('Products Item2 - 2')">Products Item2 - 2</div>
+                                    <div class="menu-contents-item" ng-click="onItemClick('Products Item2 - 3')">Products Item2 - 3</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-contents-item" ng-click="onItemClick('Products Item - 3')">Products Item - 3</div>
+                        <div class="menu-contents-item" ng-click="onItemClick('Products Item - 4')">Products Item - 4</div>
+                    </div>
+                </div>
+            </div>
+            </li>
             <nav id="test-menu" style="position:relative; padding-top: 50px;">
                 <ul>
                     <li class="menu-main" ng-dropover ng-dropover-options="{{leftMenuOptions}}">
@@ -101,16 +121,21 @@
             </div>
             <script type="text/ng-template" id="temp1.html">
                 <div>
-                    To include a template inside, use ng-include inside of <br>
+                    To include a template inside, use ng-include inside of
+                    <br>
                     <code>ng-dropover-contents</code>
                 </div>
             </script>
             <script type="text/ng-template" id="temp2.html">
                 <div>
                     <h3>Outside Directive Yo</h3>
-                    <div>Close on clicking something inside : <br><button ng-click="markEvent($event)">Close</button></div>
-                    <div>Or close more programatically (requires id on parent) : <br><button ng-click="delayClose()">Close</button>{{ countdown }}</div>
-
+                    <div>Close on clicking something inside :
+                        <br>
+                        <button ng-click="markEvent($event)">Close</button>
+                    </div>
+                    <div>Or close more programatically (requires id on parent) :
+                        <br>
+                        <button ng-click="delayClose()">Close</button>{{ countdown }}</div>
                     <div>note: be careful with directives that have replace: true</div>
                 </div>
             </script>
@@ -157,7 +182,6 @@
                         <input type="checkbox" ng-model="exampleOptions.closeOnClickOff"> Close on click off (closeOnClickOff)
                     </label>
                 </div>
-                
                 <div class="form-group">
                     <label for="exampleTriggerEvent">Trigger Event</label>
                     <select ng-model="exampleOptions.triggerEvent">
@@ -239,13 +263,10 @@
                     </div>
                 </td>
                 <td class="shadow-center">
-                    
                 </td>
                 <td class="shadow-center">
-                    
                 </td>
                 <td class="shadow-center">
-                    
                 </td>
                 <td ng-dropover class="shadow-fun" ng-dropover-options="{'triggerEvent': 'hover', 'position': 'right-center'}">
                     <div>
