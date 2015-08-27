@@ -246,7 +246,7 @@
                     function setTriggers() {
 
                         var triggerObj = triggerEventsMap.getTriggers(scope.config.triggerEvent);
-
+                        console.log(triggerObj);
                         if (!triggerObj) {
                             logError(scope.ngDropoverId, angular.element(elm), "triggerEvent must be a string: 'none', 'click', 'hover', 'focus'");
                         }
@@ -266,7 +266,7 @@
 
                     function unsetTriggers() {
                         var triggerObj = triggerEventsMap.getTriggers(scope.config.triggerEvent);
-                        if (!triggerObj) {
+                        if (!triggerObj || triggerObj.show === 'none') {
                             return;
                         }
                         if (triggerObj.show === triggerObj.hide) {
@@ -635,10 +635,10 @@
                     element.addClass('ng-dropover-trigger');
 
                     var handlers = {
-                        action: function(e){
+                        action: function(event){
                             scope.$emit('ngDropover.' + options.action, options.targetId);
                         },
-                        toggle: function(e){
+                        toggle: function(event){
                             if (event.type === 'touchend') {
                                 event.preventDefault();
                                 if ($rootScope.scrolling) {
@@ -648,13 +648,13 @@
                             }
                             scope.$emit('ngDropover.toggle', options.targetId);
                         },
-                        show: function(e){
+                        show: function(event){
                             scope.$emit('ngDropover.open', options.targetId);
                         },
-                        hide: function(e){
+                        hide: function(event){
                             scope.$emit('ngDropover.close', options.targetId);
                         },
-                        touch: function(e){
+                        touch: function(event){
                             event.preventDefault();
                             if ($rootScope.scrolling) {
                                 $rootScope.scrolling = false;
