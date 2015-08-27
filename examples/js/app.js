@@ -16,17 +16,6 @@ angular.module('example', ['ngDropover'])
 
     }).run(function($rootScope) {
 
-        var links = document.querySelectorAll('.menu-link > a');
-
-        Array.prototype.forEach.call(links, function(elem) {
-            angular.element(elem).on('touchstart click', function(event) {
-                event.preventDefault();
-                console.log('close all');
-                $rootScope.$emit('ngDropover.closeAll', {
-                    ngDropoverId: null
-                });
-            });
-        });
     }).directive('testDirective', function($interval) {
         return {
             templateUrl: 'temp2.html',
