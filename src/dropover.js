@@ -78,7 +78,7 @@
         .factory('triggerEventsMap', function() {
 
             var triggerMap = {
-                'mouseenter': 'mouseleave',
+                'mouseover': 'mouseleave',
                 'click': 'click',
                 'focus': 'blur',
                 'none': 'none',
@@ -88,7 +88,7 @@
             return {
                 getTriggers: function(triggerEvent) {
                     if (triggerEvent === 'hover') {
-                        triggerEvent = 'mouseenter';
+                        triggerEvent = 'mouseover';
                     }
                     if (triggerEvent === 'click') {
                         triggerEvent = 'touchend click';
