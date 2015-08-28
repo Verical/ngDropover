@@ -206,7 +206,6 @@
                         }, true);
 
                         $document.ready(function() {
-                            dropoverContents.css('display', 'none');
                             positionContents();
                         });
                     }
@@ -218,7 +217,8 @@
                         elm.attr("ng-dropover", scope.ngDropoverId);
                         dropoverContents = getDropoverContents();
                         dropoverContents.css({
-                            'position': 'absolute'
+                            'position': 'absolute',
+                            'display': 'none'
                         }).addClass('ngdo-contents ' + scope.config.groupId);
                         transition.event = getTransitions();
                         transition.handler = function(event) {
