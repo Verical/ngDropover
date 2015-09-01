@@ -58,9 +58,15 @@ code i {
     margin-top: 40px;
 }
 
+.definition {
+   text-align: center;
+}
+
 .main-desc{
     font-size: 24px;
-    font-weight: 600;
+    font-weight: 400;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .example-title {
@@ -99,14 +105,18 @@ code i {
     cursor: pointer;
 }
 
-/*.ngdo-contents {
+.playground-result .ngdo-contents, .top-sample .ngdo-contents {
   border: 1px solid #d14b2d;
   border-radius: 10px;
   background-color: #fbf4e1;
   padding: 20px;
   box-shadow: 0px 5px 6px #888888;
   text-align: left;
-}*/
+}
+
+.top-page {
+    margin-bottom: 20px;
+}
 
 .top-sample {
     text-align: center;
@@ -154,12 +164,15 @@ form .checkbox .control-label {
 }
 
 .content-top {
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
 .imagination {
-    font-size: 24px;
+    font-size: 36px;
+    text-align: center;
+     margin-top: 40px;
+    margin-bottom: 20px;
 }
 
 .imagination img {
@@ -179,7 +192,6 @@ form .checkbox .control-label {
     border-color: rgb(209, 75, 45);
     background-color: #fff;
     height: 250px;
-    /*background: linear-gradient( to top, #ffffff, #ffffff 85%, #76b29e 85%, #76b29e);*/
     text-align: center;
 }
 

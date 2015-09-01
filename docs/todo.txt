@@ -16,15 +16,20 @@
 	- Object destroy cleanup
 
 - Website/Examples
-	- Layout and Theme - Still needs button states
 	- Download
-	- Content copy
+	- Content
+		- Using Events section
+		- Navbar section
+		- Examples intro
+		- Test Playground
+		- Install instructions?
+		- Review API docs
+		- Intro section
 	- Mobile friendly
 
 - Directive
-	- Add type checking logic with console errors
-	- Console messages for commmon errors like "That dropover is already closed"
-		- ID is already in use
+	- Move IDs from ,_, to an array
+	- Get rid of dropover flash on load
 	- Code Comments
 	- Mobile events
 

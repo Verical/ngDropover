@@ -11,16 +11,12 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="top-page row">
         <h1 class="title-primary">Introduction</h1>
-        <div class="main-desc">ngDropover is a feature-rich, event-driven solution for dropdowns, popovers, tooltips, or any other time you need a trigger or triggers to hide-show elements.</div>
-        <div class="imagination">The only dependency is AngularJS and your imaaaaggginaaaaationnnnnn!<img src="assets/img/rainbow.png"></div>
+        <div class="definition">"Dropover" - noun 1. A hovering DOM element who's inclusion into the visible realm can be programmatically toggled.</div>
+        <div class="main-desc"><b>ngDropover</b> is a feature-rich, event-driven solution for dropdowns, popovers, tooltips, or any other time you need a trigger or triggers to hide-show elements. The only dependency is AngularJS and your imaaginaaaationnnn!</div>
         <div class="col-sm-6">
-
             <div class="intro">
-                <!-- <div>Dropover - noun 1. A hovering DOM element who's inclusion into the visible realm can be toggled.</div> -->
-                
-                
                 <li>Open and close the dropover programmatically with events</li>
                 <li>Easily create multiple triggers</li>
                 <li>Close dropover when clicking outside directive</li>
@@ -324,7 +320,16 @@
         <h1 class="example-title">Using Events</h1>
         <div class="col-sm-5">
             <p>It's easy to control dropovers remotely using events. This gives you the flexibility to open and close for more advanced triggers and situations. Notice how both dropovers are showing on the different directives. This is because they were both given the id of "myDropover" (<code ng-non-bindable>&lt;div ng-dropover="myDropover"...&gt;</code>). If you are going to give your ngDropovers an id manually, be sure to give unique ids if you don't want this behavior.</p>
-            <ul class="events-list">
+
+
+            ng-dropover-trigger="{'triggerEvent':'click', 'targetId':'myDropover'}"
+
+            <br>
+
+            Should we bother explaining why hover works but click (at least) needs the ng-dropover-trigger attribute? I think we should just change the hover example to use the trigger.
+            
+
+            <!-- <ul class="events-list">
                 <li>
                     <code class="code-title">ngDropover.open</code>
                     <p>Opens a dropover specified by it's unique ID</p>
@@ -359,7 +364,7 @@
                         $scope.$emit('ngDropover.closeAll', { ngDropoverId: 'myDropover' });
                     </code>
                 </li>
-            </ul>
+            </ul> -->
         </div>
         <div class="col-sm-7">
             <p data-height="364" data-theme-id="17874" data-slug-hash="Nqmmav" data-default-tab="result" data-user="verical" class='codepen'>See the Pen <a href='http://codepen.io/verical/pen/Nqmmav/'>Nqmmav</a> by Verical (<a href='http://codepen.io/verical'>@verical</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
@@ -376,9 +381,10 @@
         </div>
     </div> -->
     <div class="row">
-        <h1 class="example-title">Navbar with nested dropovers</h1>
+        <h1 class="example-title">ngDropovers nesting in thier natural habitat</h1>
         <div class="col-sm-5">
-            Show selected data being passed via event
+            That is right folks, you can nest ngDropovers! In this relatively simple example, we gave a trigger of "hover" to all ngDropovers and made sure to set <code>closeOthersOnOpen</code> to false. We also had to tweak the verticalOffset so that the nested ngDropover aligned better with its parent. In the view's controller, there is a click handler that emits the <code>ngDropover.closeAll</code> event to collapse the all menu levels and sets a model to the selected value. Easy as easy pie!
+
         </div>
         <div class="col-sm-7">
             <p data-height="361" data-theme-id="17874" data-slug-hash="4c94ed7519c87f6e501b123b590a30d4" data-default-tab="result" data-user="verical" class='codepen'>See the Pen <a href='http://codepen.io/verical/pen/4c94ed7519c87f6e501b123b590a30d4/'>Menu Bar</a> by Verical (<a href='http://codepen.io/verical'>@verical</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
