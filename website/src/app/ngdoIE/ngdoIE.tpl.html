@@ -11,16 +11,133 @@
             Dropover contents
         </div>
     </div>
-     <div class="ngdo" ng-dropover ng-dropover-options="{'position':'right-top','triggerEvent':'click'}">
+    <div class="ngdo" ng-dropover ng-dropover-options="{'position':'right-top','triggerEvent':'click'}">
         <button class="regular-button">Click right-top</button>
         <div ng-dropover-contents>
             Dropover contents
         </div>
     </div>
-     <div class="ngdo" ng-dropover ng-dropover-options="{'position':'left-center','triggerEvent':'click'}">
+    <div class="ngdo" ng-dropover ng-dropover-options="{'position':'left-center','triggerEvent':'click'}">
         <button class="regular-button">Click left-center</button>
         <div ng-dropover-contents>
             Dropover contents
         </div>
     </div>
+    <div>
+        <div class="col-xs-3">
+            <div class="remote-button">
+                <button class="regular-button" ng-dropover-trigger="{'triggerEvent':'click', 'targetId':'myDropover'}">Remote Click</button>
+                <div class="info">Uses the ngDropoverTrigger directive (recommended)</div>
+            </div>
+            <br>
+            <div class="remote-button">
+                <button class="regular-button" id="hover">Remote Hover</button>
+            </div>
+            <div class="info">Manually fires the ngDropover.open event</div>
+        </div>
+        <div class="col-xs-9">
+            <div ng-dropover="myDropover" ng-dropover-options="{{ doOptions1 }}">
+                ng-dropover 1
+                <div ng-dropover-contents>
+                    <div>Any content at all!</div>
+                </div>
+            </div>
+            <div ng-dropover="myDropover" ng-dropover-options="{{ doOptions1 }}">
+                ng-dropover 2
+                <div ng-dropover-contents>
+                    <div>Any content at all!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row"></div>
+    <div ng-dropover ng-dropover-options="{position: 'bottom'}">
+        <button class="regular-button">Default</button>
+        <div ng-dropover-contents>
+            <div>Any content at all!</div>
+        </div>
+    </div>
+    <div ng-dropover class="css3" ng-dropover-options="{position: 'bottom'}">
+        <button class="regular-button">CSS3</button>
+        <div ng-dropover-contents>
+            <div>Any content at all!</div>
+        </div>
+    </div>
+    <div ng-dropover ng-dropover-options="{position: 'bottom', groupId: 'jqueryGroup'}">
+        <button class="regular-button">jQuery</button>
+        <div ng-dropover-contents>
+            <div>Any content at all!</div>
+        </div>
+    </div>
+    <div class="wrapper row">
+        <div class="col-xs-6 form-container">
+            <div ng-dropover="playground" ng-dropover-options="{position: 'bottom-left'}">
+                <button class="regular-button">Open the Form</button>
+                <div class="dropover" ng-dropover-contents>
+                    <ng-include src="'http://verical.github.io/src/common/formDropover.html'"></ng-include>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 result-container">
+            <div>Input: {{input1}}</div>
+        </div>
+    </div>
+    <div class="wrapper row">
+        <div ng-dropover ng-dropover-options="{'triggerEvent':'hover', 'verticalOffset': 10}">
+            <button class="regular-button">Arrowed Tooltip</button>
+            <div ng-dropover-contents class="arrowed">
+                <div>Any content at all!</div>
+            </div>
+        </div>
+    </div>
+    <style>
+    [ng-dropover] {
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+    
+    .ngdo-contents {
+        border: 1px solid #d14b2d;
+        border-radius: 10px;
+        width: 200px;
+        background-color: #fbf4e1;
+        padding: 20px;
+        box-shadow: 0px 5px 6px #888888;
+    }
+    
+    .css3 .ngdo-contents {
+        -webkit-transition: all ease-in-out 0.5s;
+        transition: all ease-in-out 0.5s;
+        opacity: 0;
+    }
+    
+    .css3.ngdo-open .ngdo-contents {
+        opacity: 1;
+    }
+    
+    div.arrowed:before,
+    div.arrowed:after {
+        content: ' ';
+        height: 0;
+        position: absolute;
+        width: 0;
+        border: 10px solid transparent;
+    }
+    
+    div.arrowed:before {
+        border-bottom-color: #fbf4e1;
+        position: absolute;
+        top: -19px;
+        left: 20px;
+        z-index: 2;
+    }
+    
+    div.arrowed:after {
+        border-bottom-color: #d14b2d;
+        position: absolute;
+        top: -20px;
+        left: 20px;
+        z-index: 1;
+    }
+    </style>
 </div>
