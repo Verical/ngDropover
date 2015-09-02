@@ -640,7 +640,7 @@
                     var options = scope.$eval(scope.triggerOptions);
 
                     var triggerObj = triggerEventsMap.getTriggers(options.triggerEvent || 'click');
-                    element.addClass('ng-dropover-trigger');
+                    element.addClass('ngdo-trigger');
 
                     var handlers = {
                         action: function(event){
