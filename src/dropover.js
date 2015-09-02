@@ -17,6 +17,26 @@
 
     angular.module('ngDropover', [])
         .run(['$document', '$rootScope', function($document, $rootScope) {
+
+            if (!Array.prototype.indexOf) {
+                Array.prototype.indexOf = function(elt /*, from*/ ) {
+                    var len = this.length >>> 0;
+
+                    var from = Number(arguments[1]) || 0;
+                    from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+                    if (from < 0) {
+                        from += len;
+                    }
+
+                    for (; from < len; from++) {
+                        if (from in this && this[from] === elt) {
+                            return from;
+                        }
+                    }
+                    return -1;
+                };
+            }
+
             $rootScope.scrolling = false;
             $document.on('touchmove', function(event){
                 $rootScope.scrolling = true;
@@ -32,13 +52,13 @@
             });
 
             function getIds(element) {
-                var ids = '';
+                var ids = [];
                 while (element !== document) {
                     if (element.attributes.getNamedItem('ng-dropover')) {
-                        ids += element.attributes.getNamedItem('ng-dropover').nodeValue + ',_,';
+                        ids.push(element.attributes.getNamedItem('ng-dropover').nodeValue);
                     }
                     if (element.attributes.getNamedItem('ng-dropover-trigger')) {
-                        ids += ($rootScope.$eval(element.attributes.getNamedItem('ng-dropover-trigger').nodeValue).targetId || '') + ',_,';
+                        ids.push(($rootScope.$eval(element.attributes.getNamedItem('ng-dropover-trigger').nodeValue).targetId || ''));
                     }
                     element = element.parentNode;
                 }
@@ -106,33 +126,12 @@
         })
         .directive('ngDropover', ['ngDropoverConfig', 'positions', '$rootScope', '$position', '$document', '$window', 'triggerEventsMap', '$timeout', function(ngDropoverConfig, positions, $rootScope, $position, $document, $window, triggerEventsMap, $timeout) {
 
-            if (!Array.prototype.indexOf) {
-                Array.prototype.indexOf = function(elt /*, from*/ ) {
-                    var len = this.length >>> 0;
-
-                    var from = Number(arguments[1]) || 0;
-                    from = (from < 0) ? Math.ceil(from) : Math.floor(from);
-                    if (from < 0) {
-                        from += len;
-                    }
-
-                    for (; from < len; from++) {
-                        if (from in this && this[from] === elt) {
-                            return from;
-                        }
-                    }
-                    return -1;
-                };
-            }
-
             function logError(id, element, message) {
                 console.log("? ngDropover Error | ID:" + id + " ?");
                 console.log(element);
                 console.log(message);
                 console.log("");
             }
-
-            var delimeter = ',_,';
 
             return {
                 restrict: 'A',
@@ -452,7 +451,7 @@
                         });
 
                         $scope.documentClickListener = $rootScope.$on('ngDropover.documentClick', function(event, info) {
-                            if ((!info.ngDropoverId || (info.ngDropoverId).split(delimeter).indexOf($scope.ngDropoverId) < 0) && !(!$scope.config.closeOnClickOff && info.fromDocument)) {
+                            if ((!info.ngDropoverId || (info.ngDropoverId).indexOf($scope.ngDropoverId) < 0) && !(!$scope.config.closeOnClickOff && info.fromDocument)) {
                                 // Unless closeOnClickOff is false and the event was from the document listener
                                 $scope.closeAll();
                             }
