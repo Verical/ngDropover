@@ -10,7 +10,7 @@ AngularJS-ngDropover
 
 ## Installation
 
-### Install with NPM
+#### Install with NPM
 ```html
 npm install --save ngdropover
 ```
