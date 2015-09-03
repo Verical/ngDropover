@@ -37,7 +37,7 @@ angular.module('myApp', ['ngDropover'])
 ```
 
 
-### Other Options
+### Options
 
 ```javascript
 {
@@ -52,9 +52,9 @@ angular.module('myApp', ['ngDropover'])
 
 		
 ## Authors
-**Ricky Sandoval**
-**Tony Smith**
+[**Ricky Sandoval**](https://github.com/rickysandoval)
 
+[**Tony Smith**](https://github.com/santhony7)
 ## Credits
 
 
