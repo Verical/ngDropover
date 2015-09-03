@@ -1,5 +1,5 @@
 {
-  "name": "AngularJS-ngDropover",
+  "name": "ngDropover",
   "ignore": [],
   "homepage": "http://verical.github.io/#/ngDropover",
   "authors": [
@@ -20,5 +20,5 @@
   ],
   "_source": "https://github.com/Verical/ngDropover.git",
   "_target": "*",
-  "_originalSource": "AngularJS-ngDropover"
+  "_originalSource": "ngDropover"
 }
