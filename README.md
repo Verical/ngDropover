@@ -7,6 +7,7 @@ ngDropover
 * Built in touch support
 * Easily create multiple triggers for single dropover
 * Close dropover when clicking outside directive
+* Doesn't use event.stopPropagation()
 
 #### Current Version 1.0.0
 
