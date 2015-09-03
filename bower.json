@@ -1,24 +1,5 @@
 {
   "name": "AngularJS-ngDropover",
-  "description": "",
-  "version": "1.0.0",
-  "main": [
-    "dist/ngdropover.js",
-    "dist/ngdropover.min.js"
-  ],
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "components"
-  ],
-  "dependencies": {
-    "angular": ">1.2.6"
-  }
-}
-
-
-{
-  "name": "AngularJS-ngDropover",
   "ignore": [],
   "homepage": "http://verical.github.io/#/ngDropover",
   "authors": [
