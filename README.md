@@ -11,7 +11,7 @@ AngularJS-ngDropover
 #### Current Version 1.0.0
 
 ## Demo and Docs
-[Check out the directive's website for all the documentation and example goodness ](http://verical.github.io/#/ngDropover) - Prepare your eyeballs
+Check out the [ngDropover's website](http://verical.github.io/#/ngDropover) for all the documentation and example goodness - Prepare your eyeballs
 
 ## Installation
 
@@ -55,13 +55,10 @@ angular.module('myApp', ['ngDropover'])
 [**Ricky Sandoval**](https://github.com/rickysandoval)
 
 [**Tony Smith**](https://github.com/santhony7)
-## Credits
-
 
 ## Copyright
 Copyright © 2015.
 
 ## License 
-AngularJS-ngDropover is under MIT license - http://www.opensource.org/licenses/mit-license.php
+ngDropover is under MIT license - http://www.opensource.org/licenses/mit-license.php
 
-##Changes Log
