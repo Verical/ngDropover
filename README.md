@@ -16,21 +16,19 @@ npm install --save ngdropover
 ```
 
 ##### Add it to your module
-```html
+```
 angular.module('myApp', ['ngDropover'])
 ```
 
 
-## Usage
-
-
+## Basic Usage
 ```html
 <div class="ngdo" ng-dropover ng-dropover-options="{'position':'bottom-center','triggerEvent':'hover'}">
-                <button class="regular-button">Hover Over Me!</button>
-                <div ng-dropover-contents>
-                    Dropover contents can be plain HTML, an ng-include, or another directive...even another ngDropover!
-                </div>
-            </div>
+    <button class="regular-button">Hover Over Me!</button>
+    <div ng-dropover-contents>
+        Dropover contents can be plain HTML, an ng-include, or another directive...even another ngDropover!
+    </div>
+</div>
 ```
 
 
