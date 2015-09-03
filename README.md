@@ -1,7 +1,7 @@
-AngularJS-ngDropover
+ngDropover
 =================
 
-**AngularJS ngDropover** is a feature-rich, event-driven solution for dropdowns, popovers, tooltips, or any other time you need a trigger or triggers to hide-show elements. The only dependency is AngularJS and your imaaginaaaationnnn!
+**ngDropover** is a feature-rich, event-driven solution for dropdowns, popovers, tooltips, or any other time you need a trigger or triggers to hide-show elements. The only dependency is AngularJS and your imaaginaaaationnnn!
 
 * Open and close the dropover programmatically with events
 * Built in touch support
