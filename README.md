@@ -10,12 +10,12 @@ AngularJS-ngDropover
 
 ## Installation
 
-#### Install with NPM
+##### Install with NPM
 ```html
 npm install --save ngdropover
 ```
 
-### Add it to your module
+#### Add it to your module
 ```html
 angular.module('myApp', ['ngDropover'])
 ```
