@@ -1,17 +1,25 @@
 AngularJS-ngDropover
 =================
 
-**AngularJS ngDropover** is an AngularJS directive for creating/managing popovers
+**AngularJS ngDropover** is a feature-rich, event-driven solution for dropdowns, popovers, tooltips, or any other time you need a trigger or triggers to hide-show elements. The only dependency is AngularJS and your imaaginaaaationnnn!
 
-### Current Version 0.0.0
+### Current Version 1.0.0
 
-## Demo
-- Coming Soon
+## Demo and Docs
+[Check out the directive's website for all the documentation and example goodness ](http://verical.github.io/#/ngDropover) - Prepare your eyeballs
 
+## Installation
 
-## Getting started
+### Install with NPM
+```html
+npm install --save ngdropover
+```
 
-Coming Soon
+### Add it to your module
+```html
+angular.module('myApp', ['ngDropover'])
+```
+
 
 ## Usage
 
