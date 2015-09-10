@@ -53,7 +53,7 @@
 
             function getIds(element) {
                 var ids = [];
-                while (element !== document) {
+                while (element || element !== document) {
                     if (element.attributes.getNamedItem('ng-dropover')) {
                         ids.push(element.attributes.getNamedItem('ng-dropover').nodeValue);
                     }
