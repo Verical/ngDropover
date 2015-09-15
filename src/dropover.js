@@ -254,7 +254,10 @@
                             if (triggerObj.show === triggerObj.hide) {
                                 elm.on(triggerObj.show, handlers.toggle);
                             } else {
-                                elm.on('touchend', handlers.toggle);
+                            
+                                if (isLink(elm[0])) {
+                                    elm.on('touchend', handlers.toggle);
+                                }
                                 elm.on(triggerObj.show, handlers.open);
                                 elm.on(triggerObj.hide, handlers.close);
                                 if (scope.config.triggerEvent === 'hover') {
@@ -266,6 +269,13 @@
                         }
                     }
 
+                    function isLink(element) {
+                       if (element.attributes.getNamedItem('ng-click') || element.attributes.getNamedItem('href')){
+                        return true;
+                       } 
+                       return false;
+                    }
+
                     function unsetTriggers() {
                         var triggerObj = triggerEventsMap.getTriggers(scope.config.triggerEvent);
                         if (!triggerObj || triggerObj.show === 'none') {
@@ -274,7 +284,9 @@
                         if (triggerObj.show === triggerObj.hide) {
                             elm.off(triggerObj.show, handlers.toggle);
                         } else {
-                            elm.off('touchend', handlers.toggle);
+                            if (isLink(elm[0])) {
+                                elm.off('touchend', handlers.toggle);
+                            }
                             elm.off(triggerObj.show, handlers.open);
                             elm.off(triggerObj.hide, handlers.close);
                             if (scope.config.triggerEvent === 'hover') {
