@@ -154,7 +154,9 @@
                         setHtml();
                         handlers = {
                             toggle: function(event) {
-                                // This is to check if the event came from inside the directive contents
+                                if (fromContents(event)) {
+                                    return;
+                                }
                                 if (event.type === "touchend") {
                                     event.preventDefault();
                                     if ($rootScope.scrolling){
@@ -162,9 +164,7 @@
                                         return;
                                     }
                                 }
-                                if (!fromContents(event)) {
-                                    scope.toggle(scope.ngDropoverId);
-                                }
+                                scope.toggle(scope.ngDropoverId);
                             },
                             open: function(event) {
                                 if (!fromContents(event) && !scope.isOpen) {
