@@ -42,6 +42,11 @@
                 $rootScope.scrolling = true;
             });
             $document.on('touchend click', function(event) {
+                event = event.originalEvent || event;
+                var ids = getIds(event.target);
+                if (event.ngDropoverId) {
+                    ids.push(event.ngDropoverId);
+                }
                 if (event.which !== 3 && !$rootScope.scrolling) {
                     $rootScope.$emit("ngDropover.documentClick", {
                         fromDocument: true,
@@ -150,8 +155,6 @@
 
                         scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
                         scope.positions = positions;
-
-                        setHtml();
                         handlers = {
                             toggle: function(event) {
                                 if (fromContents(event)) {
@@ -175,8 +178,13 @@
                                 if (!fromContents(event) && scope.isOpen) {
                                     scope.close(scope.ngDropoverId);
                                 }
+                            },
+                            markEvent: function(event) {
+                                event = event.originalEvent || event;
+                                event['ngDropoverId'] = scope.ngDropoverId;
                             }
                         };
+                        setHtml();
 
                         function fromContents(event) {
                             var element = event.target;
@@ -229,6 +237,7 @@
                             });
                             dropoverContents[0].removeEventListener(transition.event, transition.handler);
                         };
+                        dropoverContents.on('touchend click', handlers.markEvent);
                     }
 
                     function setDropoverObj() {
@@ -429,6 +438,7 @@
                     scope.$on('$destroy', function() {
                         unsetTriggers();
                         angular.element($window).unbind('resize', positionContents);
+                        dropoverContents.off('touchend click', handlers.markEvent);
                     });
 
                 },
