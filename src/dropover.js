@@ -50,7 +50,7 @@
                 if (event.which !== 3 && !$rootScope.scrolling) {
                     $rootScope.$emit("ngDropover.documentClick", {
                         fromDocument: true,
-                        ngDropoverId: getIds(event.target)
+                        ngDropoverId: ids
                     });
                 }
                 $rootScope.scrolling = false;
@@ -187,7 +187,11 @@
                         setHtml();
 
                         function fromContents(event) {
+                            event = event.originalEvent || event;
                             var element = event.target;
+                            if (event.ngDropoverId) {
+                                return true;
+                            }
 
                             while (element && element !== document && element !== elm[0]) {
                                 if (element.attributes.getNamedItem('ng-dropover-contents')) {
