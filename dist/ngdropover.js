@@ -42,7 +42,7 @@
                 $rootScope.scrolling = true;
             });
             $document.on('touchend click', function(event) {
-                event = event.originalEvent || event;
+                event = event.originalEvent.target ? event.originalEvent : event;
                 var ids = getIds(event.target);
                 if (event.ngDropoverId) {
                     ids.push(event.ngDropoverId);
