@@ -187,7 +187,7 @@
                         setHtml();
 
                         function fromContents(event) {
-                            event = event.originalEvent || event;
+                            event = (event.originalEvent && event.originalEvent.target) ? event.originalEvent : event;
                             var element = event.target;
                             if (event.ngDropoverId) {
                                 return true;
