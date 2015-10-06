@@ -59,10 +59,10 @@
             function getIds(element) {
                 var ids = [];
                 while (element && element !== document) {
-                    if (element.attributes.getNamedItem('ng-dropover')) {
+                    if (element.attributes && element.attributes.getNamedItem('ng-dropover')) {
                         ids.push(element.attributes.getNamedItem('ng-dropover').nodeValue);
                     }
-                    if (element.attributes.getNamedItem('ng-dropover-trigger')) {
+                    if (element.attributes && element.attributes.getNamedItem('ng-dropover-trigger')) {
                         ids.push(($rootScope.$eval(element.attributes.getNamedItem('ng-dropover-trigger').nodeValue).targetId || ''));
                     }
                     element = element.parentNode;
@@ -194,7 +194,7 @@
                             }
 
                             while (element && element !== document && element !== elm[0]) {
-                                if (element.attributes.getNamedItem('ng-dropover-contents')) {
+                                if (element.attributes && element.attributes.getNamedItem('ng-dropover-contents')) {
                                     return true;
                                 }
                                 element = element.parentNode;
@@ -283,7 +283,7 @@
                     }
 
                     function isLink(element) {
-                       if (element.attributes.getNamedItem('ng-click') || element.attributes.getNamedItem('href')){
+                       if (element.attributes && (element.attributes.getNamedItem('ng-click') || element.attributes.getNamedItem('href'))){
                         return true;
                        } 
                        return false;
