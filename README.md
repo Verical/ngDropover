@@ -47,7 +47,8 @@ angular.module('myApp', ['ngDropover'])
     'triggerEvent': 'click',
     'position': 'bottom-left',
     'closeOnClickOff': true,
-    'groupId': ''
+    'groupId': '',
+    'staticOptions': false
 }
 ```
 
