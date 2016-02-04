@@ -206,7 +206,6 @@
                         setDropoverObj();
 
                         if (!scope.config.staticOptions) {
-                            console.log("WATCHER");
                             scope.$watch('ngDropoverOptions', function() {
                                 unsetTriggers();
                                 scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
@@ -219,7 +218,6 @@
                                 setPositionClass();
                             }, true);
                         } else {
-                            console.log("NOWATCHER");
                             unsetTriggers();
                             if (typeof(scope.config.position) !== 'string' || scope.positions.indexOf(scope.config.position) === -1) {
                                 logError(scope.ngDropoverId, angular.element(elm), "Position must be a string and one of these values: " + scope.positions);
