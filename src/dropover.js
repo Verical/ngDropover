@@ -42,10 +42,15 @@
                 $rootScope.scrolling = true;
             });
             $document.on('touchend click', function(event) {
+                event = (event.originalEvent && event.originalEvent.target) ? event.originalEvent : event;
+                var ids = getIds(event.target);
+                if (event.ngDropoverId) {
+                    ids.push(event.ngDropoverId);
+                }
                 if (event.which !== 3 && !$rootScope.scrolling) {
                     $rootScope.$emit("ngDropover.documentClick", {
                         fromDocument: true,
-                        ngDropoverId: getIds(event.target)
+                        ngDropoverId: ids
                     });
                 }
                 $rootScope.scrolling = false;
@@ -53,11 +58,11 @@
 
             function getIds(element) {
                 var ids = [];
-                while (element !== document) {
-                    if (element.attributes.getNamedItem('ng-dropover')) {
+                while (element && element !== document) {
+                    if (element.attributes && element.attributes.getNamedItem('ng-dropover')) {
                         ids.push(element.attributes.getNamedItem('ng-dropover').nodeValue);
                     }
-                    if (element.attributes.getNamedItem('ng-dropover-trigger')) {
+                    if (element.attributes && element.attributes.getNamedItem('ng-dropover-trigger')) {
                         ids.push(($rootScope.$eval(element.attributes.getNamedItem('ng-dropover-trigger').nodeValue).targetId || ''));
                     }
                     element = element.parentNode;
@@ -151,11 +156,11 @@
 
                         scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
                         scope.positions = positions;
-
-                        setHtml();
                         handlers = {
                             toggle: function(event) {
-                                // This is to check if the event came from inside the directive contents
+                                if (fromContents(event)) {
+                                    return;
+                                }
                                 if (event.type === "touchend") {
                                     event.preventDefault();
                                     if ($rootScope.scrolling) {
@@ -163,9 +168,7 @@
                                         return;
                                     }
                                 }
-                                if (!fromContents(event)) {
-                                    scope.toggle(scope.ngDropoverId);
-                                }
+                                scope.toggle(scope.ngDropoverId);
                             },
                             open: function(event) {
                                 if (!fromContents(event) && !scope.isOpen) {
@@ -176,14 +179,23 @@
                                 if (!fromContents(event) && scope.isOpen) {
                                     scope.close(scope.ngDropoverId);
                                 }
+                            },
+                            markEvent: function(event) {
+                                event = event.originalEvent || event;
+                                event['ngDropoverId'] = scope.ngDropoverId;
                             }
                         };
+                        setHtml();
 
                         function fromContents(event) {
+                            event = (event.originalEvent && event.originalEvent.target) ? event.originalEvent : event;
                             var element = event.target;
+                            if (event.ngDropoverId) {
+                                return true;
+                            }
 
                             while (element && element !== document && element !== elm[0]) {
-                                if (element.attributes.getNamedItem('ng-dropover-contents')) {
+                                if (element.attributes && element.attributes.getNamedItem('ng-dropover-contents')) {
                                     return true;
                                 }
                                 element = element.parentNode;
@@ -242,6 +254,7 @@
                             });
                             dropoverContents[0].removeEventListener(transition.event, transition.handler);
                         };
+                        dropoverContents.on('touchend click', handlers.markEvent);
                     }
 
                     function setDropoverObj() {
@@ -267,7 +280,10 @@
                             if (triggerObj.show === triggerObj.hide) {
                                 elm.on(triggerObj.show, handlers.toggle);
                             } else {
-                                elm.on('touchend', handlers.toggle);
+                            
+                                if (isLink(elm[0])) {
+                                    elm.on('touchend', handlers.toggle);
+                                }
                                 elm.on(triggerObj.show, handlers.open);
                                 elm.on(triggerObj.hide, handlers.close);
                                 if (scope.config.triggerEvent === 'hover') {
@@ -279,6 +295,13 @@
                         }
                     }
 
+                    function isLink(element) {
+                       if (element.attributes && (element.attributes.getNamedItem('ng-click') || element.attributes.getNamedItem('href'))){
+                        return true;
+                       } 
+                       return false;
+                    }
+
                     function unsetTriggers() {
                         var triggerObj = triggerEventsMap.getTriggers(scope.config.triggerEvent);
                         if (!triggerObj || triggerObj.show === 'none') {
@@ -287,7 +310,9 @@
                         if (triggerObj.show === triggerObj.hide) {
                             elm.off(triggerObj.show, handlers.toggle);
                         } else {
-                            elm.off('touchend', handlers.toggle);
+                            if (isLink(elm[0])) {
+                                elm.off('touchend', handlers.toggle);
+                            }
                             elm.off(triggerObj.show, handlers.open);
                             elm.off(triggerObj.hide, handlers.close);
                             if (scope.config.triggerEvent === 'hover') {
@@ -430,6 +455,7 @@
                     scope.$on('$destroy', function() {
                         unsetTriggers();
                         angular.element($window).unbind('resize', positionContents);
+                        dropoverContents.off('touchend click', handlers.markEvent);
                     });
 
                 },
