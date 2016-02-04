@@ -4,7 +4,7 @@
 
     /*
      * AngularJS ngDropover
-     * Version: 0.0.0
+     * Version: 1.1.0
      *
      * Copyright 2015
      * All Rights Reserved.
@@ -38,7 +38,7 @@
             }
 
             $rootScope.scrolling = false;
-            $document.on('touchmove', function(event){
+            $document.on('touchmove', function(event) {
                 $rootScope.scrolling = true;
             });
             $document.on('touchend click', function(event) {
@@ -72,6 +72,7 @@
                 'triggerEvent': 'click',
                 'position': 'bottom-left',
                 'closeOnClickOff': true,
+                'staticOptions': false,
                 'groupId': ''
             }
         )
@@ -157,7 +158,7 @@
                                 // This is to check if the event came from inside the directive contents
                                 if (event.type === "touchend") {
                                     event.preventDefault();
-                                    if ($rootScope.scrolling){
+                                    if ($rootScope.scrolling) {
                                         $rootScope.scrolling = false;
                                         return;
                                     }
@@ -192,9 +193,22 @@
 
                         setDropoverObj();
 
-                        scope.$watch('ngDropoverOptions', function() {
+                        if (!scope.config.staticOptions) {
+                            console.log("WATCHER");
+                            scope.$watch('ngDropoverOptions', function() {
+                                unsetTriggers();
+                                scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
+                                if (typeof(scope.config.position) !== 'string' || scope.positions.indexOf(scope.config.position) === -1) {
+                                    logError(scope.ngDropoverId, angular.element(elm), "Position must be a string and one of these values: " + scope.positions);
+                                    scope.config.position = "bottom-left";
+                                }
+                                setTriggers();
+                                positionContents();
+                                setPositionClass();
+                            }, true);
+                        } else {
+                            console.log("NOWATCHER");
                             unsetTriggers();
-                            scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
                             if (typeof(scope.config.position) !== 'string' || scope.positions.indexOf(scope.config.position) === -1) {
                                 logError(scope.ngDropoverId, angular.element(elm), "Position must be a string and one of these values: " + scope.positions);
                                 scope.config.position = "bottom-left";
@@ -202,7 +216,7 @@
                             setTriggers();
                             positionContents();
                             setPositionClass();
-                        }, true);
+                        }
 
                         $document.ready(function() {
                             positionContents();
@@ -258,7 +272,7 @@
                                 elm.on(triggerObj.show, handlers.open);
                                 elm.on(triggerObj.hide, handlers.close);
                                 if (scope.config.triggerEvent === 'hover') {
-                                    dropoverContents.on('mouseleave', function(){
+                                    dropoverContents.on('mouseleave', function() {
                                         handlers.close({});
                                     });
                                 }
@@ -278,7 +292,7 @@
                             elm.off(triggerObj.show, handlers.open);
                             elm.off(triggerObj.hide, handlers.close);
                             if (scope.config.triggerEvent === 'hover') {
-                                dropoverContents.off('mouseleave', function(){
+                                dropoverContents.off('mouseleave', function() {
                                     handlers.close({});
                                 });
                             }
@@ -641,10 +655,10 @@
                     element.addClass('ngdo-trigger');
 
                     var handlers = {
-                        action: function(event){
+                        action: function(event) {
                             scope.$emit('ngDropover.' + options.action, options.targetId);
                         },
-                        toggle: function(event){
+                        toggle: function(event) {
                             if (event.type === 'touchend') {
                                 event.preventDefault();
                                 if ($rootScope.scrolling) {
@@ -654,13 +668,13 @@
                             }
                             scope.$emit('ngDropover.toggle', options.targetId);
                         },
-                        show: function(event){
+                        show: function(event) {
                             scope.$emit('ngDropover.open', options.targetId);
                         },
-                        hide: function(event){
+                        hide: function(event) {
                             scope.$emit('ngDropover.close', options.targetId);
                         },
-                        touch: function(event){
+                        touch: function(event) {
                             event.preventDefault();
                             if ($rootScope.scrolling) {
                                 $rootScope.scrolling = false;
@@ -685,7 +699,7 @@
                         element.on('touchend', handlers.touch);
                     }
 
-                    scope.$on('destroy', function(){
+                    scope.$on('destroy', function() {
                         if (options.action === "open" || options.action === "close") {
                             element.off(triggerObj.show, handlers.action);
                         } else {
