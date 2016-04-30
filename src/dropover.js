@@ -239,6 +239,7 @@
                     function setHtml() {
                         elm.addClass(scope.config.groupId + " ngdo");
                         elm.attr("ng-dropover", scope.ngDropoverId);
+
                         dropoverContents = getDropoverContents();
                         dropoverContents.css({
                             'position': 'absolute',
@@ -374,18 +375,18 @@
                             dropoverContents[0].removeEventListener(transition.event, transition.handler);
                         }
                         if (ngDropoverId === scope.ngDropoverId && !scope.isOpen) {
+                            var event = $rootScope.$broadcast('ngDropover.opening', scope.dropoverObj);
+                            if (!event.defaultPrevented) {
+                                positionContents();
 
-                            positionContents();
+                                dropoverContents.css({
+                                    'display': 'inline-block'
+                                });
+                                elm.addClass('ngdo-open');
+                                angular.element($window).bind('resize', positionContents);
 
-                            //start the display process and fire events
-                            $rootScope.$broadcast('ngDropover.opening', scope.dropoverObj);
-                            dropoverContents.css({
-                                'display': 'inline-block'
-                            });
-                            elm.addClass('ngdo-open');
-                            angular.element($window).bind('resize', positionContents);
-
-                            scope.isOpen = true;
+                                scope.isOpen = true;
+                            }
                         }
                     };
 
@@ -433,23 +434,24 @@
                     }
 
                     function closer() {
-                        if (transition.event) {
-                            $timeout(function() {
-                                if (!scope.isOpen) {
-                                    dropoverContents[0].addEventListener(transition.event, transition.handler);
-                                }
-                            }, transition.duration / 2);
-                        } else {
-                            dropoverContents.css({
-                                'display': 'none'
-                            });
+                        var event = $rootScope.$broadcast('ngDropover.closing', scope.dropoverObj);
+                        if (!event.defaultPrevented) {
+                            if (transition.event) {
+                                $timeout(function() {
+                                    if (!scope.isOpen) {
+                                        dropoverContents[0].addEventListener(transition.event, transition.handler);
+                                    }
+                                }, transition.duration / 2);
+                            } else {
+                                dropoverContents.css({
+                                    'display': 'none'
+                                });
+                            }
+                            elm.removeClass('ngdo-open');
+                            scope.isOpen = false;
+
+                            angular.element($window).unbind('resize', positionContents);
                         }
-                        elm.removeClass('ngdo-open');
-                        scope.isOpen = false;
-
-                        $rootScope.$broadcast('ngDropover.closing', scope.dropoverObj);
-
-                        angular.element($window).unbind('resize', positionContents);
                     }
 
                     scope.$on('$destroy', function() {
