@@ -12,7 +12,7 @@
      * conditions of the MIT license, available at http://www.opensource.org/licenses/mit-license.php
      *
      * Authors: Tony Smith & Ricky Sandoval
-     * 
+     *
      */
 
     angular.module('ngDropover', [])
@@ -77,7 +77,7 @@
                 'triggerEvent': 'click',
                 'position': 'bottom-left',
                 'closeOnClickOff': true,
-                'staticOptions': 'false',
+                'staticOptions': false,
                 'groupId': ''
             }
         )
@@ -205,7 +205,7 @@
 
                         setDropoverObj();
 
-                        if (!staticOptions) {
+                        if (!scope.config.staticOptions) {
                             scope.$watch('ngDropoverOptions', function() {
                                 unsetTriggers();
                                 scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
@@ -280,7 +280,7 @@
                             if (triggerObj.show === triggerObj.hide) {
                                 elm.on(triggerObj.show, handlers.toggle);
                             } else {
-                            
+
                                 if (isLink(elm[0])) {
                                     elm.on('touchend', handlers.toggle);
                                 }
@@ -298,7 +298,7 @@
                     function isLink(element) {
                        if (element.attributes && (element.attributes.getNamedItem('ng-click') || element.attributes.getNamedItem('href'))){
                         return true;
-                       } 
+                       }
                        return false;
                     }
 
