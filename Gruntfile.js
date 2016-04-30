@@ -81,7 +81,7 @@ module.exports = function(grunt) {
             options: {
                 jshintrc: 'jshint.json'
             },
-            source: config.dist
+            source: 'src/dropover.js'
         },
         karma: {
             unit: {
@@ -102,8 +102,8 @@ module.exports = function(grunt) {
         },
         watch: {
             js: {
-                files: ['src/*.js', 'examples/js/*'],
-                tasks: ['clean', 'concat', 'uglify']
+                files: ['src/*.js'],
+                tasks: ['default']
             }
         }
     });
