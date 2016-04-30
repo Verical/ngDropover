@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "angular-mocks": "^1.4.5",
+    "es5-shim": "^4.5.8",
     "grunt": "0.4.x",
     "grunt-contrib-clean": "0.x.x",
     "grunt-contrib-concat": "0.x.x",
