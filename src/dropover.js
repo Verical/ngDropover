@@ -12,7 +12,7 @@
      * conditions of the MIT license, available at http://www.opensource.org/licenses/mit-license.php
      *
      * Authors: Tony Smith & Ricky Sandoval
-     * 
+     *
      */
 
     angular.module('ngDropover', [])
@@ -77,7 +77,7 @@
                 'triggerEvent': 'click',
                 'position': 'bottom-left',
                 'closeOnClickOff': true,
-                'staticOptions': 'false',
+                'staticOptions': false,
                 'groupId': ''
             }
         )
@@ -205,7 +205,7 @@
 
                         setDropoverObj();
 
-                        if (!staticOptions) {
+                        if (!scope.config.staticOptions) {
                             scope.$watch('ngDropoverOptions', function() {
                                 unsetTriggers();
                                 scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
@@ -239,6 +239,7 @@
                     function setHtml() {
                         elm.addClass(scope.config.groupId + " ngdo");
                         elm.attr("ng-dropover", scope.ngDropoverId);
+
                         dropoverContents = getDropoverContents();
                         dropoverContents.css({
                             'position': 'absolute',
@@ -280,7 +281,7 @@
                             if (triggerObj.show === triggerObj.hide) {
                                 elm.on(triggerObj.show, handlers.toggle);
                             } else {
-                            
+
                                 if (isLink(elm[0])) {
                                     elm.on('touchend', handlers.toggle);
                                 }
@@ -298,7 +299,7 @@
                     function isLink(element) {
                        if (element.attributes && (element.attributes.getNamedItem('ng-click') || element.attributes.getNamedItem('href'))){
                         return true;
-                       } 
+                       }
                        return false;
                     }
 
@@ -329,7 +330,7 @@
 
                         offX = parseInt(scope.config.horizontalOffset, 10) || 0;
                         offY = parseInt(scope.config.verticalOffset, 10) || 0;
-                        oldDisplay = $position.getStyle(dropoverContents[0], 'display');
+                        oldDisplay = dropoverContents.css('display');
 
                         dropoverContents.css({
                             'visibility': 'hidden',
@@ -374,18 +375,18 @@
                             dropoverContents[0].removeEventListener(transition.event, transition.handler);
                         }
                         if (ngDropoverId === scope.ngDropoverId && !scope.isOpen) {
+                            var event = $rootScope.$broadcast('ngDropover.opening', scope.dropoverObj);
+                            if (!event.defaultPrevented) {
+                                positionContents();
 
-                            positionContents();
+                                dropoverContents.css({
+                                    'display': 'inline-block'
+                                });
+                                elm.addClass('ngdo-open');
+                                angular.element($window).bind('resize', positionContents);
 
-                            //start the display process and fire events
-                            $rootScope.$broadcast('ngDropover.opening', scope.dropoverObj);
-                            dropoverContents.css({
-                                'display': 'inline-block'
-                            });
-                            elm.addClass('ngdo-open');
-                            angular.element($window).bind('resize', positionContents);
-
-                            scope.isOpen = true;
+                                scope.isOpen = true;
+                            }
                         }
                     };
 
@@ -433,23 +434,24 @@
                     }
 
                     function closer() {
-                        if (transition.event) {
-                            $timeout(function() {
-                                if (!scope.isOpen) {
-                                    dropoverContents[0].addEventListener(transition.event, transition.handler);
-                                }
-                            }, transition.duration / 2);
-                        } else {
-                            dropoverContents.css({
-                                'display': 'none'
-                            });
+                        var event = $rootScope.$broadcast('ngDropover.closing', scope.dropoverObj);
+                        if (!event.defaultPrevented) {
+                            if (transition.event) {
+                                $timeout(function() {
+                                    if (!scope.isOpen) {
+                                        dropoverContents[0].addEventListener(transition.event, transition.handler);
+                                    }
+                                }, transition.duration / 2);
+                            } else {
+                                dropoverContents.css({
+                                    'display': 'none'
+                                });
+                            }
+                            elm.removeClass('ngdo-open');
+                            scope.isOpen = false;
+
+                            angular.element($window).unbind('resize', positionContents);
                         }
-                        elm.removeClass('ngdo-open');
-                        scope.isOpen = false;
-
-                        $rootScope.$broadcast('ngDropover.closing', scope.dropoverObj);
-
-                        angular.element($window).unbind('resize', positionContents);
                     }
 
                     scope.$on('$destroy', function() {
@@ -516,7 +518,7 @@
                 if (el.currentStyle) { //IE
                     return el.currentStyle[cssprop];
                 } else if ($window.getComputedStyle) {
-                    return $window.getComputedStyle(el)[cssprop];
+                    return $window.getComputedStyle(el, null)[cssprop];
                 }
                 // finally try and get inline style
                 return el.style[cssprop];

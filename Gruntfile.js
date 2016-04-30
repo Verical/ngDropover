@@ -81,7 +81,7 @@ module.exports = function(grunt) {
             options: {
                 jshintrc: 'jshint.json'
             },
-            source: config.dist
+            source: 'src/dropover.js'
         },
         karma: {
             unit: {
@@ -90,8 +90,9 @@ module.exports = function(grunt) {
                     singleRun: true,
                     browsers: ['PhantomJS'],
                     files: [
-                        'node_modules/jquery/dist/jquery.js',
+                        'node_modules/es5-shim/es5-shim.js',
                         'node_modules/angular/angular.js',
+                        'node_modules/jquery/dist/jquery.js',
                         'node_modules/angular-mocks/angular-mocks.js',
                         'src/dropover.js',
                         'test/spec/*.js'
@@ -101,8 +102,8 @@ module.exports = function(grunt) {
         },
         watch: {
             js: {
-                files: ['src/*.js', 'examples/js/*'],
-                tasks: ['clean', 'concat', 'uglify']
+                files: ['src/*.js', 'test/**/*.js'],
+                tasks: ['default']
             }
         }
     });
