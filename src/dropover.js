@@ -329,7 +329,7 @@
 
                         offX = parseInt(scope.config.horizontalOffset, 10) || 0;
                         offY = parseInt(scope.config.verticalOffset, 10) || 0;
-                        oldDisplay = $position.getStyle(dropoverContents[0], 'display');
+                        oldDisplay = dropoverContents.css('display');
 
                         dropoverContents.css({
                             'visibility': 'hidden',
