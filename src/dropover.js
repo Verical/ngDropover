@@ -4,7 +4,7 @@
 
     /*
      * AngularJS ngDropover
-     * Version: 1.1.0
+     * Version: 1.1.1
      *
      * Copyright 2015
      * All Rights Reserved.
