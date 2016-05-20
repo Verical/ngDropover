@@ -1,6 +1,6 @@
 {
   "name": "ngdropover",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Ricky Sandoval <ricky.sandoval92@gmail.com> and Tony Smith <tony@naptown.com>",
   "description": "ngDropover is an Angular 1.x directive that is a feature-rich, event-driven solution for dropdowns, popovers, tooltips, or any other time you need a trigger or triggers to hide-show elements. The only dependency is AngularJS and your imaaginaaaationnnn! ",
   "contributors": [
