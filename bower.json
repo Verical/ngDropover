@@ -2,7 +2,7 @@
   "name": "ngDropover",
   "description": "ngDropover is a feature-rich, event-driven solution for dropdowns, popovers, tooltips, or any other time you need a trigger or triggers to hide-show elements. The only dependency is AngularJS and your imaaginaaaationnnn!",
   "main": [
-    "/dist/ngdropover.js"
+    "dist/ngdropover.js"
   ],
   "ignore": [
     "node_modules"
