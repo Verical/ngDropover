@@ -1,20 +1,22 @@
 {
   "name": "ngDropover",
-  "ignore": [],
+  "description": "ngDropover is a feature-rich, event-driven solution for dropdowns, popovers, tooltips, or any other time you need a trigger or triggers to hide-show elements. The only dependency is AngularJS and your imaaginaaaationnnn!",
+  "main": [
+    "/dist/ngdropover.js"
+  ],
+  "ignore": [
+    "node_modules"
+  ],
   "homepage": "http://verical.github.io/#/ngDropover",
   "authors": [
     "Tony Smith <tony@naptown.com>",
     "Ricky Sandoval <ricky.sandoval92@gmail.com>"
   ],
-  "description": "ngDropover is a feature-rich, event-driven solution for dropdowns, popovers, tooltips, or any other time you need a trigger or triggers to hide-show elements. The only dependency is AngularJS and your imaaginaaaationnnn!",
   "keywords": [
     "angular",
     "angularJS",
     "dropdown",
     "popover"
   ],
-  "license": "MIT",
-  "main": [
-    "/dist/ngdropover.js",
-  ]
+  "license": "MIT"
 }
