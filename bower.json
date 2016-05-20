@@ -16,7 +16,7 @@
   ],
   "license": "MIT",
   "main": [
-    "./dist/ngdropover.js",
+    "./dist/ngdropover.js"
   ],
   "_source": "https://github.com/Verical/ngDropover.git",
   "_target": "*",
