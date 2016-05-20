@@ -77,7 +77,7 @@
                 'triggerEvent': 'click',
                 'position': 'bottom-left',
                 'closeOnClickOff': true,
-                'staticOptions': false,
+                'staticOptions': 'false',
                 'groupId': ''
             }
         )
@@ -219,6 +219,7 @@
                             }, true);
                         } else {
                             unsetTriggers();
+                            scope.config = angular.extend({}, ngDropoverConfig, scope.$eval(scope.ngDropoverOptions));
                             if (typeof(scope.config.position) !== 'string' || scope.positions.indexOf(scope.config.position) === -1) {
                                 logError(scope.ngDropoverId, angular.element(elm), "Position must be a string and one of these values: " + scope.positions);
                                 scope.config.position = "bottom-left";
@@ -329,7 +330,6 @@
                         offX = parseInt(scope.config.horizontalOffset, 10) || 0;
                         offY = parseInt(scope.config.verticalOffset, 10) || 0;
                         oldDisplay = $position.getStyle(dropoverContents[0], 'display');
-
                         dropoverContents.css({
                             'visibility': 'hidden',
                             'display': ''
@@ -515,10 +515,10 @@
                 if (el.currentStyle) { //IE
                     return el.currentStyle[cssprop];
                 } else if ($window.getComputedStyle) {
-                    return $window.getComputedStyle(el)[cssprop];
+                    return $window.getComputedStyle(el, null).getPropertyValue(cssprop);
+                } else {
+                    return el.style[cssprop];
                 }
-                // finally try and get inline style
-                return el.style[cssprop];
             }
 
             /**

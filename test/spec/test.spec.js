@@ -10,7 +10,10 @@ describe("Unit testing dropover", function() {
 	}));
 
 	it('Dropover starts closed and opens', function() {
-		var element = $compile('<div ng-dropover="myDropover"><div ng-dropover-contents>Contents</div></div>')($rootScope);
+		var element = $('<div ng-dropover="myDropover"><div ng-dropover-contents>Contents</div></div>');
+		angular.element(document).find('body').append(element)
+		$compile(element)($rootScope);
+		$rootScope.$apply();
 		expect($(element).find('[ng-dropover-contents]').css('display')).toBe('none');
 		$rootScope.$emit('ngDropover.open', 'myDropover');
 		expect($(element).find('[ng-dropover-contents]').css('display')).not.toBe('none');
