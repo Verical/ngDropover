@@ -1,6 +1,7 @@
 {
   "name": "ngDropover",
   "version": "1.1.0",
+  "main": "/dist/ngdropover.js",
   "ignore": [],
   "homepage": "http://verical.github.io/#/ngDropover",
   "authors": [
@@ -15,9 +16,6 @@
     "popover"
   ],
   "license": "MIT",
-  "main": [
-    "./dist/ngdropover.js"
-  ],
   "_source": "https://github.com/Verical/ngDropover.git",
   "_target": "*",
   "_originalSource": "ngDropover"
