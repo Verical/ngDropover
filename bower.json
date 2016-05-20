@@ -7,6 +7,10 @@
   "ignore": [
     "node_modules"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Verical/ngDropover"
+  },
   "homepage": "http://verical.github.io/#/ngDropover",
   "authors": [
     "Tony Smith <tony@naptown.com>",
