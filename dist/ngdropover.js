@@ -4,7 +4,7 @@
 
     /*
      * AngularJS ngDropover
-     * Version: 1.1.1
+     * Version: 1.1.2
      *
      * Copyright 2015
      * All Rights Reserved.
@@ -287,8 +287,10 @@
                                 elm.on(triggerObj.show, handlers.open);
                                 elm.on(triggerObj.hide, handlers.close);
                                 if (scope.config.triggerEvent === 'hover') {
-                                    dropoverContents.on('mouseleave', function() {
-                                        handlers.close({});
+                                    dropoverContents.on('mouseleave', function(event) {
+                                        if (!toTrigger(event)) {
+                                            handlers.close({});
+                                        }
                                     });
                                 }
                             }
@@ -316,11 +318,26 @@
                             elm.off(triggerObj.show, handlers.open);
                             elm.off(triggerObj.hide, handlers.close);
                             if (scope.config.triggerEvent === 'hover') {
-                                dropoverContents.off('mouseleave', function() {
-                                    handlers.close({});
+                                dropoverContents.off('mouseleave', function(event) {
+                                    if (!toTrigger(event)) {
+                                        handlers.close({});
+                                    }
                                 });
                             }
                         }
+                    }
+
+                    function toTrigger(event) {
+                        event = (event.originalEvent && event.originalEvent.target) ? event.originalEvent : event;
+                        var element = event.target;
+
+                        while (element && element !== document) {
+                            if (element === elm[0]) {
+                                return true;
+                            }
+                            element = element.parentNode;
+                        }
+                        return false;
                     }
 
                     function positionContents() {
