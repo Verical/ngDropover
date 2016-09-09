@@ -12,7 +12,7 @@
      * conditions of the MIT license, available at http://www.opensource.org/licenses/mit-license.php
      *
      * Authors: Tony Smith & Ricky Sandoval
-     * 
+     *
      */
 
     angular.module('ngDropover', [])
@@ -183,6 +183,11 @@
                             markEvent: function(event) {
                                 event = event.originalEvent || event;
                                 event['ngDropoverId'] = scope.ngDropoverId;
+                            },
+                            mouseleave: function(event) {
+                                if (!toTrigger(event)) {
+                                    handlers.close({});
+                                }
                             }
                         };
                         setHtml();
@@ -280,18 +285,14 @@
                             if (triggerObj.show === triggerObj.hide) {
                                 elm.on(triggerObj.show, handlers.toggle);
                             } else {
-                            
+
                                 if (isLink(elm[0])) {
                                     elm.on('touchend', handlers.toggle);
                                 }
                                 elm.on(triggerObj.show, handlers.open);
                                 elm.on(triggerObj.hide, handlers.close);
                                 if (scope.config.triggerEvent === 'hover') {
-                                    dropoverContents.on('mouseleave', function(event) {
-                                        if (!toTrigger(event)) {
-                                            handlers.close({});
-                                        }
-                                    });
+                                    dropoverContents.on('mouseleave', handlers.mouseleave);
                                 }
                             }
                         }
@@ -300,7 +301,7 @@
                     function isLink(element) {
                        if (element.attributes && (element.attributes.getNamedItem('ng-click') || element.attributes.getNamedItem('href'))){
                         return true;
-                       } 
+                       }
                        return false;
                     }
 
@@ -318,11 +319,7 @@
                             elm.off(triggerObj.show, handlers.open);
                             elm.off(triggerObj.hide, handlers.close);
                             if (scope.config.triggerEvent === 'hover') {
-                                dropoverContents.off('mouseleave', function(event) {
-                                    if (!toTrigger(event)) {
-                                        handlers.close({});
-                                    }
-                                });
+                                dropoverContents.off('mouseleave', handlers.mouseleave);
                             }
                         }
                     }
