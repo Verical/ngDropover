@@ -9,7 +9,7 @@ ngDropover
 * Close dropover when clicking outside directive
 * Doesn't use event.stopPropagation()
 
-#### Current Version 1.1.2
+#### Current Version 1.1.4
 
 ## Demo and Docs
 Check out the [ngDropover's website](http://verical.github.io/#/ngDropover) for all the documentation and example goodness - Prepare your eyeballs
