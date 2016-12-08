@@ -346,7 +346,7 @@
                         oldDisplay = $position.getStyle(dropoverContents[0], 'display');
                         dropoverContents.css({
                             'visibility': 'hidden',
-                            'display': ''
+                            'display': 'inline-block'
                         });
 
                         positions = $position.positionElements(elm, dropoverContents, scope.config.position, false);
