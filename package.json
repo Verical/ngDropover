@@ -23,10 +23,10 @@
     "popover"
   ],
   "dependencies": {
-    "angular": "1.x.x"
+    "angular": "~1.2.30"
   },
   "devDependencies": {
-    "angular-mocks": "^1.4.5",
+    "angular-mocks": "~1.2.30",
     "grunt": "0.4.x",
     "grunt-contrib-clean": "0.x.x",
     "grunt-contrib-concat": "0.x.x",
